@@ -3,7 +3,7 @@ layout: post
 title: Python Numpy ile Sifirdan K Nearest Neighbours Algoritmasini Yazalim
 date: 2020-11-08 
 summary: Bu yazıda Python Numpy ile Sıfırdan Knn yazıyoruz. 
-tags: [numpy, knn, makine öğrenmesi]
+tags: [numpy, knn, makine ogrenmesi]
 ---
 
 Merhaba bu yazımızda Makine Öğrenmesinde meşhur bir algoritma olan Knn algoritmasını sıfırdan yazacağız. Tabii ki

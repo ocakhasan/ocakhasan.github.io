@@ -3,7 +3,7 @@ layout: post
 title: Flask ve Sklearn ile Film Önerme Sitesi Yapalım 
 summary: Metin benzerliği benzerliğini kullanarak Flask ile film önerme sitesi yapalım.
 date: 2021-03-01
-tags: [flask, makine öğrenmesi]
+tags: [flask, makine ogrenmesi]
 ---
 
 

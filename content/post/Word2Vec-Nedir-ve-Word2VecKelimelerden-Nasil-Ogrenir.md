@@ -3,7 +3,7 @@ layout: post
 title: Word2Vec Nedir ve Word2Vec Kelimelerden Nasıl Öğrenir
 date: 2020-12-14
 summary: Natural Language Processing'de kullanılan Word2Vec modelini inceliyoruz.
-tags: [makine öğrenmesi, nlp]
+tags: [makine ogrenmesi, nlp]
 ---
 
 

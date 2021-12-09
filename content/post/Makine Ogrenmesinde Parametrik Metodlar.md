@@ -3,7 +3,7 @@ layout: post
 title: Makine Ogrenmesinde Parametrik Metodlar  
 summary: İstatiksel biçimde parametrik metodları inceliyoruz.
 date: 2020-01-12
-tags: [makine öğrenmesi, matematik]
+tags: [makine ogrenmesi, matematik]
 ---
 
 ## TANIM
