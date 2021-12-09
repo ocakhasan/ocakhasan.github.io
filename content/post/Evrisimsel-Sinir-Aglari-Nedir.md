@@ -52,7 +52,7 @@ Convolutional katman Convolutional sinir ağlarının büyük ağır işini yapa
 Conv katmanlar parametreleri öğrenilebilir filtrelerden oluşur. Her bir filtre boyut olarak küçüktür, ancak input derinliği boyunca uzanırlar. Örnek olarak, tipik bir filtre $5 * 5 * 3$ boyutlarında olabilir. İlk 5 genişlik, ikinci 5 yükseklik ve üçüncü 3 ise resimin 3 derinlikli olmasından kaynaklanır. Doğrudan iletme kısmında, her bir filtreyi input resmi üzerinde kaydırıyoruz, bu kaydırma sırasında resimlerde pixeller ile filtredeki sayılar ile dot product alıyoruz. Filtreyi kaydırma işlemi sırasında 2 boyutlu bir aktivite haritası oluşturuyoruz. Bu harita ise bize her bir pozisyondaki cevabı veriyor. Sinir ağı, bu filtreler ne zaman belirli bir görsel özellik, örnek olarak kenar, gördüğü zaman öğrenecek. Her bir filtrenin oluşturduğu haritaları üst üste sıkıştırıp bunu bir sonraki katmana iletiyoruz. 
 
 
-![Convolutional Sinir Ağları Örnek]({{ site.baseurl }}/images/cnn.png)
+![Convolutional Sinir Ağları Örnek](../../images/cnn.png)
 
 
 **BOYUTSAL AYARLAMA**
@@ -79,7 +79,7 @@ $$
 
 Şimdi bu boyut tek bir nörondan çıkan sonuç. Eğer elimizde $n$ tane nöron varsa, bu katmandan çıkan sonucun boyutu $8 * 8 * n$ olacaktı. 
 
-![Convolutional Sinir Ağları Örnek]({{ site.baseurl }}/images/cnn_filter.png)
+![Convolutional Sinir Ağları Örnek](../../images/cnn_filter.png)
 
 Yukarıdaki örnekten de görüleceği üzere filtre boyutumuz $3 *3$, bundan dolayı resimde de (3*3) lük alanlar alıp, bu aldığımız alanla filtre arasında bir dot product işlemi uyguluyoruz. Peki resimdeki $31$ sayısına nasıl ulaştık onu inceleyelim.
 
@@ -158,7 +158,7 @@ Convolutional sinir ağlarında convolutional katmanlar arasına *Pooling* katma
 
 
 
-![Convolutional Sinir Ağları Pooling Layer Örneği]({{ site.baseurl }}/images/pooling.png)
+![Convolutional Sinir Ağları Pooling Layer Örneği](../../images/pooling.png)
 
 Resimde de görüleceği üzere her bir $(2 * 2)$ lik bölümden en büyük sayılar alınıp yeni bir örnek elde ediliyor.
 

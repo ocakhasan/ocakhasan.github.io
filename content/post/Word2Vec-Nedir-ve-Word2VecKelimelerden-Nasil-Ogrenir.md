@@ -39,7 +39,7 @@ Unutmadan:
 * merkezi kelime için, içerik kelimelerinin olasılıklarını hesapla.
 * vektörleri olasılıkları artıracak şekilde ayarla
 
-![word2vec-nedir]({{ site.baseurl }}/images/training_data.png)
+![word2vec-nedir](../../images/training_data.png)
 
 Resimde de görüleceği üzere her seferinde arkası mavi olan `merkezi kelime` ve diğerleri de `içerik kelimeleri`. 
 

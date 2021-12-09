@@ -7,7 +7,7 @@ tags: [numpy]
 ---
 # NUMPY 
 
-![Numpy Logo](../../numpy_logo.png)
+![Numpy Logo](../../images/numpy_logo.png)
 ```python
 import numpy as np
 ```
