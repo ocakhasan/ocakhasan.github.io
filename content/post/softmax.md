@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Softmax Aktivasyon Fonksiyonu Nedir ve Numpy ile Nasıl Implement Edilir 
+date: 2020-08-12
 summary: Derin Öğrenmede kullanılan softmax aktivasyon fonksiyonunu inceliyoruz.
 tags: [numpy, derin öğrenme, matematik]
 

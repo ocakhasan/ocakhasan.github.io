@@ -2,6 +2,7 @@
 layout: post
 title:  Evrişimsel Sinir Ağları  (Convolutional Neural Network) Nedir
 summary: Derin Öğrenmede resimler üzerinde kullanılan evrişimsel sinir ağlarını kullanıyoruz.
+date: 2020-12-17 
 tags: [numpy, pytorch, cnn]
 ---
 

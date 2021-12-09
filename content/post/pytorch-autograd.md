@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  Pytorch AutoGrad Nedir ve Nasıl Çalışır
+date: 2021-02-20
 summary: Basit şekilde Pytorch Autograd ile otomatik olarak nasıl türev işlemleri halledilir.
 tags: [pytorch, matematik]
 ---

@@ -2,11 +2,12 @@
 layout: post
 title: Kapsamli Şekilde Python Numpy Öğrenelim
 summary: Bu yazıda Python Numpy Kütüphanesini inceliyoruz. 
+date: 2020-11-09
 tags: [numpy]
 ---
 # NUMPY 
 
-![Numpy Logo]({{ site.baseurl }}/images/numpy_logo.png)
+![Numpy Logo](../../resources/_gen/images/numpy_logo.png)
 ```python
 import numpy as np
 ```
