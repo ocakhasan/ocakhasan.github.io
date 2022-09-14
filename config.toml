@@ -1,6 +1,6 @@
 baseURL = "https://ocakhasan.github.io/blog/"
-languageCode = "en"
-defaultContentLanguage = "en"                             # en / zh-cn / ... (This field determines which i18n file to use)
+languageCode = "tr"
+defaultContentLanguage = "tr"                             # en / zh-cn / ... (This field determines which i18n file to use)
 title = "Hasan Ocak Tech Blog"
 preserveTaxonomyNames = true
 enableRobotsTXT = true
