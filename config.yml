@@ -128,7 +128,7 @@ markup:
         # codeFences: true
         # guessSyntax: true
         # lineNos: true
-        style: dracula
+        # style: monokai
         pygmentsUseClasses: true
 
 privacy:
