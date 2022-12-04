@@ -4,6 +4,7 @@ title: Dinamik Programlama ile Knapsack Problemi Nasıl Çözülür
 summary: Meşhur Knapscak problemini dinamik programlama ile çözüyoruz. 
 date: 2020-11-18
 tags: [algoritmalar, python]
+math: true
 ---
 
 
