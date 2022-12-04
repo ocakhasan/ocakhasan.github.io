@@ -1,4 +1,4 @@
-baseURL: "https://ocakhasan.github.io/blog"
+baseURL: "https://ocakhasan.github.io/blog/"
 title: Tech Blog 
 paginate: 5
 theme: hugo-PaperMod
