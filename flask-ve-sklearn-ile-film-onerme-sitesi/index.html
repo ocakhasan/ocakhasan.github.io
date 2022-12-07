@@ -1,0 +1,258 @@
+<!doctype html><html lang=tr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Flask ve Sklearn ile Film Önerme Sitesi Yapalım - Hasan Ocak Tech Blog</title><meta name=Description content="Çeşitli konulardan bahseden bir tech blog"><meta property="og:title" content="Flask ve Sklearn ile Film Önerme Sitesi Yapalım"><meta property="og:description" content="Metin benzerliği benzerliğini kullanarak Flask ile film önerme sitesi yapalım."><meta property="og:type" content="article"><meta property="og:url" content="https://ocakhasan.github.io/flask-ve-sklearn-ile-film-onerme-sitesi/"><meta property="og:image" content="https://ocakhasan.github.io/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-03-01T00:00:00+00:00"><meta property="article:modified_time" content="2022-12-07T21:09:02+03:00"><meta property="og:site_name" content="Hasan Ocak Tech Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://ocakhasan.github.io/logo.png"><meta name=twitter:title content="Flask ve Sklearn ile Film Önerme Sitesi Yapalım"><meta name=twitter:description content="Metin benzerliği benzerliğini kullanarak Flask ile film önerme sitesi yapalım."><meta name=application-name content="Hasan Ocak Tech Blog"><meta name=apple-mobile-web-app-title content="Hasan Ocak Tech Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://ocakhasan.github.io/flask-ve-sklearn-ile-film-onerme-sitesi/><link rel=prev href=https://ocakhasan.github.io/pytorch-autograd-nedir-ve-nasil-calisir/><link rel=next href=https://ocakhasan.github.io/go-dilinde-concurrency-calisma-ornegi/><link rel=stylesheet href=/css/style.min.css><link rel=preload href=/lib/fontawesome-free/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.css></noscript><link rel=preload href=/lib/animate/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><meta name=google-site-verification content="6FsPs8qV_9zEnPMWf3bEQwRJFU2Q9imUdyZqX_99So4"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Flask ve Sklearn ile Film Önerme Sitesi Yapalım","inLanguage":"tr","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/ocakhasan.github.io\/flask-ve-sklearn-ile-film-onerme-sitesi\/"},"genre":"posts","keywords":"flask, makine ogrenmesi","wordcount":1204,"url":"https:\/\/ocakhasan.github.io\/flask-ve-sklearn-ile-film-onerme-sitesi\/","datePublished":"2021-03-01T00:00:00+00:00","dateModified":"2022-12-07T21:09:02+03:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"Hasan Ocak"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Flask ve Sklearn ile Film Önerme Sitesi Yapalım</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>Hasan Ocak</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2021-03-01>2021-03-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;1204 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;6 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept=true><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#gereksinimler>Gereksinimler</a></li><li><a href=#sitenin-yapısı>Sitenin Yapısı</a></li><li><a href=#veri-seti-ve-metin-benzerliği>Veri Seti ve Metin Benzerliği</a><ul><li><a href=#film-önerme-fonksiyonu>Film Önerme Fonksiyonu</a></li><li><a href=#html-arayüz>HTML Arayüz</a></li><li><a href=#flask-endpointleri-halletme>Flask Endpointleri halletme</a></li></ul></li></ul></nav></div></div><div class=content id=content><p>Bu yazıdaki bütün kodlar <a href=https://github.com/ocakhasan/movie-recommender target=_blank rel="noopener noreffer">Bu repodan</a> bulunmaktadır. Eğer demo versiyonunu görmek isterseniz <a href=http://banafilmoner.herokuapp.com/ target=_blank rel="noopener noreffer">http://banafilmoner.herokuapp.com/</a> sitesinden görebilirsiniz.</p><h2 id=gereksinimler>Gereksinimler</h2><p>Bu yazımızda yapacağımız siteyi eğer kendiniz de yapmak istiyorsanız <a href=https://flask.palletsprojects.com/en/1.1.x/ target=_blank rel="noopener noreffer">Flask</a> ve <a href=https://scikit-learn.org/ target=_blank rel="noopener noreffer">Scikit-learn</a> kütüphanelerini yüklemeniz gerekmektedir. Bunları yüklemek için terminalden şu komutları yazabilirsiniz ya da her bir paketin dökümentasyonundan bakabilirsiniz.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>pip install Flask 
+</span></span><span class=line><span class=cl>pip install scikit-learn
+</span></span></code></pre></td></tr></table></div></div><h2 id=sitenin-yapısı>Sitenin Yapısı</h2><p>Yapacağımız sitede film önerileri metin benzerliği ile olacak. Bu filmlerin açıklama metinlerini ise bir veri kümesinden alacağız. Bu veri kümesine <a href=https://www.kaggle.com/tmdb/tmdb-movie-metadata target=_blank rel="noopener noreffer">TMDB 5000 Movies</a> sayfasından ulaşabilirsiniz. Bundan dolayı önerebileceğimiz metinler sadece bu veri kümesindekiler olacaktır. Metin benzerliğini ise <a href=https://merveenoyan.medium.com/kosin%C3%BCs-benzerli%C4%9Fi-2b4a4c924f27 target=_blank rel="noopener noreffer">kosinüs benzerliği</a> ile yapacağız.</p><h2 id=veri-seti-ve-metin-benzerliği>Veri Seti ve Metin Benzerliği</h2><p>Veri setindeki <code>title</code> sütunu filmin başlığını ve <code>overview</code> sütunu ise filmi basitçe açıklar.Bu yazıda <code>overview</code> sütununu kullanarak metin benzerliğini kuracağız. Bunun için önce <code>utils.py</code> diye bir dosya oluşturalım ve indirdiğimiz veri setini de projedeki dosyaya koyalım. Öncelikle filmlerin açıklamalarını kullanarak kosinüs benzerliğini verecek olan bir fonksiyon yazalım.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>sklearn.feature_extraction.text</span> <span class=kn>import</span> <span class=n>TfidfVectorizer</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>sklearn.metrics.pairwise</span> <span class=kn>import</span> <span class=n>linear_kernel</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>get_cosine_similarities</span><span class=p>(</span><span class=n>df</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>vectorizer</span> <span class=o>=</span> <span class=n>TfidfVectorizer</span><span class=p>(</span><span class=n>stop_words</span><span class=o>=</span><span class=s2>&#34;english&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>tf_idf_mat</span> <span class=o>=</span> <span class=n>vectorizer</span><span class=o>.</span><span class=n>fit_transform</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>&#39;overview&#39;</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>cosine_sim</span> <span class=o>=</span> <span class=n>linear_kernel</span><span class=p>(</span><span class=n>tf_idf_mat</span><span class=p>,</span> <span class=n>tf_idf_mat</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>cosine_sim</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>get_cosine_similarities(df)</code> fonksiyonu parametere olarak <code>DataFrame</code> alır, <code>DataFrame</code>i ise veri setini okuduktan sonra bu fonksiyona parametre olarak vereceğiz. Fonksiyonda kullanılan <a href=https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html target=_blank rel="noopener noreffer"><code>TfidfVectorizer</code></a> metinlerden bilgi çıkarmamıza yarayan bir algoritmadır. Açılımı <strong>Term frequency (tf) -> (terim sıklığı)</strong> ve <strong>inverse document frequency (ters döküman sıklığı)dır</strong>. Yani terimlerin her bir metinde ne kadar sıklıkla geçtiğine ve bu terimlerin bütün dökümanda ne kadar sıklıkla geçtiğine bakıp, hangi terimlerin cümleleri ayırmada önemli olduğuna karar verir. Bu bize (4803, n) boyutunda bir matrix dönderecektir. <strong>n</strong> ise bu algoritmanın bulduğu belirleyici kelimelerin sayısıdır. Yazdığımız fonksiyonla beraber, her bir cümle için her bir kelimenin ne kadar önemi olduğunu gösteren bir matrix elde edilecek. Daha sonra bu matrixi kullanarak her bir metin arasındaki benzerliği bulmak için <a href=https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.linear_kernel.html target=_blank rel="noopener noreffer">linear_kernel</a> kullanıyoruz. Bu algoritma ise bize (4803, 4803) boyutunda her bir metnin diğer 4038 filmin metni ile benzerliğini gösteren bir matrix döndürecek.
+Bu fonksiyondan çıkan sonuç ise şu şekildedir</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>[[1.         0.         0.         ... 0.         0.         0.        ]
+</span></span><span class=line><span class=cl> [0.         1.         0.         ... 0.02160533 0.         0.        ]
+</span></span><span class=line><span class=cl> [0.         0.         1.         ... 0.01488159 0.         0.        ]
+</span></span><span class=line><span class=cl> ...
+</span></span><span class=line><span class=cl> [0.         0.02160533 0.01488159 ... 1.         0.01609091 0.00701914]
+</span></span><span class=line><span class=cl> [0.         0.         0.         ... 0.01609091 1.         0.01171696]
+</span></span><span class=line><span class=cl> [0.         0.         0.         ... 0.00701914 0.01171696 1.        ]]
+</span></span></code></pre></td></tr></table></div></div><p>Görüldüğü gibi bazı değerler 0 bazıları 1 (köşegendekiler), bazıları da 0 ile 1 arasında.
+Kısaca</p><ol><li>Sonucu 0 olanlar arasında hiçbir benzerlik yok,</li><li>1 olanlar zaten kendileri ile ölçüldüğü için aynı olarak çıkıyor, örnek olarak 1.film ile 1.film arasındaki benzerlik 1 olacak doğal olarak</li><li>0-1 arasındakiler ise iki film arasındaki benzerliği gösteriyor.</li></ol><p>Ne yaptığımızı kısaca yazalım.</p><ul><li>Veri setini okuduk</li><li>Kosinüs benzerlik matriksini oluşturduk.</li></ul><p>Şimdi yapılması gerekenler ise bu matrixi kullanıp film önerileri alabilmek. Bunun için yapılması gerekenler</p><ol><li>Kosinüs matrixini kullanıp bize verilen film için önerileri döndüren bir fonksiyon yazmak</li><li>Flask ile web arayüzü oluşturup, kullanıcın girdiği filme öneriler vermek</li><li>Bu fonksiyonu flask ile kullanabilmek.</li></ol><h3 id=film-önerme-fonksiyonu>Film Önerme Fonksiyonu</h3><p>Bu fonksiyona geçmeden önce veriyi okuyalım, ve kosinüs matriximizi alalım. Şunu belirtmem gerekir ki, kullanıcının attığı her requestte veri setini baştan okuyup kosinüs matrixini okumak yük olur. Bundan dolayı, bunu bir kez yapmak adına, bu işlemleri <code>if __name__ == "__main__"</code> altında yapacağız.</p><p>Öncelikle bir <code>app.py</code> adında bir dosya açalım. Bu dosyada Flask applikasyonumuzun kodları olacak. Diğer <code>utils.py</code> dan fonksiyonları çağıracağız.</p><p><code>app.py</code> dosyasına şu kodları girelim.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>flask</span> <span class=kn>import</span> <span class=n>Flask</span><span class=p>,</span> <span class=n>render_template</span><span class=p>,</span> <span class=n>request</span><span class=p>,</span> <span class=n>redirect</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>pandas</span> <span class=k>as</span> <span class=nn>pd</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>utils</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>app</span> <span class=o>=</span> <span class=n>Flask</span><span class=p>(</span><span class=vm>__name__</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span><span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>read_csv</span><span class=p>(</span><span class=s2>&#34;data.csv&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span><span class=p>[</span><span class=s1>&#39;overview&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>&#39;overview&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span><span class=p>[</span><span class=s1>&#39;lower_name&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>&#39;title&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>str</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>titles</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>Series</span><span class=p>(</span><span class=n>df</span><span class=o>.</span><span class=n>index</span><span class=p>,</span> <span class=n>index</span><span class=o>=</span><span class=n>df</span><span class=p>[</span><span class=s1>&#39;lower_name&#39;</span><span class=p>])</span><span class=o>.</span><span class=n>drop_duplicates</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>cosine_sim</span> <span class=o>=</span> <span class=n>utils</span><span class=o>.</span><span class=n>get_cosine_similarities</span><span class=p>(</span><span class=n>df</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>app</span><span class=o>.</span><span class=n>run</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p>Şuan <code>app.py</code> dosyasında yapılan işlemler.</p><ol><li>Flask uygulaması oluşturuldu.</li><li>Veri okundu.</li><li>Kosinüs benzerlik matriksi oluşturuldu.</li></ol><p>Main kısmında <em><strong>titles</strong></em> diye bir değişken oluşturulma sebebi bu değişkenin filmleri önerecek olan fonksiyonda kullanacağımızdan dolayıdır. <em><strong>Titles</strong></em> değişkeni tip olarak <code>Series</code>dir. Konsola yazdırdığımız zaman şöyle bir sonuç çıkacaktır.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>lower_name
+</span></span><span class=line><span class=cl>avatar                                         0
+</span></span><span class=line><span class=cl>pirates of the caribbean: at world&#39;s end       1
+</span></span><span class=line><span class=cl>spectre                                        2
+</span></span><span class=line><span class=cl>the dark knight rises                          3
+</span></span><span class=line><span class=cl>john carter                                    4
+</span></span><span class=line><span class=cl>                                            ...
+</span></span><span class=line><span class=cl>el mariachi                                 4798
+</span></span><span class=line><span class=cl>newlyweds                                   4799
+</span></span><span class=line><span class=cl>signed, sealed, delivered                   4800
+</span></span><span class=line><span class=cl>shanghai calling                            4801
+</span></span><span class=line><span class=cl>my date with drew                           4802
+</span></span><span class=line><span class=cl>Length: 4803, dtype: int64
+</span></span></code></pre></td></tr></table></div></div><p>Şimdi filmleri önerecek fonksiyonu yazmaya başlayabiliriz. Bunu <code>utils.py</code> dosyasında yazalım.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>movie_title = istenilen filmin ismi
+</span></span></span><span class=line><span class=cl><span class=s2>cosine_similarity = kosinüs benzerlik matriksi
+</span></span></span><span class=line><span class=cl><span class=s2>titles= az önce oluşturduğumuz filmin isimlerine sahip olan `Series`
+</span></span></span><span class=line><span class=cl><span class=s2>df = bütün filmleri barındıran dataframe
+</span></span></span><span class=line><span class=cl><span class=s2>&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>get_recommendations</span><span class=p>(</span><span class=n>movie_title</span><span class=p>,</span> <span class=n>cosine_similarity</span><span class=p>,</span> <span class=n>titles</span><span class=p>,</span> <span class=n>df</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>index_movie</span> <span class=o>=</span> <span class=n>titles</span><span class=p>[</span><span class=n>movie_title</span><span class=p>]</span>                   <span class=c1>#istenilen filmin indexini bul</span>
+</span></span><span class=line><span class=cl>    <span class=n>name_of_movie</span> <span class=o>=</span> <span class=n>df</span><span class=o>.</span><span class=n>iloc</span><span class=p>[</span><span class=n>index_movie</span><span class=p>][</span><span class=s1>&#39;title&#39;</span><span class=p>]</span>       <span class=c1>#daha sonra dataframeden filmin adını bul. </span>
+</span></span><span class=line><span class=cl>                                                        <span class=c1>#istenilen isim küçük harfli olabilir, biz</span>
+</span></span><span class=line><span class=cl>                                                        <span class=c1>#dataframde nasılsa onu almak için yapıyoruz.</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=n>similarities</span> <span class=o>=</span> <span class=n>cosine_similarity</span><span class=p>[</span><span class=n>index_movie</span><span class=p>]</span>       <span class=c1>#daha sonra girilen filmin kosinüs benzerlik </span>
+</span></span><span class=line><span class=cl>                                                        <span class=c1>#arrayini al, diğer filmlerle benzerlik arrayi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>similarity_scores</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=nb>enumerate</span><span class=p>(</span><span class=n>similarities</span><span class=p>))</span>   <span class=c1>#işlem kolaylığı için her bir benzerliğin indexini</span>
+</span></span><span class=line><span class=cl>                                                        <span class=c1>#alabilmemiz lazım. yani (0, 0.2), (1, 0.4), (2. 0.7) ... gibi.</span>
+</span></span><span class=line><span class=cl>    <span class=n>similarity_scores</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>similarity_scores</span> <span class=p>,</span> <span class=n>key</span><span class=o>=</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=n>x</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>reverse</span> <span class=o>=</span> <span class=kc>True</span><span class=p>)</span> <span class=c1>#bütün benzerlik skorlarını sırala</span>
+</span></span><span class=line><span class=cl>    <span class=n>similarity_scores</span> <span class=o>=</span> <span class=n>similarity_scores</span><span class=p>[</span><span class=mi>1</span><span class=p>:</span><span class=mi>11</span><span class=p>]</span>         <span class=c1>#en benzer 10 filmi al</span>
+</span></span><span class=line><span class=cl>    <span class=n>similar_indexes</span> <span class=o>=</span> <span class=p>[</span><span class=n>x</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>similarity_scores</span><span class=p>]</span> <span class=c1>#benzer filmlerin indexlerini al</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>df</span><span class=o>.</span><span class=n>iloc</span><span class=p>[</span><span class=n>similar_indexes</span><span class=p>],</span> <span class=n>name_of_movie</span>      <span class=c1>#benzer filmlerin bilgilerini almak için indexlerini kullan.</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=html-arayüz>HTML Arayüz</h3><p>Bu fonksiyon da yazıldığına göre şimdi Flask ile bağlayabiliriz. Ama öncelikle bir arayüzümüz olması gerekiyor. Bunun için aynı klasörde <code>templates</code> diye bir klasör oluşturun ve içine <code>index.html</code> adında bir dosya oluşturun. Bu dosya bizim kullanıcıdan arayüzü almamızı sağlayacak olan <code>HTML</code> kodunu içerecek. <code>HTML</code> kısmını anlatmayacağım. Basit şekilde <code>Flask</code> bildiğinizi varsayıyorum.</p><p><code>index.html</code> dosyasına <a href=https://github.com/ocakhasan/movie-recommender/blob/master/templates/index.html target=_blank rel="noopener noreffer">buradaki arayüz kodunu</a> yapıştırın. HTML kısmı şuan çok ilgi alanımız değil, eğer arayüz nasıl görünüyor diye merak ediyorsanız, <a href=https://banafilmoner.herokuapp.com target=_blank rel="noopener noreffer">buradan</a> bakabilirsiniz.</p><h3 id=flask-endpointleri-halletme>Flask Endpointleri halletme</h3><p>Bu kodda dikkatinizi çekmek istediğim bir nokta var. <code>FORM</code> bir &lsquo;/&rsquo; yoluna <em>POST</em> request yapıyor. Flask uygulamasında &lsquo;/&rsquo; adresine bir <em>POST</em> request yapılacak. Ayrıca websitesinin giriş sayfası da bu adrese <em>GET</em> request yapılarak alınacak. Şimdi <code>app.py</code> dosyasında bu koşulları sağlayan kodumuzu yazalım.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>flask</span> <span class=kn>import</span> <span class=n>Flask</span><span class=p>,</span> <span class=n>render_template</span><span class=p>,</span> <span class=n>request</span><span class=p>,</span> <span class=n>redirect</span><span class=p>,</span> <span class=n>flash</span><span class=p>,</span> <span class=n>url_for</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>pandas</span> <span class=k>as</span> <span class=nn>pd</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>utils</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>app</span> <span class=o>=</span> <span class=n>Flask</span><span class=p>(</span><span class=vm>__name__</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nd>@app.route</span><span class=p>(</span><span class=s1>&#39;/&#39;</span><span class=p>,</span> <span class=n>methods</span><span class=o>=</span><span class=p>[</span><span class=s1>&#39;GET&#39;</span><span class=p>,</span> <span class=s1>&#39;POST&#39;</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>hello</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=n>length</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=n>movie_name</span> <span class=o>=</span> <span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>context</span> <span class=o>=</span> <span class=p>{</span>                     <span class=c1>#Bu dictionary önerilen filmlerin bilgilerini tutuyor.</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;movies&#39;</span><span class=p>:</span> <span class=p>[],</span>               <span class=c1>#isimler</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;urls&#39;</span><span class=p>:</span> <span class=p>[],</span>                 <span class=c1>#filmlerin sayfaları</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;release_dates&#39;</span><span class=p>:</span> <span class=p>[],</span>        <span class=c1>#filmlerin yayınlanma tarihleri</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;runtimes&#39;</span><span class=p>:</span> <span class=p>[],</span>             <span class=c1>#filmlerin süreleri</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;overviews&#39;</span><span class=p>:</span> <span class=p>[]</span>             <span class=c1>#filmleri anlatan metinler</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>request</span><span class=o>.</span><span class=n>method</span> <span class=o>==</span> <span class=s2>&#34;POST&#34;</span><span class=p>:</span>                    <span class=c1>#Kullanıcı bir input girdiyse</span>
+</span></span><span class=line><span class=cl>        <span class=n>text</span> <span class=o>=</span> <span class=n>request</span><span class=o>.</span><span class=n>form</span><span class=p>[</span><span class=s1>&#39;fname&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;request text&#34;</span><span class=p>,</span> <span class=n>text</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>recommended_df</span><span class=p>,</span> <span class=n>movie_name</span> <span class=o>=</span> <span class=n>utils</span><span class=o>.</span><span class=n>get_recommendations</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>                <span class=n>text</span><span class=p>,</span> <span class=n>cosine_sim</span><span class=p>,</span> <span class=n>titles</span><span class=p>,</span> <span class=n>df</span><span class=p>)</span>                               <span class=c1>#girilen inputtan filmleri al</span>
+</span></span><span class=line><span class=cl>            <span class=n>context</span><span class=p>[</span><span class=s1>&#39;movies&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>recommended_df</span><span class=o>.</span><span class=n>title</span><span class=o>.</span><span class=n>values</span>
+</span></span><span class=line><span class=cl>            <span class=n>context</span><span class=p>[</span><span class=s1>&#39;urls&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>recommended_df</span><span class=o>.</span><span class=n>homepage</span><span class=o>.</span><span class=n>values</span>
+</span></span><span class=line><span class=cl>            <span class=n>context</span><span class=p>[</span><span class=s1>&#39;release_dates&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>recommended_df</span><span class=o>.</span><span class=n>release_date</span><span class=o>.</span><span class=n>values</span>
+</span></span><span class=line><span class=cl>            <span class=n>context</span><span class=p>[</span><span class=s1>&#39;runtimes&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>recommended_df</span><span class=o>.</span><span class=n>runtime</span><span class=o>.</span><span class=n>values</span>
+</span></span><span class=line><span class=cl>            <span class=n>context</span><span class=p>[</span><span class=s1>&#39;overviews&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>recommended_df</span><span class=o>.</span><span class=n>overview</span><span class=o>.</span><span class=n>values</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=n>length</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>context</span><span class=p>[</span><span class=s1>&#39;movies&#39;</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>        <span class=k>except</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=n>render_template</span><span class=p>(</span><span class=s1>&#39;index.html&#39;</span><span class=p>,</span> <span class=n>error</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>            <span class=c1>#filmi bulamadıysak error döndür.</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>render_template</span><span class=p>(</span><span class=s1>&#39;index.html&#39;</span><span class=p>,</span> <span class=n>length</span><span class=o>=</span><span class=n>length</span><span class=p>,</span> <span class=n>context</span><span class=o>=</span><span class=n>context</span><span class=p>,</span> <span class=n>movie_name</span><span class=o>=</span><span class=n>movie_name</span><span class=p>,</span> <span class=n>error</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>read_csv</span><span class=p>(</span><span class=s2>&#34;data.csv&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span><span class=p>[</span><span class=s1>&#39;overview&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>&#39;overview&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>fillna</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>titles</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>Series</span><span class=p>(</span><span class=n>df</span><span class=o>.</span><span class=n>index</span><span class=p>,</span> <span class=n>index</span><span class=o>=</span><span class=n>df</span><span class=p>[</span><span class=s1>&#39;lower_name&#39;</span><span class=p>])</span><span class=o>.</span><span class=n>drop_duplicates</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>cosine_sim</span> <span class=o>=</span> <span class=n>utils</span><span class=o>.</span><span class=n>get_cosine_similarities</span><span class=p>(</span><span class=n>df</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>app</span><span class=o>.</span><span class=n>run</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p>Render templatede gönderilen <code>context</code> değişkeni <code>HTML</code> dosyasında parse ediliyor ve bilgiler güzel bir şekilde gösteriliyor. Dediğim gibi basit şekilde <em>Flask</em> bildiğiniz düşünüyorum.</p><p>Beğendiyseniz paylaşırsanız çok sevinirim. İyi öğrenmeler.</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2022-12-07</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/flask-ve-sklearn-ile-film-onerme-sitesi/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://ocakhasan.github.io/flask-ve-sklearn-ile-film-onerme-sitesi/ data-title="Flask ve Sklearn ile Film Önerme Sitesi Yapalım" data-hashtags="flask,makine ogrenmesi"><i class="fab fa-twitter fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://ocakhasan.github.io/flask-ve-sklearn-ile-film-onerme-sitesi/ data-hashtag=flask><i class="fab fa-facebook-square fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://ocakhasan.github.io/flask-ve-sklearn-ile-film-onerme-sitesi/ data-title="Flask ve Sklearn ile Film Önerme Sitesi Yapalım"><i class="fab fa-hacker-news fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Line" data-sharer=line data-url=https://ocakhasan.github.io/flask-ve-sklearn-ile-film-onerme-sitesi/ data-title="Flask ve Sklearn ile Film Önerme Sitesi Yapalım"><i data-svg-src=/lib/simple-icons/icons/line.min.svg aria-hidden=true></i></a><a href=javascript:void(0); title="Share on 微博" data-sharer=weibo data-url=https://ocakhasan.github.io/flask-ve-sklearn-ile-film-onerme-sitesi/ data-title="Flask ve Sklearn ile Film Önerme Sitesi Yapalım"><i class="fab fa-weibo fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/flask/>flask</a>,&nbsp;<a href=/tags/makine-ogrenmesi/>makine ogrenmesi</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/pytorch-autograd-nedir-ve-nasil-calisir/ class=prev rel=prev title="Pytorch AutoGrad Nedir ve Nasıl Çalışır"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>Pytorch AutoGrad Nedir ve Nasıl Çalışır</a>
+<a href=/go-dilinde-concurrency-calisma-ornegi/ class=next rel=next title="Go Dilinde Concurrency Üzerinde Çalışma">Go Dilinde Concurrency Üzerinde Çalışma<i class="fas fa-angle-right fa-fw" aria-hidden=true></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.108.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2019 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Hasan Ocak</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.css><link rel=stylesheet href=/lib/cookieconsent/cookieconsent.min.css><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/contrib/auto-render.min.js></script><script type=text/javascript src=/lib/katex/contrib/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/contrib/mhchem.min.js></script><script type=text/javascript src=/lib/cookieconsent/cookieconsent.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:50},comment:{},cookieconsent:{content:{dismiss:"Got it!",link:"Learn more",message:"This website uses Cookies to improve your experience."},enable:!0,palette:{button:{background:"#f0f0f0"},popup:{background:"#1aa3ff"}},theme:"edgeless"},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>

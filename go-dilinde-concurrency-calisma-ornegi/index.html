@@ -1,0 +1,365 @@
+<!doctype html><html lang=tr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Go Dilinde Concurrency Üzerinde Çalışma - Hasan Ocak Tech Blog</title><meta name=Description content="Çeşitli konulardan bahseden bir tech blog"><meta property="og:title" content="Go Dilinde Concurrency Üzerinde Çalışma"><meta property="og:description" content="Kod parçasındaki hataları bulup düzelteceğiz"><meta property="og:type" content="article"><meta property="og:url" content="https://ocakhasan.github.io/go-dilinde-concurrency-calisma-ornegi/"><meta property="og:image" content="https://ocakhasan.github.io/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-09-14T00:00:00+00:00"><meta property="article:modified_time" content="2022-12-07T21:09:02+03:00"><meta property="og:site_name" content="Hasan Ocak Tech Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://ocakhasan.github.io/logo.png"><meta name=twitter:title content="Go Dilinde Concurrency Üzerinde Çalışma"><meta name=twitter:description content="Kod parçasındaki hataları bulup düzelteceğiz"><meta name=application-name content="Hasan Ocak Tech Blog"><meta name=apple-mobile-web-app-title content="Hasan Ocak Tech Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://ocakhasan.github.io/go-dilinde-concurrency-calisma-ornegi/><link rel=prev href=https://ocakhasan.github.io/flask-ve-sklearn-ile-film-onerme-sitesi/><link rel=stylesheet href=/css/style.min.css><link rel=preload href=/lib/fontawesome-free/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.css></noscript><link rel=preload href=/lib/animate/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><meta name=google-site-verification content="6FsPs8qV_9zEnPMWf3bEQwRJFU2Q9imUdyZqX_99So4"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Go Dilinde Concurrency Üzerinde Çalışma","inLanguage":"tr","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/ocakhasan.github.io\/go-dilinde-concurrency-calisma-ornegi\/"},"genre":"posts","keywords":"golang, concurrency, refactor","wordcount":1212,"url":"https:\/\/ocakhasan.github.io\/go-dilinde-concurrency-calisma-ornegi\/","datePublished":"2022-09-14T00:00:00+00:00","dateModified":"2022-12-07T21:09:02+03:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"Hasan Ocak"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Go Dilinde Concurrency Üzerinde Çalışma</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>Hasan Ocak</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2022-09-14>2022-09-14</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;1212 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;6 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept=true><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#elimizdeki-fonksiyon>Elimizdeki Fonksiyon</a></li><li><a href=#sorunlar>Sorunlar</a><ul><li><a href=#semaphore-ve-waitgroup-kısmı>Semaphore ve WaitGroup Kısmı</a></li><li><a href=#semaphoreların-kullanımı>Semaphoreların Kullanımı</a></li><li><a href=#for-loop>For Loop</a><ul><li><a href=#functiona-parametre-olarak-verme>Functiona parametre olarak verme</a></li><li><a href=#yeni-değişken-olarak-tanımlama>Yeni Değişken Olarak Tanımlama</a></li></ul></li><li><a href=#error-channele-yazma>Error Channele Yazma</a></li><li><a href=#references>REFERENCES</a></li></ul></li></ul></nav></div></div><div class=content id=content><h1 id=özet>Özet</h1><p>Bu yazıda basit bir kod parçasındaki bütün hataları bulup refactor edeceğim. Bunu yaparken de Go dilindeki temel unsurları açıklayarak yapacağım.</p><p><em><strong>Bu yazı <a href="https://www.youtube.com/watch?v=DqHb5KBe7qI&t=643s" target=_blank rel="noopener noreffer">Concurrency Made Easy</a> videosundan ağır şekilde esinlenmiştir.</strong></em></p><p>Go dilinde <code>concurreny</code> baya öne çıkan bir unsur ancak doğru kullanmayı bilmek daha da önemli. Kendim de bu konuda mükemmel sayılmam ancak hala öğreniyorum.</p><h2 id=elimizdeki-fonksiyon>Elimizdeki Fonksiyon</h2><p>Elimizdeki fonksiyon sadece bir parametre <code>websites</code> alıyor. Bu websiteler üzerinde gezinirken <code>handle</code> diye error döndüren bir fonksiyon alıyor ve <code>handle</code> fonksiyonu herhangi bir error döndürdüğü anda ise bu erroru döndürmek istiyor.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=nf>handleWebsites</span><span class=p>(</span><span class=nx>websites</span> <span class=p>[]</span><span class=kt>string</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>errChan</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>error</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>semaphores</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kd>struct</span><span class=p>{},</span> <span class=mi>5</span><span class=p>)</span> <span class=c1>// aynı anda 5 iş çalıştır
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=nx>websites</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>website</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>websites</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>semaphores</span> <span class=o>&lt;-</span> <span class=kd>struct</span><span class=p>{}{}</span>    <span class=c1>// semaphore acquire et
+</span></span></span><span class=line><span class=cl><span class=c1></span>		<span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>				<span class=o>&lt;-</span><span class=nx>semaphores</span>
+</span></span><span class=line><span class=cl>			<span class=p>}()</span>
+</span></span><span class=line><span class=cl>			<span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>handle</span><span class=p>(</span><span class=nx>website</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>errChan</span> <span class=o>&lt;-</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>		<span class=p>}()</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>semaphores</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>errChan</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&lt;-</span><span class=nx>errChan</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=sorunlar>Sorunlar</h2><h3 id=semaphore-ve-waitgroup-kısmı>Semaphore ve WaitGroup Kısmı</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=hl><span class=lnt> 9
+</span></span><span class=hl><span class=lnt>10
+</span></span><span class=hl><span class=lnt>11
+</span></span><span class=hl><span class=lnt>12
+</span></span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=hl><span class=lnt>18
+</span></span><span class=hl><span class=lnt>19
+</span></span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=nf>handleWebsites</span><span class=p>(</span><span class=nx>websites</span> <span class=p>[]</span><span class=kt>string</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>errChan</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>error</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>semaphores</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kd>struct</span><span class=p>{},</span> <span class=mi>5</span><span class=p>)</span> <span class=c1>// aynı anda 5 iş çalıştır
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=nx>websites</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>website</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>websites</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>semaphores</span> <span class=o>&lt;-</span> <span class=kd>struct</span><span class=p>{}{}</span>    <span class=c1>// semaphore acquire et
+</span></span></span><span class=line><span class=cl><span class=c1></span>		<span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class="line hl"><span class=cl>			<span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class="line hl"><span class=cl>				<span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class="line hl"><span class=cl>				<span class=o>&lt;-</span><span class=nx>semaphores</span>
+</span></span><span class="line hl"><span class=cl>			<span class=p>}()</span>
+</span></span><span class=line><span class=cl>			<span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>handle</span><span class=p>(</span><span class=nx>website</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>errChan</span> <span class=o>&lt;-</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>		<span class=p>}()</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class="line hl"><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+</span></span><span class="line hl"><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>semaphores</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>errChan</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&lt;-</span><span class=nx>errChan</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Bu kısımlar kodumuzda bir panic oluşturmuyor, ancak aşağıdaki 2 durumdan birisi oluşuyor.</p><ol><li><code>&lt;-semaphores</code> işlemi <code>close(semaphores)</code> işleminden önce oluşabilir ve bu durumda zaten kanaldan bir değer okur.</li><li><code>close(semaphores)</code> işlemi daha önce gerçekleşir ve <code>&lt;-semaphores</code> ise zero value alır. Önce <code>wg.Done()</code> operasyonu <code>wg.Wait()</code> fonksiyonun bitmesine ve <code>close(semaphores)</code> satırının çalışmasına yol açabilir.</li></ol><p>Her iki durumda da bir sıkıntı yok ancak bu kod fonksiyonun takibini daha zor yapıyor. Bunu go dilindeki şu tavsiyeyle çözebiliriz.</p><blockquote><p>Release locks and semaphores in the reverse order you acquired them.</p></blockquote><p>Anlamı ise <strong>locklar ve semaphoreları onları aldığınız sıranın tersinde bırakın.</strong> Bu durumda kodumuz şu hale geliyor ve daha basit bir duruma dönüşüyor.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=hl><span class=lnt> 9
+</span></span><span class=hl><span class=lnt>10
+</span></span><span class=hl><span class=lnt>11
+</span></span><span class=hl><span class=lnt>12
+</span></span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=hl><span class=lnt>18
+</span></span><span class=hl><span class=lnt>19
+</span></span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=nf>handleWebsites</span><span class=p>(</span><span class=nx>websites</span> <span class=p>[]</span><span class=kt>string</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>errChan</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>error</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>semaphores</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kd>struct</span><span class=p>{},</span> <span class=mi>5</span><span class=p>)</span> <span class=c1>// aynı anda 5 iş çalıştır
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=nx>websites</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>website</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>websites</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>semaphores</span> <span class=o>&lt;-</span> <span class=kd>struct</span><span class=p>{}{}</span>    <span class=c1>// semaphore acquire et
+</span></span></span><span class=line><span class=cl><span class=c1></span>		<span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class="line hl"><span class=cl>			<span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class="line hl"><span class=cl>				<span class=o>&lt;-</span><span class=nx>semaphores</span>
+</span></span><span class="line hl"><span class=cl>				<span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class="line hl"><span class=cl>			<span class=p>}()</span>
+</span></span><span class=line><span class=cl>			<span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>handle</span><span class=p>(</span><span class=nx>website</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>errChan</span> <span class=o>&lt;-</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>		<span class=p>}()</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class="line hl"><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+</span></span><span class="line hl"><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>semaphores</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>errChan</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&lt;-</span><span class=nx>errChan</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Şimdi ise sadece tek bir durum gerçekleşebilir o da <code>&lt;-semaphores</code> işlemi channel kapanmadan okuma işlemlerini yapabilir çünkü <code>wg.Wait()</code> işlemi ancak ve ancak bütün <code>semaphores</code> kanalından okuma işlemleri gerçekleştikten sonra gerçekleşebilir.</p><h3 id=semaphoreların-kullanımı>Semaphoreların Kullanımı</h3><p>Semaphoreların kullanıldığı kısıma biraz daha yakından bakalım.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=hl><span class=lnt> 2
+</span></span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>website</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>websites</span> <span class=p>{</span>
+</span></span><span class="line hl"><span class=cl>	<span class=nx>semaphores</span> <span class=o>&lt;-</span> <span class=kd>struct</span><span class=p>{}{}</span> <span class=c1>// semaphore acquire et
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=o>&lt;-</span><span class=nx>semaphores</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>            <span class=p>}()</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>handle</span><span class=p>(</span><span class=nx>website</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>errChan</span> <span class=o>&lt;-</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}()</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>semaphores</code> channelı 5 uzunluklu bir channel olduğundan dolayı 5 goroutine çalıştıktan sonra 6. taska geldiğinde fonksiyon 2. satırda duracak ve bu <code>handle(website)</code> fonksiyonu bitene kadar durmayacak. Halbuki şöyle bir durum daha mantıklı olabilir.</p><p>Aynı anda 5 kez <code>handle(website)</code> fonksiyonu çalışsın, bir diğer deyimle goroutineler yaratılsın ve hazırda beklesin. Bunun için şu motto ile hareket edebiliriz.</p><blockquote><p>Acquire semaphores when you&rsquo;re ready to use them.</p></blockquote><p>Anlamı ise <code>semaphoreları ne zaman kullanmaya hazırsan o durumda acquire et</code>.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>website</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>websites</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>semaphores</span> <span class=o>&lt;-</span> <span class=kd>struct</span><span class=p>{}{}</span> <span class=c1>// semaphore acquire et
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=o>&lt;-</span><span class=nx>semaphores</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>            <span class=p>}()</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>handle</span><span class=p>(</span><span class=nx>website</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>errChan</span> <span class=o>&lt;-</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}()</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Bu değişiklikten sonra artık bütün goroutineler yaratılır ve aynı anda ancak 5 tanesi sadece <code>handle(website)</code> fonksiyonunu çalıştırabilir.</p><h3 id=for-loop>For Loop</h3><p><code>For-range</code> loop da yeni bir değişken <code>website</code> yaratıyoruz. Bir goroutine bu değişkeni updatelerken diğer goroutineler bu değişken üzerinden işlem yapıyor. Bundan dolayı burada bir data race var. Onun yerine 2 şekilde halledebiliriz.</p><h4 id=functiona-parametre-olarak-verme>Functiona parametre olarak verme</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>website</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>websites</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>go</span> <span class=kd>func</span><span class=p>(</span><span class=nx>website</span> <span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>semaphores</span> <span class=o>&lt;-</span> <span class=kd>struct</span><span class=p>{}{}</span> <span class=c1>// semaphore acquire et
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=o>&lt;-</span><span class=nx>semaphores</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>            <span class=p>}()</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>handle</span><span class=p>(</span><span class=nx>website</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>errChan</span> <span class=o>&lt;-</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}(</span><span class=nx>website</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=yeni-değişken-olarak-tanımlama>Yeni Değişken Olarak Tanımlama</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>website</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>websites</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>website</span> <span class=o>:=</span> <span class=nx>website</span>
+</span></span><span class=line><span class=cl>        <span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>semaphores</span> <span class=o>&lt;-</span> <span class=kd>struct</span><span class=p>{}{}</span> <span class=c1>// semaphore acquire et
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=o>&lt;-</span><span class=nx>semaphores</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>            <span class=p>}()</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>handle</span><span class=p>(</span><span class=nx>website</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>errChan</span> <span class=o>&lt;-</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}()</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Bundan ayrı olarak da genelde goroutineleri ayrı fonksiyonlara almak önerilir. Bu kod parçasını</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>semaphores</span> <span class=o>&lt;-</span> <span class=kd>struct</span><span class=p>{}{}</span> <span class=c1>// semaphore acquire et
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=o>&lt;-</span><span class=nx>semaphores</span>
+</span></span><span class=line><span class=cl>                <span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=p>}()</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>handle</span><span class=p>(</span><span class=nx>website</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nx>errChan</span> <span class=o>&lt;-</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}()</span>
+</span></span></code></pre></td></tr></table></div></div><p>şu şekilde refactor edebiliriz.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=nf>handleWebsites</span><span class=p>(</span><span class=nx>websites</span> <span class=p>[]</span><span class=kt>string</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>errChan</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>error</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>semaphores</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kd>struct</span><span class=p>{},</span> <span class=mi>5</span><span class=p>)</span> <span class=c1>// aynı anda 5 iş çalıştır
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=nx>websites</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>website</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>websites</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>go</span> <span class=nf>worker</span><span class=p>(</span><span class=nx>website</span><span class=p>,</span> <span class=nx>semaphores</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>wg</span><span class=p>,</span> <span class=nx>errChan</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>semaphores</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>errChan</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&lt;-</span><span class=nx>errChan</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>worker</span><span class=p>(</span><span class=nx>website</span> <span class=kt>string</span><span class=p>,</span> <span class=nx>sem</span> <span class=kd>chan</span> <span class=kd>struct</span><span class=p>{},</span> <span class=nx>wg</span> <span class=o>*</span><span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span><span class=p>,</span> <span class=nx>errChan</span> <span class=kd>chan</span> <span class=nx>err</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>semaphores</span> <span class=o>&lt;-</span> <span class=kd>struct</span><span class=p>{}{}</span> <span class=c1>// semaphore acquire et
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=o>&lt;-</span><span class=nx>semaphores</span>
+</span></span><span class=line><span class=cl>                <span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=p>}()</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>handle</span><span class=p>(</span><span class=nx>website</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nx>errChan</span> <span class=o>&lt;-</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span> 
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=error-channele-yazma>Error Channele Yazma</h3><p>Bütün bu işlemleri yaptık ancak hala kodumuzda bir sorun var. Herhangi bir goroutine <code>errChan &lt;- err</code> işlemini yaptığında diğer bütün error goroutineler bu kanala yazarken sonsuza kadar bekleyecekler ve bu da deadlock yaratacak. Bekleme sebebi <code>errChan</code> kanalının 1 uzunlukta bir channel olmasından dolayıdır.</p><blockquote><p>Bir goroutine başlatmadan önce ne zaman ve nasıl duracağını bilmek gerekir.</p></blockquote><p>Bunun yerine <code>select</code> ve <code>case</code> kullanarak sorunu halletmiş oluruz.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=hl><span class=lnt>22
+</span></span><span class=hl><span class=lnt>23
+</span></span><span class=hl><span class=lnt>24
+</span></span><span class=hl><span class=lnt>25
+</span></span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=nf>handleWebsites</span><span class=p>(</span><span class=nx>websites</span> <span class=p>[]</span><span class=kt>string</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>errChan</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>error</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>semaphores</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kd>struct</span><span class=p>{},</span> <span class=mi>5</span><span class=p>)</span> <span class=c1>// aynı anda 5 iş çalıştır
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=nx>websites</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>website</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>websites</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>go</span> <span class=nf>worker</span><span class=p>(</span><span class=nx>website</span><span class=p>,</span> <span class=nx>semaphores</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>wg</span><span class=p>,</span> <span class=nx>errChan</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>semaphores</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>errChan</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&lt;-</span><span class=nx>errChan</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>worker</span><span class=p>(</span><span class=nx>website</span> <span class=kt>string</span><span class=p>,</span> <span class=nx>sem</span> <span class=kd>chan</span> <span class=kd>struct</span><span class=p>{},</span> <span class=nx>wg</span> <span class=o>*</span><span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span><span class=p>,</span> <span class=nx>errChan</span> <span class=kd>chan</span> <span class=nx>err</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>semaphores</span> <span class=o>&lt;-</span> <span class=kd>struct</span><span class=p>{}{}</span> <span class=c1>// semaphore acquire et
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=o>&lt;-</span><span class=nx>semaphores</span>
+</span></span><span class=line><span class=cl>                <span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=p>}()</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>handle</span><span class=p>(</span><span class=nx>website</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class="line hl"><span class=cl>                <span class=k>select</span> <span class=p>{</span>
+</span></span><span class="line hl"><span class=cl>                    <span class=k>case</span> <span class=nx>errChan</span> <span class=o>&lt;-</span> <span class=nx>err</span><span class=p>:</span>
+</span></span><span class="line hl"><span class=cl>                    <span class=k>default</span><span class=p>:</span>
+</span></span><span class="line hl"><span class=cl>                <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span> 
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Bu durumda eğer herhangi bir goroutine <code>errChan</code>e yazabilirse yazacak ve yazamazsa <code>default</code> case çalışacak. Hiçbir goroutine bloklanmayacak. Select Case ile blocking çağrıları non-blocking olarak değiştirebiliriz.</p><h3 id=references>REFERENCES</h3><ul><li><a href="https://www.youtube.com/watch?v=DqHb5KBe7qI&t=643s" target=_blank rel="noopener noreffer">Concurrency Made Easy From Dave Chevey</a></li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2022-12-07</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/go-dilinde-concurrency-calisma-ornegi/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://ocakhasan.github.io/go-dilinde-concurrency-calisma-ornegi/ data-title="Go Dilinde Concurrency Üzerinde Çalışma" data-hashtags=golang,concurrency,refactor><i class="fab fa-twitter fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://ocakhasan.github.io/go-dilinde-concurrency-calisma-ornegi/ data-hashtag=golang><i class="fab fa-facebook-square fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://ocakhasan.github.io/go-dilinde-concurrency-calisma-ornegi/ data-title="Go Dilinde Concurrency Üzerinde Çalışma"><i class="fab fa-hacker-news fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Line" data-sharer=line data-url=https://ocakhasan.github.io/go-dilinde-concurrency-calisma-ornegi/ data-title="Go Dilinde Concurrency Üzerinde Çalışma"><i data-svg-src=/lib/simple-icons/icons/line.min.svg aria-hidden=true></i></a><a href=javascript:void(0); title="Share on 微博" data-sharer=weibo data-url=https://ocakhasan.github.io/go-dilinde-concurrency-calisma-ornegi/ data-title="Go Dilinde Concurrency Üzerinde Çalışma"><i class="fab fa-weibo fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/golang/>golang</a>,&nbsp;<a href=/tags/concurrency/>concurrency</a>,&nbsp;<a href=/tags/refactor/>refactor</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/flask-ve-sklearn-ile-film-onerme-sitesi/ class=prev rel=prev title="Flask ve Sklearn ile Film Önerme Sitesi Yapalım"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>Flask ve Sklearn ile Film Önerme Sitesi Yapalım</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.108.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2019 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Hasan Ocak</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.css><link rel=stylesheet href=/lib/cookieconsent/cookieconsent.min.css><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/contrib/auto-render.min.js></script><script type=text/javascript src=/lib/katex/contrib/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/contrib/mhchem.min.js></script><script type=text/javascript src=/lib/cookieconsent/cookieconsent.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:50},comment:{},cookieconsent:{content:{dismiss:"Got it!",link:"Learn more",message:"This website uses Cookies to improve your experience."},enable:!0,palette:{button:{background:"#f0f0f0"},popup:{background:"#1aa3ff"}},theme:"edgeless"},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
