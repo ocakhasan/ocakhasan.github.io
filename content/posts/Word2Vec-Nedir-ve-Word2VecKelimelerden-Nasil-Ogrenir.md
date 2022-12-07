@@ -109,7 +109,7 @@ $$
 J(\theta) = -\frac{1}{T} \log L(\theta) = -\frac{1}{T} \sum_{t=1}^{T} \sum_{-m \leq j \leq m, j \neq 0 } \log P(w_{t + j} \mid w_t, \theta)
 $$
 
-Merkezi kelime $w_t$ için, kayıp fonksiyonu ayrı bir terimi her bir içerik kelimesi $w_{t + j}$ (sliding window içerisindeki)  $J_{t,j}(\theta) = -\log P(w_{t + j} \mid w_t, \theta)$ 
+Merkezi kelime $w_t$ için, kayıp fonksiyonu ayrı bir terimi her bir içerik kelimesi \(w_{t + j}\) (sliding window içerisindeki)  \(J_{t,j}(\theta) = -\log P(w_{t + j} \mid w_t, \theta\
 
 Bir örnek vererek bu durumu daha iyi anlayalım. Şu cümleyi ele alalım. 
 
@@ -118,9 +118,12 @@ Bugün bahçede <span style="color: green">bir</span> top gördüm.
 Yeşil renkli *bir* kelimesi burada bizim merkezi kelimemizdir. Her seferinde bir kelimeye bakacağımız için, bir tane içerik kelimesi seçeceğiz. Örnek olarak *top* kelimesini ele alalım. Bundan sonra bu iki kelime için kayıp fonksiyonu
 
 
+
+<p>
 $$
 J_{t,j}(\theta) = -\log P(top \mid bir) = -log \frac{exp(u^{T}_{top} v_{bir})}{\sum_{w \ in V} exp(u^{T}_{w} v_{bir})} = -u_{top}^T v_{bir} + log \sum_{w \in V} exp(u^{T}_{w} v_{bir})
 $$ 
+</p>
 
 Buradaki $V$ kümesi sliding windowu kapsayan kelimelerden oluşur. Loss (kayıp) fonksiyonumuzu aldığıma göre, şimdi vektörler üzerinde güncelleme yapalım. 
 
