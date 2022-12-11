@@ -57,6 +57,15 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
     name = "Tags"
     url = "/tags/"
     title = ""
+  [[menu.main]]
+    weight = 3
+    identifier = "about"
+    pre = ""
+    post = ""
+    name = "About"
+    url = "/about"
+    title = ""
+
 
 [params]
   # site default theme ["auto", "light", "dark"]
@@ -177,9 +186,9 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
       # Gravatar Email for preferred avatar in home page
       gravatarEmail = ""
       # URL of avatar shown in home page
-      avatarURL = "/images/avatar.png"
+      avatarURL = ""
       #  title shown in home page (HTML format is supported)
-      title = "Hello I am Hasan"
+      title = "Hi, This is Hasan 👋"
       # subtitle shown in home page (HTML format is supported)
       subtitle = "Working as Backend Developer"
       # whether to use typeit animation for subtitle
