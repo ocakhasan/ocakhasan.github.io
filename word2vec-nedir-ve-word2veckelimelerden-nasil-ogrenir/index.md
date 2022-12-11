@@ -112,12 +112,12 @@ Bugün bahçede <span style="color: green">bir</span> top gördüm.
 Yeşil renkli *bir* kelimesi burada bizim merkezi kelimemizdir. Her seferinde bir kelimeye bakacağımız için, bir tane içerik kelimesi seçeceğiz. Örnek olarak *top* kelimesini ele alalım. Bundan sonra bu iki kelime için kayıp fonksiyonu
 
 
-
-<p>
+{{< raw >}}
 $$
 J_{t,j}(\theta) = -\log P(top \mid bir) = -log \frac{exp(u^{T}_{top} v_{bir})}{\sum_{w \ in V} exp(u^{T}_{w} v_{bir})} = -u_{top}^T v_{bir} + log \sum_{w \in V} exp(u^{T}_{w} v_{bir})
 $$ 
-</p>
+{{< /raw >}}
+
 
 Buradaki $V$ kümesi sliding windowu kapsayan kelimelerden oluşur. Loss (kayıp) fonksiyonumuzu aldığıma göre, şimdi vektörler üzerinde güncelleme yapalım. 
 
