@@ -21,3 +21,9 @@ Until now I only written in Turkish but I will write in English too.
 Please stay tuned,
 
 Bye
+
+Here are my social links
+
+- {{< link href="https://github.com/ocakhasan" content=Github >}}
+- {{< link href="https://linkedin.com/in/ocakhasan" content=Linkedin >}}
+- {{< link href="mailto:hasanocak.tech@gmail.com" content=Email >}}

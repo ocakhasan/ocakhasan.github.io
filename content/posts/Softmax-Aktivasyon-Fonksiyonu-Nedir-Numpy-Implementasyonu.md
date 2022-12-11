@@ -16,11 +16,13 @@ Softmax fonksiyonu input olarak $K$ boyutlu uzaydan vektör $z$ alır. Bu vektö
 
 Standart softmax function tanımı şu şekildedir. $\sigma : \mathbb{R^{K}} \rightarrow  \mathbb{R^K}$ 
 
-<p>
+{{< raw >}}
 $$
 \sigma(z)_{i} = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}} her \hspace{1mm} i = 1, 2, 3, ...,  K ve  \hspace{1mm} z = (z_1, z_2, ... , z_k) \in \mathbb{R^K}
 $$
-</p>
+{{< /raw >}}
+
+
 Bir diğer deyişle bizim yaptığımız işlem her bir değerin exponential fonksiyonunu almak ve bunu toplama bölmek. Böylece normalize etmiş oluyoruz ve bütün değerleri topladığımız zaman sonuç 1 ediyor. 
 
 Örnek olarak vektör $k = [1, 1, 1] \in \mathbb{R^3}$ olsun. O zaman,
