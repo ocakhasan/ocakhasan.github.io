@@ -19,6 +19,12 @@ The examples are written with Go 1.19 and [go.mongodb.org/mongo-driver/mongo](ht
 
 [Finding All Documents From MongoDB](#finding-all-documents-from-mongodb)
 
+[Updating Document(s) From MongoDB](#update-single-document)
+
+[Deleting Document(s) From MongoDB](#delete-documents-from-mongodb)
+
+
+
 
 ### Connecting to MongoDB
 
@@ -325,4 +331,139 @@ condition := bson.M{
 }
 ```
 
+#### Use Projection in Find Operations
+
+If you want to use projection in `Find()` operation, we can use the `mongo.Options` for that. Let's say we would like to return 2 fields
+1. return the brand of the car.
+2. return a boolean field to check if the car is new
+   1. if the production year of the car is 2022, it is new
+   2. else, it is old.
+
+
+[SetProjection()](https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo/options#FindOptions.SetProjection) sets the value for the projection field.
+
+```go
+var opts = options.Find().SetProjection(
+		bson.M{
+			"brand": 1,
+			"isNew": bson.M{
+				"$cond": bson.M{
+					"if": bson.M{"$gte": bson.A{"$year", 2022}}, 
+					"then": true, 
+					"else": false},
+			},
+		})
+cur, err := db.Collection("cars").Find(context.Background(), bson.M{}, opts)
+```
+
 More will come, so please stay tuned!
+
+#### Update Single Document
+
+To update a single document, we should use the `FindOneAndUpdate()` or `UpdateOne()` operations. For this blog, we will use the `FindOneAndUpdate()` operation.
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+)
+
+func main() {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db := client.Database("testdb")
+
+	filter := bson.M{
+		"brand": "Toyota",
+		"model": "Corolla",
+	}
+
+	update := bson.M{
+		"year": 2022,
+	}
+
+	res := db.Collection("cars").FindOneAndUpdate(context.Background(), filter, update)
+
+	if res.Err() != nil {
+		log.Fatal(err)
+	}
+
+	// operation successful
+}
+```
+
+##### How to return the updated document in MongoDB?
+
+We can use `mongo.Options` package to do that. We should set the return document option to after.
+
+```go
+opts := options.FindOneAndUpdate().SetReturnDocument(options.After)
+
+res := db.Collection("cars").FindOneAndUpdate(context.Background(), filter, update, opts)
+
+// we can use the updated car document
+var updatedData Car
+
+if err := res.Decode(&updatedData); err != nil {
+	log.Fatal(err)
+}
+```
+
+#### Delete Document(s) from MongoDB
+
+To delete a document we can use `DeleteOne()` method of the `*Collection` object. 
+
+To delete many documents, we can use the `DeleteMany()` method of the `*Collection`
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+)
+
+func main() {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db := client.Database("testdb")
+
+	filter := bson.M{
+		"brand": "Toyota",
+		"model": "Corolla",
+	}
+
+	// for single document
+	res, err := db.Collection("cars").DeleteMany(context.Background(), filter)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 1 document is deleted.
+	log.Printf("%v document is deleted", res.DeletedCount)
+}
+
+```
