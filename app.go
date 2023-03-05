@@ -38,7 +38,7 @@ type romanHandler struct{}
 func (h romanHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method != http.MethodGet {
-		http.Error(w, "unsupported method", http.StatusMethodNotAllowed)
+		http.Error(w, "unsupported httpMethod", http.StatusMethodNotAllowed)
 		return
 	}
 
