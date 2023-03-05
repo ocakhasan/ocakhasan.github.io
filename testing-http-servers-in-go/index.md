@@ -208,3 +208,8 @@ By using this duo of `httptest.ResponseRecorder` and `http.Request`, we can succ
     --- PASS: TestRomanHandler/correct_query_param (0.00s)
 PASS
 ```
+
+### REFERENCES
+- [net/http](https://pkg.go.dev/net/http)
+- [Testing HTTP Servers By Ieftimov](https://ieftimov.com/posts/testing-in-go-testing-http-servers/)
+- [Converting Decimal To Roman](https://www.geeksforgeeks.org/converting-decimal-number-lying-between-1-to-3999-to-roman-numerals/)
