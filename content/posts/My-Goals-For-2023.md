@@ -24,7 +24,7 @@ Let's see if I will be able to achieve my goals.
   - [ ] write non-techincal stuff also (maybe some reviews on books)
 - [ ] Go outside more :smile:
 - [ ] Start to learn investing
-- [ x ] Get a promotion hopefully
+- [x] Get a promotion hopefully
   
 
 These are the things that comes to my mind. If anything comes up, I will add it to the list.
