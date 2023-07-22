@@ -59,7 +59,7 @@ And the browser will be
 
 ![SQS Create Local Queue](../../images/sqs_create_queue.png)
 
-## How To Integrate With Go
+## How To Integrate With Go
 
 Normally that's how you create a sqs client in go to list the queue urls.
 
