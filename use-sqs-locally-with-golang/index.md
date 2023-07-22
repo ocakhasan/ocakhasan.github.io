@@ -3,7 +3,7 @@
 
 # Introduction
 
-Before going any further all of the code can be found in the [local-go-sqs-setup](https://github.com/ocakhasan/local-sqs-go-setup).
+Before going any further all of the code can be found in the [local-go-sqs-setup](https://gist.github.com/ocakhasan/053c35a9f0e9a231bb7846b4d9cfa6db).
 
 Welcome to our blog post on using local Amazon Simple Queue Service (SQS) with Golang! As developers, we understand the importance of reliable and efficient message queuing systems for building scalable and decoupled applications. Amazon SQS, a fully managed message queuing service, is a popular choice among cloud-based solutions. However, during the development and testing phase, relying on the cloud-based SQS might not always be the best option due to network latency and potential costs.
 
