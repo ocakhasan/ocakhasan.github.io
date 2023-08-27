@@ -23,11 +23,21 @@ The system should continue to work correctly even though a system error occurs.
 
 - tolerate human errors
 - prevents unauthorized access
+- there could be some hardware problems such as hard disk crashs, ram becomes faulty etc.
+- design systems in a way that human errors opportunity are minimized. 
+- test your system, froom unit to integration tests.
+- setup monitoring tools, perfomance metrics and error rates.
 
 
 #### Scalability
 
 The system should handle the load gracefully if the volume (data, network etc) grows.
+
+- what happens to system resources when you increase the load to your system
+- how much resource you need to increase when you increase the load.
+- response time is what client sees, request sent and response is received from the client
+- latency is the duration that a request is waiting to be handled
+- in response times it is better to use percentile, not the average. because it does not tell you how many users are affected by a specific number of delay.
 
 
 #### Maintainability
