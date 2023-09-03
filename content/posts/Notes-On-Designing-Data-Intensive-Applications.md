@@ -49,3 +49,60 @@ The system should handle the load gracefully if the volume (data, network etc) g
 #### Maintainability
 
 Project should be easily developed by many other engineers who work on the project.
+
+- cost of software are mostly based on the ongoing mainteiance, not the initial software development.
+- projects should be
+    - evolvable: meaning making changes should be easy.
+    - simple: a project should not be complex, should be easy to work with.
+
+
+##  CHAPTER 2 - Data Models and Query Languages
+
+### Relational Vs Document Model
+
+Most famous data format is SQL. Goal of relational model was to hide the implementation detail behind a cleaner interface rather than forcing developers to think the internal representation of the data.
+
+The driving forces for NoSQL (Document) Databases
+- need for greater scalability
+- specialized query operations not supported by SQL
+- more dynamic and expressive data models. 
+
+Chapter 2 will be continued.
+
+## CHAPTER 3 - STORAGE AND RETRIEVAL
+
+On the most basic model, a database needs to do 2 operations.
+
+1. it should store the given data
+2. when ask it again later, it should give the data back.
+
+
+The questions needs to be asked as an application developer probably would not be
+- how the database handles storage and retrieval internally?
+
+But if you have to tune the program you use, it is better to know the internals of the tool.
+
+### WORLD SIMPLEST DATABASE
+
+Would be a key value store written into a file.
+
+```bash
+db_set () {
+    echo "$1,$2" >> database
+}
+db_get () {
+    grep "^$1," database | sed -e "s/^$1,//" | tail -n 1
+}
+```
+
+Similarly to what `db_set` function does, the databasess also uses a **log** internally, append-only data file.
+
+
+`db_get` function performance is terrible on large scale of data since it traverse the all of the file `O(N)`.
+
+### Index
+
+To retrieve the data efficiently, you need an **index**. Index is an additional data which can be derived from the original set of data. Creating indexes may create an overhead to write operations, since it cannot be more efficient than writing to end of file.
+
+
+### HASH INDEXES
