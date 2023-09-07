@@ -1,0 +1,517 @@
+<!doctype html><html lang=tr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Convert Rest Endpoint To GraphQL in Go - Hasan Ocak Tech Blog</title><meta name=Description content="Çeşitli konulardan bahseden bir tech blog"><meta property="og:title" content="Convert Rest Endpoint To GraphQL in Go"><meta property="og:description" content="Lets convert a Rest endpoint to GraphQL"><meta property="og:type" content="article"><meta property="og:url" content="https://ocakhasan.github.io/conver-rest-to-graphql/"><meta property="og:image" content="https://ocakhasan.github.io/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-09-07T00:00:00+00:00"><meta property="article:modified_time" content="2023-09-07T23:27:09+03:00"><meta property="og:site_name" content="Hasan Ocak Tech Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://ocakhasan.github.io/logo.png"><meta name=twitter:title content="Convert Rest Endpoint To GraphQL in Go"><meta name=twitter:description content="Lets convert a Rest endpoint to GraphQL"><meta name=application-name content="Hasan Ocak Tech Blog"><meta name=apple-mobile-web-app-title content="Hasan Ocak Tech Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://ocakhasan.github.io/conver-rest-to-graphql/><link rel=prev href=https://ocakhasan.github.io/notes-on-designing-data-intensive-applications/><link rel=stylesheet href=/css/style.min.css><link rel=preload href=/lib/fontawesome-free/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.css></noscript><link rel=preload href=/lib/animate/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><meta name=google-site-verification content="6FsPs8qV_9zEnPMWf3bEQwRJFU2Q9imUdyZqX_99So4"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Convert Rest Endpoint To GraphQL in Go","inLanguage":"tr","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/ocakhasan.github.io\/conver-rest-to-graphql\/"},"genre":"posts","keywords":"golang, network, rest, graphql","wordcount":1241,"url":"https:\/\/ocakhasan.github.io\/conver-rest-to-graphql\/","datePublished":"2023-09-07T00:00:00+00:00","dateModified":"2023-09-07T23:27:09+03:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"Hasan Ocak"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/about>About </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/about title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class="toc-content always-active" id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Convert Rest Endpoint To GraphQL in Go</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>Hasan Ocak</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2023-09-07>2023-09-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;1241 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;6 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#introduction>Introduction</a></li><li><a href=#rest-api-implementation>Rest API Implementation</a><ul><li><a href=#structure-change>Structure Change</a></li></ul></li><li><a href=#graphql-implementation>GraphQL Implementation</a><ul><li><a href=#project-structure>Project structure</a></li><li><a href=#generated-code-and-graphiql-playground>Generated Code and GraphiQL Playground</a></li><li><a href=#graphql-file>GraphQL File</a></li><li><a href=#implementation-of-the-resolver>Implementation of the Resolver</a></li></ul></li><li><a href=#references>REFERENCES</a></li></ul></nav></div></div><div class=content id=content><h2 id=introduction>Introduction</h2><p>In the ever-evolving landscape of web development, GraphQL has emerged as a powerful alternative to traditional RESTful APIs.</p><p>Its flexibility and efficiency have led many developers to consider migrating their REST endpoints to GraphQL. In this blog post, we will explore the process of converting a RESTful endpoint to GraphQL, unlocking the benefits of a more customizable and efficient data-fetching experience.</p><p>Join us on this journey as we delve into the world of GraphQL and transform a RESTful API into a GraphQL powerhouse.</p><h2 id=rest-api-implementation>Rest API Implementation</h2><p>Let&rsquo;s say that we have a server with a REST Endpoint structured as below.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>curl http://localhost:8080/artists
+</span></span></code></pre></td></tr></table></div></div><p>and it returns</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;The Weeknd&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;age&#34;</span><span class=p>:</span> <span class=mi>30</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;tracks&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>      <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Creepin&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;duration&#34;</span><span class=p>:</span> <span class=mi>222</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Sezen Aksu&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;age&#34;</span><span class=p>:</span> <span class=mi>60</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;tracks&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>      <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Firuze&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;duration&#34;</span><span class=p>:</span> <span class=mi>302</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div><p>This endpoint simply can be handled by this below code.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span> <span class=nx>main</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;encoding/json&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;log&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;net/http&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>Track</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Name</span>     <span class=kt>string</span> <span class=s>`json:&#34;name&#34;`</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Duration</span> <span class=kt>int</span>    <span class=s>`json:&#34;duration&#34;`</span> <span class=c1>// in seconds
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>Artist</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Name</span>   <span class=kt>string</span>  <span class=s>`json:&#34;name&#34;`</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Age</span>    <span class=kt>int</span>     <span class=s>`json:&#34;age&#34;`</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Tracks</span> <span class=p>[]</span><span class=nx>Track</span> <span class=s>`json:&#34;tracks&#34;`</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>var</span> <span class=nx>data</span> <span class=p>=</span> <span class=p>[]</span><span class=nx>Artist</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Name</span><span class=p>:</span> <span class=s>&#34;The Weeknd&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Age</span><span class=p>:</span>  <span class=mi>30</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Tracks</span><span class=p>:</span> <span class=p>[]</span><span class=nx>Track</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=p>{</span><span class=nx>Name</span><span class=p>:</span> <span class=s>&#34;Creepin&#34;</span><span class=p>,</span> <span class=nx>Duration</span><span class=p>:</span> <span class=mi>222</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>		<span class=p>},</span>
+</span></span><span class=line><span class=cl>	<span class=p>},</span>
+</span></span><span class=line><span class=cl>	<span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Name</span><span class=p>:</span> <span class=s>&#34;Sezen Aksu&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Age</span><span class=p>:</span>  <span class=mi>60</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Tracks</span><span class=p>:</span> <span class=p>[]</span><span class=nx>Track</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=p>{</span><span class=nx>Name</span><span class=p>:</span> <span class=s>&#34;Firuze&#34;</span><span class=p>,</span> <span class=nx>Duration</span><span class=p>:</span> <span class=mi>302</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>		<span class=p>},</span>
+</span></span><span class=line><span class=cl>	<span class=p>},</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>mux</span> <span class=o>:=</span> <span class=nx>http</span><span class=p>.</span><span class=nf>NewServeMux</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=nx>mux</span><span class=p>.</span><span class=nf>HandleFunc</span><span class=p>(</span><span class=s>&#34;/artists&#34;</span><span class=p>,</span> <span class=kd>func</span><span class=p>(</span><span class=nx>w</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>r</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>json</span><span class=p>.</span><span class=nf>NewEncoder</span><span class=p>(</span><span class=nx>w</span><span class=p>).</span><span class=nf>Encode</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>data</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=k>return</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>log</span><span class=p>.</span><span class=nf>Fatal</span><span class=p>(</span><span class=nx>http</span><span class=p>.</span><span class=nf>ListenAndServe</span><span class=p>(</span><span class=s>&#34;:8080&#34;</span><span class=p>,</span> <span class=nx>mux</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=structure-change>Structure Change</h3><p>But you only want some of the fields maybe like</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;The Weeknd&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;tracks&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>      <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Creepin&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Sezen Aksu&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;tracks&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>      <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Firuze&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div><p>You want to make it as a GraphQL query maybe something like</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>query {
+</span></span><span class=line><span class=cl>    getArtists {
+</span></span><span class=line><span class=cl>        name
+</span></span><span class=line><span class=cl>        tracks {
+</span></span><span class=line><span class=cl>            name
+</span></span><span class=line><span class=cl>        }
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><p>Question is how to change this really simple API to a graphQL endpoint.</p><h2 id=graphql-implementation>GraphQL Implementation</h2><p>For this we will use the package of <code>https://github.com/99designs/gqlgen</code>, you can have a look.</p><p>To start the project, we will follow the quick quide.</p><ol><li>First create the project</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>mkdir example
+</span></span><span class=line><span class=cl><span class=nb>cd</span> example
+</span></span><span class=line><span class=cl>go mod init example
+</span></span></code></pre></td></tr></table></div></div><ol start=2><li>Add 99designs/gqlgen to your project&rsquo;s tools.go</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>printf</span> <span class=s1>&#39;// +build tools\npackage tools\nimport (_ &#34;github.com/99designs/gqlgen&#34;\n _ &#34;github.com/99designs/gqlgen/graphql/introspection&#34;)&#39;</span> <span class=p>|</span> gofmt &gt; tools.go
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>go mod tidy
+</span></span></code></pre></td></tr></table></div></div><ol start=3><li>Initialise gqlgen config and generate models</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>go run github.com/99designs/gqlgen init
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>go mod tidy
+</span></span></code></pre></td></tr></table></div></div><p>Start the graphql server</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>go run server.go
+</span></span></code></pre></td></tr></table></div></div><h3 id=project-structure>Project structure</h3><p>Your folder structure should look like this</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>├── go.mod
+</span></span><span class=line><span class=cl>├── go.sum
+</span></span><span class=line><span class=cl>├── gqlgen.yml
+</span></span><span class=line><span class=cl>├── graph
+</span></span><span class=line><span class=cl>│   ├── generated.go
+</span></span><span class=line><span class=cl>│   ├── model
+</span></span><span class=line><span class=cl>│   │   └── models_gen.go
+</span></span><span class=line><span class=cl>│   ├── resolver.go
+</span></span><span class=line><span class=cl>│   ├── schema.graphqls
+</span></span><span class=line><span class=cl>│   └── schema.resolvers.go
+</span></span><span class=line><span class=cl>├── server.go
+</span></span><span class=line><span class=cl>└── tools.go
+</span></span></code></pre></td></tr></table></div></div><h3 id=generated-code-and-graphiql-playground>Generated Code and GraphiQL Playground</h3><p>Your server.go will look like this</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span> <span class=nx>main</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;log&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;net/http&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;os&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;github.com/99designs/gqlgen/graphql/handler&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;github.com/99designs/gqlgen/graphql/playground&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;github.com/ocakhasan/graph/graph&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>const</span> <span class=nx>defaultPort</span> <span class=p>=</span> <span class=s>&#34;8080&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>port</span> <span class=o>:=</span> <span class=nx>os</span><span class=p>.</span><span class=nf>Getenv</span><span class=p>(</span><span class=s>&#34;PORT&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>port</span> <span class=o>==</span> <span class=s>&#34;&#34;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>port</span> <span class=p>=</span> <span class=nx>defaultPort</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>srv</span> <span class=o>:=</span> <span class=nx>handler</span><span class=p>.</span><span class=nf>NewDefaultServer</span><span class=p>(</span><span class=nx>graph</span><span class=p>.</span><span class=nf>NewExecutableSchema</span><span class=p>(</span><span class=nx>graph</span><span class=p>.</span><span class=nx>Config</span><span class=p>{</span><span class=nx>Resolvers</span><span class=p>:</span> <span class=o>&amp;</span><span class=nx>graph</span><span class=p>.</span><span class=nx>Resolver</span><span class=p>{}}))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>http</span><span class=p>.</span><span class=nf>Handle</span><span class=p>(</span><span class=s>&#34;/&#34;</span><span class=p>,</span> <span class=nx>playground</span><span class=p>.</span><span class=nf>Handler</span><span class=p>(</span><span class=s>&#34;GraphQL playground&#34;</span><span class=p>,</span> <span class=s>&#34;/query&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=nx>http</span><span class=p>.</span><span class=nf>Handle</span><span class=p>(</span><span class=s>&#34;/query&#34;</span><span class=p>,</span> <span class=nx>srv</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;connect to http://localhost:%s/ for GraphQL playground&#34;</span><span class=p>,</span> <span class=nx>port</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>log</span><span class=p>.</span><span class=nf>Fatal</span><span class=p>(</span><span class=nx>http</span><span class=p>.</span><span class=nf>ListenAndServe</span><span class=p>(</span><span class=s>&#34;:&#34;</span><span class=o>+</span><span class=nx>port</span><span class=p>,</span> <span class=kc>nil</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>When you run all of the commands above and run the project you should see something like this on your project</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../../images/2023-09-07-22-59-27.png data-srcset="../../images/2023-09-07-22-59-27.png, ../../images/2023-09-07-22-59-27.png 1.5x, ../../images/2023-09-07-22-59-27.png 2x" data-sizes=auto alt=../../images/2023-09-07-22-59-27.png title=../../images/2023-09-07-22-59-27.png></p><p>We will be testing our query from the UI to easily see the results.</p><h3 id=graphql-file>GraphQL File</h3><p>There is an autogenerated file <code>schema.graphqls</code>, we will be setting our <code>Artist</code> and <code>Track</code> models here.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-graphql data-lang=graphql><span class=line><span class=cl><span class=kd>type</span><span class=w> </span><span class=nc>Artist</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=py>name</span><span class=p>:</span><span class=w> </span><span class=nc>String</span><span class=p>!</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=py>age</span><span class=p>:</span><span class=w> </span><span class=nc>Int</span><span class=p>!</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=py>tracks</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=nc>Track</span><span class=p>!]!</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nc>Track</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=py>name</span><span class=p>:</span><span class=w> </span><span class=nc>String</span><span class=p>!</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=py>duration</span><span class=p>:</span><span class=w> </span><span class=nc>Int</span><span class=p>!</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>type</span><span class=w> </span><span class=nc>Query</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=py>artists</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=nc>Artist</span><span class=p>!]!</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Then run below command to auto-generate models resolver etc, we will just fill the logic.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>go run github.com/99designs/gqlgen generate
+</span></span></code></pre></td></tr></table></div></div><p>Then the <code>schema.resolvers.go</code> file will be like this</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span> <span class=nx>graph</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// This file will be automatically regenerated based on the schema, any resolver implementations
+</span></span></span><span class=line><span class=cl><span class=c1>// will be copied through when generating and any unknown code will be moved to the end.
+</span></span></span><span class=line><span class=cl><span class=c1>// Code generated by github.com/99designs/gqlgen version v0.17.36
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;context&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;fmt&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;github.com/ocakhasan/graph/graph/model&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// Artists is the resolver for the artists field.
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>func</span> <span class=p>(</span><span class=nx>r</span> <span class=o>*</span><span class=nx>queryResolver</span><span class=p>)</span> <span class=nf>Artists</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>)</span> <span class=p>([]</span><span class=o>*</span><span class=nx>model</span><span class=p>.</span><span class=nx>Artist</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nb>panic</span><span class=p>(</span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Errorf</span><span class=p>(</span><span class=s>&#34;not implemented: Artists - artists&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// Query returns QueryResolver implementation.
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>func</span> <span class=p>(</span><span class=nx>r</span> <span class=o>*</span><span class=nx>Resolver</span><span class=p>)</span> <span class=nf>Query</span><span class=p>()</span> <span class=nx>QueryResolver</span> <span class=p>{</span> <span class=k>return</span> <span class=o>&amp;</span><span class=nx>queryResolver</span><span class=p>{</span><span class=nx>r</span><span class=p>}</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>queryResolver</span> <span class=kd>struct</span><span class=p>{</span> <span class=o>*</span><span class=nx>Resolver</span> <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>We will fill the <code>Artists</code> method, it will be a simple returning array of <code>model.Artist</code> which is in the <code>model/models_gen.go</code> (auto-generated file)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// Code generated by github.com/99designs/gqlgen, DO NOT EDIT.
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=kn>package</span> <span class=nx>model</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>Artist</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Name</span>   <span class=kt>string</span>   <span class=s>`json:&#34;name&#34;`</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Age</span>    <span class=kt>int</span>      <span class=s>`json:&#34;age&#34;`</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Tracks</span> <span class=p>[]</span><span class=o>*</span><span class=nx>Track</span> <span class=s>`json:&#34;tracks&#34;`</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>Track</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Name</span>     <span class=kt>string</span> <span class=s>`json:&#34;name&#34;`</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Duration</span> <span class=kt>int</span>    <span class=s>`json:&#34;duration&#34;`</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=implementation-of-the-resolver>Implementation of the Resolver</h3><p>To implement the resolver we will return a hardcoded array of <code>model.Artist</code> struct.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span> <span class=nx>graph</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// This file will be automatically regenerated based on the schema, any resolver implementations
+</span></span></span><span class=line><span class=cl><span class=c1>// will be copied through when generating and any unknown code will be moved to the end.
+</span></span></span><span class=line><span class=cl><span class=c1>// Code generated by github.com/99designs/gqlgen version v0.17.36
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;context&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;github.com/ocakhasan/graph/graph/model&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>var</span> <span class=nx>data</span> <span class=p>=</span> <span class=p>[]</span><span class=o>*</span><span class=nx>model</span><span class=p>.</span><span class=nx>Artist</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Name</span><span class=p>:</span> <span class=s>&#34;The Weeknd&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Age</span><span class=p>:</span>  <span class=mi>30</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Tracks</span><span class=p>:</span> <span class=p>[]</span><span class=o>*</span><span class=nx>model</span><span class=p>.</span><span class=nx>Track</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=p>{</span><span class=nx>Name</span><span class=p>:</span> <span class=s>&#34;Creepin&#34;</span><span class=p>,</span> <span class=nx>Duration</span><span class=p>:</span> <span class=mi>222</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>		<span class=p>},</span>
+</span></span><span class=line><span class=cl>	<span class=p>},</span>
+</span></span><span class=line><span class=cl>	<span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Name</span><span class=p>:</span> <span class=s>&#34;Sezen Aksu&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Age</span><span class=p>:</span>  <span class=mi>60</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Tracks</span><span class=p>:</span> <span class=p>[]</span><span class=o>*</span><span class=nx>model</span><span class=p>.</span><span class=nx>Track</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=p>{</span><span class=nx>Name</span><span class=p>:</span> <span class=s>&#34;Firuze&#34;</span><span class=p>,</span> <span class=nx>Duration</span><span class=p>:</span> <span class=mi>302</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>		<span class=p>},</span>
+</span></span><span class=line><span class=cl>	<span class=p>},</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// Artists is the resolver for the artists field.
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>func</span> <span class=p>(</span><span class=nx>r</span> <span class=o>*</span><span class=nx>queryResolver</span><span class=p>)</span> <span class=nf>Artists</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>)</span> <span class=p>([]</span><span class=o>*</span><span class=nx>model</span><span class=p>.</span><span class=nx>Artist</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=nx>data</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// Query returns QueryResolver implementation.
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>func</span> <span class=p>(</span><span class=nx>r</span> <span class=o>*</span><span class=nx>Resolver</span><span class=p>)</span> <span class=nf>Query</span><span class=p>()</span> <span class=nx>QueryResolver</span> <span class=p>{</span> <span class=k>return</span> <span class=o>&amp;</span><span class=nx>queryResolver</span><span class=p>{</span><span class=nx>r</span><span class=p>}</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>queryResolver</span> <span class=kd>struct</span><span class=p>{</span> <span class=o>*</span><span class=nx>Resolver</span> <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Let&rsquo;s run the server again and go to <strong>GraphiQL playground (http://localhost:8080/)</strong>.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>go run server.go
+</span></span></code></pre></td></tr></table></div></div><p>Then go to <code>http://localhost:8080</code> and paste the query</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>query {
+</span></span><span class=line><span class=cl>  artists {
+</span></span><span class=line><span class=cl>    name
+</span></span><span class=line><span class=cl>  }
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><p>it will return</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;data&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;artists&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>      <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;The Weeknd&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Sezen Aksu&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><img class=lazyload src=/svg/loading.min.svg data-src=../../images/2023-09-07-23-23-27.png data-srcset="../../images/2023-09-07-23-23-27.png, ../../images/2023-09-07-23-23-27.png 1.5x, ../../images/2023-09-07-23-23-27.png 2x" data-sizes=auto alt=../../images/2023-09-07-23-23-27.png title=../../images/2023-09-07-23-23-27.png></p><p>You can play with the editor and convert your rest endpoints to GraphQL easily.</p><h2 id=references>REFERENCES</h2><p>In summary, transitioning from REST to GraphQL offers numerous benefits for your API. It&rsquo;s a journey worth taking, promising improved efficiency and flexibility. So, take that step, and may your GraphQL journey be both rewarding and transformative. Happy coding!</p><ul><li><a href=https://github.com/99designs/gqlgen target=_blank rel="noopener noreffer">https://github.com/99designs/gqlgen</a></li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2023-09-07</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/conver-rest-to-graphql/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://ocakhasan.github.io/conver-rest-to-graphql/ data-title="Convert Rest Endpoint To GraphQL in Go" data-hashtags=golang,network,rest,graphql><i class="fab fa-twitter fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://ocakhasan.github.io/conver-rest-to-graphql/ data-hashtag=golang><i class="fab fa-facebook-square fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://ocakhasan.github.io/conver-rest-to-graphql/ data-title="Convert Rest Endpoint To GraphQL in Go"><i class="fab fa-hacker-news fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Line" data-sharer=line data-url=https://ocakhasan.github.io/conver-rest-to-graphql/ data-title="Convert Rest Endpoint To GraphQL in Go"><i data-svg-src=/lib/simple-icons/icons/line.min.svg aria-hidden=true></i></a><a href=javascript:void(0); title="Share on 微博" data-sharer=weibo data-url=https://ocakhasan.github.io/conver-rest-to-graphql/ data-title="Convert Rest Endpoint To GraphQL in Go"><i class="fab fa-weibo fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/golang/>golang</a>,&nbsp;<a href=/tags/network/>network</a>,&nbsp;<a href=/tags/rest/>rest</a>,&nbsp;<a href=/tags/graphql/>graphql</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/notes-on-designing-data-intensive-applications/ class=prev rel=prev title="My Notes on Designing Data Intensive Applications"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>My Notes on Designing Data Intensive Applications</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.118.2">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2019 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Hasan Ocak</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.css><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/contrib/auto-render.min.js></script><script type=text/javascript src=/lib/katex/contrib/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/contrib/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-165674239-4",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-165674239-4" async></script></body></html>
