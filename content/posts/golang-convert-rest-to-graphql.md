@@ -38,12 +38,12 @@ and it returns
     ]
   },
   {
-    "name": "Sezen Aksu",
-    "age": 60,
+    "name": "Tame Impala",
+    "age": 30,
     "tracks": [
       {
-        "name": "Firuze",
-        "duration": 302
+        "name": "Let It Happen",
+        "duration": 467
       }
     ]
   }
@@ -81,10 +81,10 @@ var data = []Artist{
 		},
 	},
 	{
-		Name: "Sezen Aksu",
-		Age:  60,
+		Name: "Tame Impala",
+		Age:  35,
 		Tracks: []Track{
-			{Name: "Firuze", Duration: 302},
+			{Name: "Let It Happen", Duration: 467},
 		},
 	},
 }
@@ -118,10 +118,10 @@ But you only want some of the fields maybe like
     ]
   },
   {
-    "name": "Sezen Aksu",
+    "name": "Tame Impala",
     "tracks": [
       {
-        "name": "Firuze",
+        "name": "Let It Happen",
       }
     ]
   }
@@ -336,10 +336,10 @@ var data = []*model.Artist{
 		},
 	},
 	{
-		Name: "Sezen Aksu",
+		Name: "Tame Impala",
 		Age:  60,
 		Tracks: []*model.Track{
-			{Name: "Firuze", Duration: 302},
+			{Name: "Let It Happen", Duration: 467},
 		},
 	},
 }
@@ -381,14 +381,14 @@ it will return
         "name": "The Weeknd"
       },
       {
-        "name": "Sezen Aksu"
+        "name": "Tame Impala"
       }
     ]
   }
 }
 ```
 
-![](../../images/2023-09-07-23-23-27.png)
+![Alt text](../../images/image.png)
 
 You can play with the editor and convert your rest endpoints to GraphQL easily.
 
