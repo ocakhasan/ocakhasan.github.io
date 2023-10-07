@@ -1,4 +1,4 @@
-# Convert Rest Endpoint To GraphQL in Go
+# Setting up a GraphQL Server in Golang
 
 
 ## Introduction
