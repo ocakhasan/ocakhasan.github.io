@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Convert Rest Endpoint To GraphQL in Go 
-summary: Lets convert a Rest endpoint to GraphQL 
+title: Setting up a GraphQL Server in Golang 
+summary: Lets setup a graphql server in golang 
 date: 2023-09-07
 tags: [golang, network, rest, graphql]
 math: true
