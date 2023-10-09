@@ -1,12 +1,12 @@
 # (TR) Bundan Sonra Ne Yazacağım
 
 
-Bu yılın başında hedeflerimden birisi fazla yazı yazmaktı. Neden böyle bir karar aldığımı açıklayayım.
+Bu yılın başında hedeflerimden birisi olabildiğince yazı yazmaktı. Neden böyle bir karar aldığımı açıklayayım.
 
 1. Blog yazmaktan ziyade, yazma sürecini sevmem.
-    - blog yazabilmek için yazdığınız konuyu iyice öğrenmek gerekiyor.
+    - blog yazabilmek için yazdığınız konuyu iyice öğrenmeniz gerekiyor.
     - bir şeyleri öğrenmenin verdiği haz beni mutlu ediyor.
-2. Yazılarımın ne kadar az kişi tarafından olsa da okunduğunu görmek gerçekten keyif veriyor.
+2. Yazılarımın ne kadar az kişi tarafından da olsa okunduğunu görmek gerçekten keyif veriyor.
 3. Çevremdeki bazı insanların blogum hakkındaki pozitif yorumları.
 
 Yılın ilk yarısında ne kadar fazla blog yazmak gibi bir hedefim olsa da bunu tutturamadım. Ancak yılın ikinci yarısında, özellikle Ağustos 
