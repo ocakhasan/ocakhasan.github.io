@@ -11,8 +11,8 @@ toc: false
 Ben bu konu hakkında uzman değilim, sadece kendi fikirlerimi beyan ediyorum.
 {{< /admonition >}}
 
-Son zamanlarda sosyal medyada özellikle `Stoacılık` ile alakalı çok video görmeye başladım. Daha sonra merak ettim
-ve aslında bana da çokça uyan bir felsefik düşünce olduğunu gördüm. Bunla alakalı meşhur bir kitap olan Donald Robertson'dan `Marcus Aurelius'un Stoacı Felsefesi: Roma İmparatoru Gibi Düşünmek` kitabını satın aldım ve bu kitabı okumak bana askerliğimi yaparken nasip oldu. Bol bol boş vaktim olunca hem okuyup hem de üstüne düşündüm ve bazı düşünceler gerçekten çok hoşuma gitmeye başladı, hatta askerliğime bile katkısı oldu diyebilirim. Bunu ilerleyen bölümlerde açıklayacağım. 
+Son zamanlarda  `Stoacılık` ile alakalı çok fazla içerik görmeye başladım. Daha sonra merak ettim
+ve aslında bana da çokça uyan bir felsefi düşünce olduğunu gördüm. Bunla alakalı meşhur bir kitap olan Donald Robertson'dan `Marcus Aurelius'un Stoacı Felsefesi: Roma İmparatoru Gibi Düşünmek` kitabını satın aldım ve bu kitabı okumak bana askerliğimi yaparken nasip oldu. Bol bol boş vaktim olunca hem okuyup hem de üstüne düşündüm ve bazı düşünceler gerçekten çok hoşuma gitmeye başladı, hatta askerliğime bile katkısı oldu diyebilirim. Bunu ilerleyen bölümlerde açıklayacağım. 
 
 ![Roma İmparatoru Gibi Düşünmek](../../images/kitap.jpeg)
 
@@ -49,7 +49,8 @@ Tüm detayları internette kolayca bulabilirsiniz, bu yazıda ben sadece kitapta
 
 ## Bilişsel Mesafe Koyma
 
-Bilişsel mesafe koyma Stoacı felsefede en önemli acı yönetimi stratejisidir, Marcus Aurelis ve hocası [Epiktetos](https://tr.wikipedia.org/wiki/Epiktetos) tarafından bolca dile getirilmiştir. Kısaca şöyle açıklanabilir. Sadece acı yönetimi değil aynı zamanda arzulardan kurtulma yolundada kullanabilen bir yöntemdir.
+Bilişsel mesafe koyma Stoacı felsefede en önemli acı yönetimi stratejisidir, Marcus Aurelis ve hocası [Epiktetos](https://tr.wikipedia.org/wiki/Epiktetos) tarafından bolca dile getirilmiştir. Sadece acı yönetimi değil aynı zamanda arzulardan kurtulma yolundada kullanabilen bir yöntemdir.
+ Kısaca şöyle açıklanabilir.
 
 {{< admonition note "Bilişsel Mesafe Koyma" >}}
 
@@ -58,7 +59,7 @@ Bizi üzen olayların kendisi değil, onlar hakkındaki yargılarımızdır. Eğ
 {{< /admonition >}}
 
 
-Çok güzel bir quote ile devam edelim
+Çok güzel bir alıntı ile devam edelim
 
 {{< admonition quote "Marcus Aurelius" >}}
 
@@ -72,13 +73,13 @@ Yargıyı yok et. 'Zarar gördüm' düşüncesi de yok olur: o düşünceyi yok 
 
 Çok basit bir örnek olarak baş ağrınız bulunuyor, ve siz kendinize şu cümleyi söylüyorsunuz: Bu baş ağrısına dayanamıyorum, beni öldürecek!
 
-Bu tarz bir düşüncenin aslında sizin ağrınızı psikolojik olarak daha da çoğalttığını fark edeceksiniz, eğer objektif bir şekilde düşününce bu ağrının size zarar verdiğini fark edeceksiniz ancak sizi öldürecek kadar şiddetli bir ağrı olmadığını göreceksiniz ve eninde sonunda bu ağrı gidecek.
+Bu tarz bir düşüncenin aslında sizin ağrınızı psikolojik olarak daha da çoğalttığını fark edeceksiniz, eğer objektif bir şekilde düşününce bu ağrının size zarar verdiğini ancak sizi öldürecek kadar şiddetli bir ağrı olmadığını göreceksiniz ve eninde sonunda bu ağrı gidecek.
 
 İlk defa bu terimi duyduğumda öncelikle çevremdeki hastalıkları hakkında çok fazla söylenen kişiler aklıma geldi, ben de bunlardan biriydim. Herhangi bir soğuk algınlığı vesaire durumunda sanki dünyanın sonuymuş gibi "Çok kötüyüm, ne zaman iyileşeceğim" moduna giriyordum ve bu söylemler hastalığı daha da beter bir hale getiriyordu. 
 
-Bunu sadece hastalık anlamında düşünmeyin, hayatta sizi üzen herhangi bir olay olabilir. İşten kovulmuşsunuzdur, kız/erkek arkadaşınızdan ayrılmışsınızdır vesaire. Tabii ki yargılarını bir kenara bırak demek kolay ancak aksiyon almak zor. Benim de başıma benzer bir olay geldi ve öyle bir terimi benimsedim diyip her şeyi unutmak ne yazık ki çok zor, ancak üstünde çalışmaya engel değil.
+Bunu sadece hastalık anlamında düşünmeyin, hayatta sizi üzen herhangi bir olay olabilir. İşten kovulmuşsunuzdur, kız/erkek arkadaşınızdan ayrılmışsınızdır vesaire. Tabii ki yargılarını bir kenara bırak demek kolay ancak aksiyon almak zor.
 
-Askerdeyken bu kitabı okurken *Bilişsel Mesafe Koyma* terimi çok mantıklı geldi, bazı konularda uyguladığımı düşünüyorum ancak bazı konularda ne kadar yargılamayı bıraksak da işin içine duygular girebiliyor, sizi üzebiliyor ya da sevindirebiliyor. Her ne kadar insanı acıdan uzaklaştırmasa da bu yönde çalışmak bile insana iyi gelebilir. Ne yazık ki çabaladığım halde bu terimi hayatıma tam uygulayabildiğimi düşünmüyorum ancak daha yolun başındayım ve bu konu hakkında daha fazla araştırma yapıp daha iyi hayatıma uygulayacağımı düşünüyorum.
+Askerdeyken bu kitabı okurken *Bilişsel Mesafe Koyma* yöntemi çok mantıklı geldi ve uygulamaya çalıştım. Bazı konularda başarılı olduğumu düşünüyorum ancak bazı konularda ne kadar olayları yargılamayı bıraksak da işin içine duygular girebiliyor, sizi üzebiliyor ya da sevindirebiliyor. Her ne kadar insanı acıdan uzaklaştırmasa da bu yönde çalışmak bile insana iyi gelebilir. Ne yazık ki çabaladığım halde bu terimi hayatıma tam uygulayabildiğimi düşünmüyorum ancak daha yolun başındayım ve bu konu hakkında daha fazla araştırma yapıp daha iyi hayatıma uygulayacağımı ümit ediyorum.
 
 İlk başta bu kitabın askerliğime yardımcı olduğunu söylemiştim. Kısa süreli bir askerlik yapsam da nasıl yardımcı olduğunu söyleyeyim.
 
