@@ -22,7 +22,7 @@ Stoacılık, MÖ 3. yüzyılın başlarında Atina Agorası'nda Kıbrıslı Zeno
 
 ## Kitap: Roma İmparatoru Gibi Düşünmek
 
-Bu kitap meşhur Stoacı **Marcus Aurelius** Stoacı felsefeyi gündelik hayatına nasıl uyguladığını ve günlük yaşamda nasıl kullanabileceğimi anlatıyor. Kitapta genel olarak anlatılan konular
+Bu kitap meşhur Stoacı **Marcus Aurelius** Stoacı felsefeyi gündelik hayatına nasıl uyguladığını ve günlük yaşamda nasıl kullanabileceğini anlatıyor. Kitapta genel olarak anlatılan konular
 
 - Stoacı Felsefenin Temelleri
 - Marcus Aurelius'un Hayatı ve Öğretileri
@@ -70,16 +70,16 @@ Bu tarz bir düşüncenin aslında sizin ağrınızı psikolojik olarak daha da 
 
 İlk defa bu terimi duyduğumda öncelikle çevremdeki hastalıkları hakkında çok fazla söylenen kişiler aklıma geldi, ben de bunlardan biriydim. Herhangi bir soğuk algınlığı vesaire durumunda sanki dünyanın sonuymuş gibi "Çok kötüyüm, ne zaman iyileşeceğim" moduna giriyordum ve bu söylemler hastalığı daha da beter bir hale getiriyordu. 
 
-Bunu sadece hastalık anlamında düşünmeyin, hayatta sizi üzen herhangi bir olay olabilir. İşten kovulmuşsunuzdur, kız/erkek arkadaşınızdan ayrılmışsınızdır vesaire. Tabii ki yargılarını bir kenara bırak demek kolay ancak aksiyon almak zor, benim de başıma benzer bir olay geldi.
+Bunu sadece hastalık anlamında düşünmeyin, hayatta sizi üzen herhangi bir olay olabilir. İşten kovulmuşsunuzdur, kız/erkek arkadaşınızdan ayrılmışsınızdır vesaire. Tabii ki yargılarını bir kenara bırak demek kolay ancak aksiyon almak zor. Benim de başıma benzer bir olay geldi ve öyle bir terimi benimsedim diyip her şeyi unutmak ne yazık ki çok zor, ancak üstünde çalışmaya engel değil.
 
-Askerdeyken bu kitabı okurken *Bilişsel Mesafe Koyma* terimi çok mantıklı geldi, bazı konularda uyguladığımı düşünüyorum ancak bazı konularda ne kadar yargılamayı bıraksak da işin içine duygular girebiliyor, sizi üzebiliyor ya da sevindirebiliyor. Çabaladığım halde bu terimi hayatıma tam uygulayabildiğimi düşünmüyorum ancak daha yolun başındayım ve bu konu hakkında daha fazla araştırma yapıp daha iyi hayatıma uygulayacağım.
+Askerdeyken bu kitabı okurken *Bilişsel Mesafe Koyma* terimi çok mantıklı geldi, bazı konularda uyguladığımı düşünüyorum ancak bazı konularda ne kadar yargılamayı bıraksak da işin içine duygular girebiliyor, sizi üzebiliyor ya da sevindirebiliyor. Her ne kadar insanı acıdan uzaklaştırmasa da bu yönde çalışmak bile insana iyi gelebilir. Ne yazık ki çabaladığım halde bu terimi hayatıma tam uygulayabildiğimi düşünmüyorum ancak daha yolun başındayım ve bu konu hakkında daha fazla araştırma yapıp daha iyi hayatıma uygulayacağımı düşünüyorum.
 
 İlk başta bu kitabın askerliğime yardımcı olduğunu söylemiştim. Kısa süreli bir askerlik yapsam da nasıl yardımcı olduğunu söyleyeyim.
 
 - İlk zamanlar, ne zaman bitecek bu askerlik diyip kaç günüm kaldığını her gün kontrol ediyordum.
 - Kitabı okuduktan sonra, bu düşüncenin aslında zararlı olduğunu, eninde sonunda bu görevin biteceğini, olabildiğince bu görevden faydalanmam gerektiğini düşündüm
 - Daha çok insanla tanışmaya çalıştım, güzel insanlarla tanıştım ve artık gün saymayı bıraktım. Sadece şu tarihte eve döneceğim diyordum.
-- Hatta bir ara askerlik çok keyifli gelmeye başladı ancak bu his kısa sürdü tabii ki :)
+- Hatta bir ara askerlik çok keyifli gelmeye başladı ancak bu his kısa sürdü tabii ki :handshake:
 
 Kısa süren askerlik bile başlarda çok bıktırsa da sonradan çok rahat bir şekilde devam ettirebildim. Askerde bol bol düşünme zamanınız olduğu için aklınıza takılan herhangi bir sıkıntıyı iyice düşünme fırsatınız oluyor. Bazı kişisel konular ilk başlarda beni çok üzmeye, germeye başladı ancak daha sonra aslında bana acı veren konuların o kadar da sıkıntı şeyler olmadığını gördüm ve biraz da olsa rahatladım diyebilirim.
 
