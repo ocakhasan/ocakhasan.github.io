@@ -96,7 +96,7 @@ Dediğim gibi hala bu konu üzerinde çalışıyorum. İleride bu terimi daha iy
 
 {{< admonition note "Son Not" >}}
 Bundan sonra sadece teknik konular üzerinde değil canımın istediği her bir konu hakkında yazacağım. Bu yazılarımın az okunduğunu da biliyorum.
-Aslında burayı bir kendime arşiv olarak görüyorum. Blogumu bu zamana kadar destekleyen ve az sayıda olan düzenli okuyucularıma teşekkürlerimi sunarım :upside_down_face:
+Aslında burayı kendime bir arşiv olarak görüyorum. Blogumu bu zamana kadar destekleyen ve az sayıda olan düzenli okuyucularıma teşekkürlerimi sunarım :upside_down_face:
 {{< /admonition >}}
 
 Umarım keyifli bir okuma olmuştur. Okuduğunuz için teşekkürler.
