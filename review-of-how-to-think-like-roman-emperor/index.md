@@ -1,4 +1,4 @@
-# (TR) Kitap İncelemesi; Roma İmparatoru Gibi Düşünmek
+# (TR) Stoacılık, Bilişsel Mesafe Koyma
 
 
 {{< admonition note "Disclaimer" >}}
@@ -41,7 +41,7 @@ Marcus Aurelius Antoninus Augustus (26 Nisan 121 – 17 Mart 180), 161 - 180 yı
 
 Tüm detayları internette kolayca bulabilirsiniz, bu yazıda ben sadece kitaptaki en çok ilgimi çeken terim olan **Bilişsel Mesafe** terimini tartışacağım.
 
-## Bilişsel Mesafe Koyma
+## Bilişsel Mesafe Koyma (Cognitive Distancing)
 
 Bilişsel mesafe koyma Stoacı felsefede en önemli acı yönetimi stratejisidir, Marcus Aurelis ve hocası [Epiktetos](https://tr.wikipedia.org/wiki/Epiktetos) tarafından bolca dile getirilmiştir. Sadece acı yönetimi değil aynı zamanda arzulardan kurtulma yolundada kullanabilen bir yöntemdir.
  Kısaca şöyle açıklanabilir.
@@ -51,6 +51,8 @@ Bilişsel mesafe koyma Stoacı felsefede en önemli acı yönetimi stratejisidir
 Bizi üzen olayların kendisi değil, onlar hakkındaki yargılarımızdır. Eğer yargıları bir kenara koyarsak çektiğimiz acı hafifler.
 
 {{< /admonition >}}
+
+Stoacı bilgeler acının da yaşamın bir parçası olduğunu, bunu inkar etmememiz gerektiğinden bahsediyor. Duyguları bastırmamalı, duyguların doğal olduğunu ancak olabildiğince duygularımızdan da bağımsız kalabilmeyi öğütler. Buradaki en önemli konu duygulara *zarar* bakış açısından bakmamamız gerektiğidir. Herhangi bir şeyin size zararlı ya da faydalı olmasının sizin hayattaki hedef ve amaçlarınıza bağlı olduğunu söyler. 
 
 
 Çok güzel bir alıntı ile devam edelim
@@ -80,18 +82,18 @@ Askerdeyken bu kitabı okurken *Bilişsel Mesafe Koyma* yöntemi çok mantıklı
 - İlk zamanlar, ne zaman bitecek bu askerlik diyip kaç günüm kaldığını her gün kontrol ediyordum.
 - Kitabı okuduktan sonra, bu düşüncenin aslında zararlı olduğunu, eninde sonunda bu görevin biteceğini, olabildiğince bu görevden faydalanmam gerektiğini düşündüm
 - Daha çok insanla tanışmaya çalıştım, güzel insanlarla tanıştım ve artık gün saymayı bıraktım. Sadece şu tarihte eve döneceğim diyordum.
-- Hatta bir ara askerlik çok keyifli gelmeye başladı ancak bu his kısa sürdü tabii ki :handshake:
+- Hatta bir ara askerlik çok keyifli gelmeye başladı ancak bu his kısa sürdü tabii ki 
 
 Kısa süren askerlik bile başlarda çok bıktırsa da sonradan çok rahat bir şekilde devam ettirebildim. Askerde bol bol düşünme zamanınız olduğu için aklınıza takılan herhangi bir sıkıntıyı iyice düşünme fırsatınız oluyor. Bazı kişisel konular ilk başlarda beni çok üzmeye, germeye başladı ancak daha sonra aslında bana acı veren konuların o kadar da sıkıntı şeyler olmadığını gördüm ve biraz da olsa rahatladım diyebilirim.
 
-Dediğim gibi hala bu konu üzerinde çalışıyorum. İleride bu terimi daha iyi entegre edebildiğimi görürsem bu yazıyı güncelleyeceğim. 
+Dediğim gibi hala bu konu üzerinde çalışıyorum. İleride bu terimi daha iyi entegre edebildiğimi görürsem bu yazıyı güncelleyeceğim. :handshake:
 
 {{< admonition note "Son Not" >}}
 Bundan sonra sadece teknik konular üzerinde değil canımın istediği her bir konu hakkında yazacağım. Bu yazılarımın az okunduğunu da biliyorum.
 Aslında burayı bir kendime arşiv olarak görüyorum. Blogumu bu zamana kadar destekleyen ve az sayıda olan düzenli okuyucularıma teşekkürlerimi sunarım :upside_down_face:
 {{< /admonition >}}
 
-Umarım keyifli bir okuma olmuştur. Okuduğunuz için teşekkürler
+Umarım keyifli bir okuma olmuştur. Okuduğunuz için teşekkürler.
 
 ## REFERENCES
 - [Stoacılık](https://tr.wikipedia.org/wiki/Stoac%C4%B1l%C4%B1k)
