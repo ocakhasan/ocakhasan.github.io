@@ -11,6 +11,12 @@ I have more than 5000 games as of the data 16th Oct 2023. We will be analyzing l
 
 Let's begin.
 
+I got help from [ChatGPT](https://chat.openai.com/) while creating this notebook. So let's continue with a quote from `ChatGPT`
+
+{{< admonition quote "ChatGPT" >}}
+"Missing someone is like a chess game played in the heart. Each memory, a move. Each sigh, a pause. Just as in chess, every move echoes with the absence of their presence, and every strategy is an attempt to bring them back, even if only in the mind's intricate game."
+{{< /admonition >}}
+
 {{< figure src="/images/lichess.webp" title="Lichess Server Crash Image" >}}
 
 ## Fetch the Games
