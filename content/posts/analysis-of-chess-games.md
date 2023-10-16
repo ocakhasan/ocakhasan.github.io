@@ -268,3 +268,5 @@ plt.show()
 
 
 It seems like I lost 505 games whereas I won the 495 games, it is almost 50/50. No improvement at all :smile:
+
+It will be continued...
