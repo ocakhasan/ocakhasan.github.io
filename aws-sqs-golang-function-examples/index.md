@@ -1,4 +1,4 @@
-# AWS SQS Sdk & Golang Complete Cheat Sheet
+# AWS SQS SDK & Golang Complete Cheat Sheet
 
 
 # SQS (Simple Queue Service) Query Examples
