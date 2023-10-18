@@ -4,6 +4,7 @@ title: Local SQS Setup With Golang
 summary: Learn how to use local sqs with golang.
 date: 2023-07-22
 tags: [sqs, go, consumer]
+draft: true
 ---
 
 # Introduction
