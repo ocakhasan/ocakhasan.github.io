@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AWS SQS Sdk & Golang Complete Cheat Sheet 
+title: AWS SQS SDK & Golang Complete Cheat Sheet 
 summary: Let's see how we can utilize AWS SQS with Golang.
 date: 2023-10-18
 tags: [golang, sqs, aws]
