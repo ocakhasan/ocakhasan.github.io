@@ -208,9 +208,8 @@ import (
 )
 
 type YourStruct struct {
-	University string
-	Major      string
-	Level      string
+	Artist string
+	Song   string
 }
 
 func main() {
@@ -222,9 +221,8 @@ func main() {
 	sqsClient := sqs.NewFromConfig(cfg)
 
 	data := YourStruct{
-		University: "Technical University of Munich",
-		Major:      "Informatics",
-		Level:      "Graduate",
+		Artist: "Tame Impala",
+		Song: "Let It Happen",
 	}
 
 	bytes, _ := json.Marshal(&data)
@@ -306,7 +304,7 @@ func main() {
 Output will be something like this
 
 ```
-2023/10/18 22:22:57 the message body is {"University":"Technical University of Munich","Major":"Informatics","Level":"Graduate"}
+2023/10/18 22:22:57 the message body is {"Artist":"Tame Impala","Song":"Let It Happen"}
 ```
 
 ### How to Decode the Message Into Your Struct
