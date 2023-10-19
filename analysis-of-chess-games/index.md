@@ -1,4 +1,4 @@
-# (TR) Analysis Of My Lichess Bullet Games
+# Analysis Of My Lichess Bullet Games
 
 
 Hello Guys,
