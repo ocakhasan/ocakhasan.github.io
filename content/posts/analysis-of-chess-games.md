@@ -1,6 +1,6 @@
 ---
 layout: post
-title: (TR) Analysis Of My Lichess Bullet Games
+title: Analysis Of My Lichess Bullet Games
 summary: A simple analysis on the bullet games I played on Lichess
 date: 2023-10-16
 tags: [chess, python, data]
