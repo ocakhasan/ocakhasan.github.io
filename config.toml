@@ -9,7 +9,7 @@ title = "Hasan Ocak Tech Blog"
 # language code ["en", "zh-CN", "fr", "pl", ...]
 languageCode = "tr"
 # language name ["English", "简体中文", "Français", "Polski", ...]
-languageName = "Turkishs"
+languageName = "Turkish"
 # whether to include Chinese/Japanese/Korean
 hasCJKLanguage = false
 
@@ -201,7 +201,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
     [params.home.posts]
       enable = true
       # special amount of posts in each home posts page
-      paginate = 6
+      paginate = 8
       #  replaced with hiddenFromHomePage in params.page
       # default behavior when you don't set "hiddenFromHomePage" in front matter
       defaultHiddenFromHomePage = false
