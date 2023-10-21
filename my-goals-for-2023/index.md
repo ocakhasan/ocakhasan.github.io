@@ -8,13 +8,13 @@ Let's see if I will be able to achieve my goals.
 
 **Here is the list**
 
-- [ ] Read More Books (at least 25)
+- [] Read More Books (at least 25)
 - [ ] Do more exercise
   - [ ] 10000 pushups
   - [x] start to run regularly
-- [ ] Write more blog posts
-  - [ ] at least 1 post per month
-  - [ ] write non-techincal stuff also (maybe some reviews on books)
+- [x] Write more blog posts
+  - [x] at least 1 post per month
+  - [x] write non-techincal stuff also (maybe some reviews on books)
 - [ ] Go outside more :smile:
 - [x] Start to learn investing
 - [x] Get a promotion hopefully

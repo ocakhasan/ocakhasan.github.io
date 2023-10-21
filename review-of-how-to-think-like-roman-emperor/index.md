@@ -43,7 +43,7 @@ Tüm detayları internette kolayca bulabilirsiniz, bu yazıda ben sadece kitapta
 
 ## Bilişsel Mesafe Koyma (Cognitive Distancing)
 
-Bilişsel mesafe koyma Stoacı felsefede en önemli acı yönetimi stratejisidir, Marcus Aurelis ve hocası [Epiktetos](https://tr.wikipedia.org/wiki/Epiktetos) tarafından bolca dile getirilmiştir. Sadece acı yönetimi değil aynı zamanda arzulardan kurtulma yolundada kullanabilen bir yöntemdir.
+Bilişsel mesafe koyma Stoacı felsefede en önemli acı yönetimi stratejisidir, Marcus Aurelis ve hocası [Epiktetos](https://tr.wikipedia.org/wiki/Epiktetos) tarafından bolca dile getirilmiştir. Sadece acı yönetimi değil aynı zamanda arzulardan kurtulma yolunda da kullanabilen bir yöntemdir.
  Kısaca şöyle açıklanabilir.
 
 {{< admonition note "Bilişsel Mesafe Koyma" >}}
