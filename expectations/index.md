@@ -42,11 +42,11 @@ expect the worst, hope for the best. (en kötüsünü bekle, en iyisini umut et)
 ayakkabım olmadığı için ağladım, daha sonra hiç ayağı olmayan biriyle tanıştım.
 {{< /admonition >}}
 
-bu hayatın her durumunda böyledir. sağlıklısınızdır, ekonomik olarak ortalama bir durumdasınızdır ancak mutlu değilsinizdir. Sahip olduğunuz şeylerin mutlu olmanız için yeterli olmadığını düşünüyorsunuzdur. Daha sonrasında ise bir yakınınızı kaybettiğinizde ya da sizin durumunuzdan daha kötü bir durumda olan birini gördüğünüzde içinizde bir şükür duygusu belirecektir. 
+bu hayatın her durumunda böyledir. sağlıklısınızdır, ekonomik olarak ortalama bir durumdasınızdır ancak mutlu değilsinizdir. sahip olduğunuz şeylerin mutlu olmanız için yeterli olmadığını düşünüyorsunuzdur. daha sonrasında ise bir yakınınızı kaybettiğinizde ya da sizin durumunuzdan daha kötü bir durumda olan birini gördüğünüzde içinizde bir şükür duygusu belirecektir. 
 
-benim de kendim için beklentilerim hep yüksekti ve hala daha tam potensiyelimi kullanamadığımı düşünüyorum, lisede veya üniversite de  kendimi hep daha büyük işler yaparken hayal ediyordum. böyle hedeflerimizin olması güzel ancak bu durum benim şuanda sahip olduklarımdan aldığım tatminlik duygusunu azaltabilir, bundan dolayı aslında kendime bir bakıma zarar verebilirim. aslında yaptığımın yanlış olduğunu, gayet iyi durumda olduğumun farkına varmam gerekir, çünkü çevremdeki çoğu insanın benim durumumda olmak için bir şeylerinden feragat edebileceğini biliyorum.
+benim de kendim için beklentilerim hep yüksekti ve hala daha tam potensiyelimi kullanamadığımı düşünüyorum, lisede veya üniversite de  kendimi hep daha büyük işler yaparken hayal ediyordum. böyle hedeflerimizin olması güzel ancak bu durum benim şuanda sahip olduklarımdan aldığım tatminlik duygusunu azaltabilir, bundan dolayı aslında kendime bir bakıma zarar vermiş oluyorum. aslında yaptığımın yanlış olduğunu, gayet iyi durumda olduğumun farkına varmam gerekir, çünkü çevremdeki çoğu insanın benim durumumda olmak için bir şeylerinden feragat edebileceğini biliyorum.
 
-insanın sahip olduklarının değerini bilmesi, şükretmesi gerekir. bunu herkes hayatında onlarca kez duymuştur ancak açgözlülük insana bu duyguları uygulamada çok zorluk çıkarıyor.
+insanın sahip olduklarının değerini bilmesi, şükretmesi gerekir. bunu herkes hayatında onlarca kez duymuştur ancak açgözlülük insana bu duyguları uygulamada zorluk çıkarıyor.
 
 ## insanlardan beklentiler
 
@@ -54,7 +54,7 @@ insanın sahip olduklarının değerini bilmesi, şükretmesi gerekir. bunu herk
 
 insanlar kendi bildikleri gibi davranırlar, bizim onlardan beklediğimiz gibi değil.
 
-insanlar çok farklıdır ve bu farklılıkların eğitim, kültür, zenginlik, büyüdüğü çevre gibi bir sürü nedeni olabilir. insanlardan belirli başlı davranışları beklemek sizi hayal kırıklığına uğratabilir, bunun bilincinde olmalısınız. çünkü hiç kimse size sizin onlara davrandığınız gibi, ya da ondan davranmasını beklediğiniz gibi davranmak zorunda değil.
+insanlar birbirlerinden çok farklıdır ve bu farklılıkların eğitim, kültür, zenginlik, büyüdüğü çevre gibi bir sürü nedeni olabilir. insanlardan belirli başlı davranışları beklemek sizi hayal kırıklığına uğratabilir, bunun bilincinde olmalısınız. çünkü hiç kimse size sizin onlara davrandığınız gibi, ya da ondan davranmasını beklediğiniz gibi davranmak zorunda değil.
 
 ben her zaman düşünceli biri olduğumu düşünmüşümdür. kimseyi incitmemeye, karşımdaki insanın duygularına özen göstermeye çalışmışımdır ancak geçmişte gördüm ki her insan aynı değil, karşınızdaki insan sizden daha düşünceli olabileceği gibi daha düşüncesiz biri de olabilir. ancak kesin olan bir şey var ki, siz eğer insanlardan belirli bir beklentiyle davranmalarını beklerseniz ve beklediğiniz gibi davranmadığını ilk gördüğünüz an hayal kırıklığına uğrayacaksınız.
 
