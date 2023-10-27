@@ -4,7 +4,7 @@ title: (tr) beklentiler
 summary: beklentiler hayatımızı nasıl yönlendiriyor onu konuşalım.
 date: 2023-10-27
 tags: [life, thoughts]
-draft: true
+draft: false 
 ---
 
 ## beklenti nedir?
@@ -26,7 +26,7 @@ benim bu konu hakkında herhangi bir uzmanlığım yok, sadece okuduğum ve dene
 
 ## beklenti ve mutluluk
 
-hayatınızda eğer bir şeyler için çabaladığını düşünüyorsanız ve hala mutsuzsanız bunun birkaç sebebi olabilir.
+hayatınızda eğer bir şeyler için çabaladığınızı düşünüyorsanız ve hala mutsuzsanız bunun birkaç sebebi olabilir.
 
 - mutluluğunuzu çok fazla dış etkenlere bağlıyorsunuz (iş, başarı, ilişki vb.)
 - beklentileriniz çok yüksek ve beklentilerinizi karşılayamıyorsunuz.
@@ -62,23 +62,23 @@ insanlar kendi bildikleri gibi davranırlar, bizim onlardan beklediğimiz gibi d
 
 insanlar birbirlerinden çok farklıdır ve bu farklılıkların eğitim, kültür, zenginlik, büyüdüğü çevre gibi bir sürü nedeni olabilir. insanlardan belirli başlı davranışları beklemek sizi hayal kırıklığına uğratabilir, bunun bilincinde olmalısınız. çünkü hiç kimse size sizin onlara davrandığınız gibi, ya da ondan davranmasını beklediğiniz gibi davranmak zorunda değil.
 
-ben her zaman düşünceli biri olduğumu düşünmüşümdür. kimseyi incitmemeye, karşımdaki insanın duygularına özen göstermeye çalışmışımdır ancak geçmişte gördüm ki her insan aynı değil, karşınızdaki insan sizden daha düşünceli olabileceği gibi daha düşüncesiz biri de olabilir. ancak kesin olan bir şey var ki, siz eğer insanlardan belirli bir beklentiyle davranmalarını beklerseniz ve beklediğiniz gibi davranmadığını ilk gördüğünüz an hayal kırıklığına uğrayacaksınız.
+insanlar sizin doğrularınız ile değil kendi bildikleri doğrular ile hareket eder. siz eğer insanlardan belirli bir beklentiyle davranmalarını beklerseniz, beklediğiniz gibi davranmadığını ilk gördüğünüz an hayal kırıklığına uğrayacaksınız.
 
 ondan dolayı hepimizin birbirimizden farklı bireyler olduğunu unutmamalı ve buna göre kendimizi hazırlamalıyız. 
 
 ## beklentiler nasıl belirlenmeli
 
-beklentilerimizin bizi mutsuz edebileceğini, bundan dolayı kendimiz için daha doğru ve gerçekçi hedefler, beklentiler belirlemenin daha iyi olduğunuz yazdık.
+beklentilerimizin bizi mutsuz edebileceğini, bundan dolayı kendimiz için daha doğru ve gerçekçi hedefler, beklentiler belirlemenin daha iyi olduğunu yazdık.
 
 peki bu hayallerimizden vazgeçmemiz anlamına mı geliyor?
 
 tabi ki de hayır, hayatımızda her zaman bizi etkileyen olaylar, imrendiğiniz insanlar olacaktır. keşke şu durumda olsam diyeceksiniz ancak her şeyin sizin kontrolünüzde olmadığını da bilmek gerekir.
 
-eğer bir sınavdan yüksek almak istiyorsanız, böyle bir beklentiniz varsa o zaman çok çalışmalısınız. hiç çalışmayıp, güzel bir not beklediğiniz zaman, beklediğiniz notu alamadığınızı gördüğünde üzülmemek gerekir. 
+eğer bir sınavdan yüksek almak istiyorsanız, böyle bir beklentiniz varsa o zaman çok çalışmalısınız. hiç çalışmayıp, güzel bir not beklediğiniz zaman, beklediğiniz notu alamadığınızı gördüğünüzde üzülmemek gerekir. 
 
-kötü bir örnek oldu belki ama hedeflerimiz elbet olacak, ancak bu hedeflere ulaşmak için çabalamıyorsak belki de öyle hedeflere sahip olmamamız gerekir. 
+kötü bir örnek oldu belki ama hedeflerimiz elbet olacak, ancak bu hedeflere ulaşmak için çabalamıyorsak belki de öyle hedeflere sahip olmamamız gerekir.
 
-yukarıda bahsettiğim gibi ben kendi potensiyelimi hala tam kullanamadığımı düşünüyorum ancak şuan bu konuyu düzeltmek için harcadığım ekstra bir mesai yok. bundan dolayı böyle bir düşünce bana ancak şükürsüzlük, dolayısıyla tatminsizlik verecektir ki ben bunun farkındayım ve bu yazıyı yazarken böyle bir düşünceye en azından şuan sahip olmamam gerektiğini görebiliyorum.
+yukarıda bahsettiğim gibi ben kendi potansiyelimi hala tam kullanamadığımı düşünüyorum ancak şuan bu konuyu düzeltmek için harcadığım ekstra bir mesai yok. bundan dolayı böyle bir düşünce bana ancak şükürsüzlük, dolayısıyla tatminsizlik verecektir ki ben bunun farkındayım ve bu yazıyı yazarken böyle bir düşünceye en azından şuan sahip olmamam gerektiğini görebiliyorum.
 
 umarım güzel bir yazı olmuştur, okuduğunuz için teşekkür ederim.
 
