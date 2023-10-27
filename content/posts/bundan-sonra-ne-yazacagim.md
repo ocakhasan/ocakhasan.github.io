@@ -5,7 +5,7 @@ summary: Bu yıl hangi konular hakkında yazacağımı görelim
 date: 2023-09-08
 tags: [life]
 toc: false
-draft: false 
+draft: true 
 ---
 
 Bu yılın başında hedeflerimden birisi olabildiğince yazı yazmaktı. Neden böyle bir karar aldığımı açıklayayım.
