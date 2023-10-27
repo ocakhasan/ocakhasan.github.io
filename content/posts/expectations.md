@@ -4,6 +4,7 @@ title: (tr) beklentiler
 summary: beklentiler hayatımızı nasıl yönlendiriyor onu konuşalım.
 date: 2023-10-27
 tags: [life, thoughts]
+draft: true
 ---
 
 ## beklenti nedir?
