@@ -22,21 +22,21 @@ and it returns
 ```json
 [
   {
-    "name": "",
+    "name": "The Weeknd",
     "age": 30,
     "tracks": [
       {
-        "name": "The Show Must Go On",
+        "name": "Creepin",
         "duration": 222
       }
     ]
   },
   {
-    "name": "Sezen Aksu",
+    "name": "Tame Impala",
     "age": 30,
     "tracks": [
       {
-        "name": "Firuze",
+        "name": "Let It Happen",
         "duration": 467
       }
     ]
@@ -68,17 +68,17 @@ type Artist struct {
 
 var data = []Artist{
 	{
-		Name: "Queen",
+		Name: "The Weeknd",
 		Age:  30,
 		Tracks: []Track{
-			{Name: "The Show Must Go On", Duration: 271},
+			{Name: "Creepin", Duration: 222},
 		},
 	},
 	{
-		Name: "Sezen Aksu",
+		Name: "Tame Impala",
 		Age:  35,
 		Tracks: []Track{
-			{Name: "Firuze", Duration: 304},
+			{Name: "Let It Happen", Duration: 467},
 		},
 	},
 }
@@ -104,18 +104,18 @@ But you only want some of the fields maybe like
 ```json
 [
   {
-    "name": "Queen",
+    "name": "The Weeknd",
     "tracks": [
       {
-        "name": "The Show Must Go On",
+        "name": "Creepin",
       }
     ]
   },
   {
-    "name": "Sezen Aksu",
+    "name": "Tame Impala",
     "tracks": [
       {
-        "name": "Firuze",
+        "name": "Let It Happen",
       }
     ]
   }
@@ -323,17 +323,17 @@ import (
 
 var data = []*model.Artist{
 	{
-		Name: "Queen",
+		Name: "The Weeknd",
 		Age:  30,
 		Tracks: []*model.Track{
-			{Name: "The Show Must Go On", Duration: 222},
+			{Name: "Creepin", Duration: 222},
 		},
 	},
 	{
 		Name: "Tame Impala",
 		Age:  60,
 		Tracks: []*model.Track{
-			{Name: "Firuze", Duration: 467},
+			{Name: "Let It Happen", Duration: 467},
 		},
 	},
 }
@@ -372,10 +372,10 @@ it will return
   "data": {
     "artists": [
       {
-        "name": "Queen"
+        "name": "The Weeknd"
       },
       {
-        "name": "Sezen Aksu"
+        "name": "Tame Impala"
       }
     ]
   }
