@@ -298,6 +298,8 @@ As we can see it is super easy to setup and test our endpoints.
 
 Hope you enjoyed the blog. Once again, you may not grasp the whole concept by just looking at the code examples here, please check the [golang-mongo-rest-api](https://github.com/ocakhasan/golang-mongo-rest-api). 
 
+You can check the other tests in the [controller_test.go](https://github.com/ocakhasan/golang-mongo-rest-api/blob/main/internal/controllers/integration_test/controller_test.go) file.
+
 
 [^1]: https://testcontainers.com/
 [^2]: https://pkg.go.dev/testing#M
