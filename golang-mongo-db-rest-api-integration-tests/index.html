@@ -1,0 +1,301 @@
+<!doctype html><html lang=tr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB - Hasan Ocak Tech Blog</title><meta name=Description content="Çeşitli konulardan bahseden bir tech blog"><meta property="og:title" content="Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB">
+<meta property="og:description" content="Let&rsquo;s write a real integration tests for a golang rest api."><meta property="og:type" content="article"><meta property="og:url" content="https://ocakhasan.github.io/golang-mongo-db-rest-api-integration-tests/"><meta property="og:image" content="https://ocakhasan.github.io/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-11-10T00:00:00+00:00"><meta property="article:modified_time" content="2023-11-10T22:39:19+03:00"><meta property="og:site_name" content="Hasan Ocak Tech Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://ocakhasan.github.io/logo.png"><meta name=twitter:title content="Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB"><meta name=twitter:description content="Let&rsquo;s write a real integration tests for a golang rest api."><meta name=application-name content="Hasan Ocak Tech Blog"><meta name=apple-mobile-web-app-title content="Hasan Ocak Tech Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://ocakhasan.github.io/golang-mongo-db-rest-api-integration-tests/><link rel=prev href=https://ocakhasan.github.io/expectations/><link rel=stylesheet href=/css/style.min.css><link rel=preload href=/lib/fontawesome-free/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.css></noscript><link rel=preload href=/lib/animate/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><meta name=google-site-verification content="6FsPs8qV_9zEnPMWf3bEQwRJFU2Q9imUdyZqX_99So4"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB","inLanguage":"tr","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/ocakhasan.github.io\/golang-mongo-db-rest-api-integration-tests\/"},"genre":"posts","keywords":"golang, mongodb, rest, tests","wordcount":1206,"url":"https:\/\/ocakhasan.github.io\/golang-mongo-db-rest-api-integration-tests\/","datePublished":"2023-11-10T00:00:00+00:00","dateModified":"2023-11-10T22:39:19+03:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"Hasan Ocak"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/about>About </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i>
+</span></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/about title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class="toc-content always-active" id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>Hasan Ocak</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2023-11-10>2023-11-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;1206 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;6 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#simple-design-of-the-api>Simple Design of the API</a></li><li><a href=#database-models-for-the-api>Database Models For the API</a></li><li><a href=#api>API</a><ul><li><a href=#how-to-design-integration-tests>How to Design Integration Tests</a></li><li><a href=#test-containers>Test Containers</a></li><li><a href=#how-to-implement-with-golang>How to Implement With Golang</a></li><li><a href=#apitest-package>apitest package</a></li></ul></li></ul></nav></div></div><div class=content id=content><p>Building a REST API that plays nice with MongoDB is a common challenge in web development. But how do you make sure it all works seamlessly? That&rsquo;s where integration testing comes in. In this blog post, we&rsquo;re going to break down the process of writing integration tests for your REST API, specifically when MongoDB is in the mix.</p><p>You can get all of the code samples for this blog from <a href=https://github.com/ocakhasan/golang-mongo-rest-api target=_blank rel="noopener noreffer">this repository</a>.</p><h2 id=simple-design-of-the-api>Simple Design of the API</h2><figure><img src=/images/api-simple-system-design.png><figcaption><h4>simple design of api</h4></figcaption></figure><p>As you can see, only component of our API is MongoDB, which is kind of not realistic for real life examples but you will get the idea
+on how to apply for it for multiple components for integration tests.</p><h2 id=database-models-for-the-api>Database Models For the API</h2><div class=mermaid id=id-1></div><ol><li>Each author can have many books</li><li>Each book can have many comments.</li></ol><p>Please do not try to validate the design of the models. It is just designed in a way where I can write the code fast and have the tests ready in short period of time.</p><h2 id=api>API</h2><p>Our api has 3 different endpoints.</p><ol><li><code>GET /api/books</code>: returns all of the books with their corresponding comments.</li><li><code>GET /api/author/{id}/books</code>: returns the books of the author with given id.</li><li><code>POST /api/book</code>: creates a new book.</li></ol><p>You can check the example request and responses from the <a href=https://github.com/ocakhasan/golang-mongo-rest-api target=_blank rel="noopener noreffer">project readme</a>.</p><h3 id=how-to-design-integration-tests>How to Design Integration Tests</h3><p>Let&rsquo;s check our <a href=https://github.com/ocakhasan/golang-mongo-rest-api/blob/main/internal/controllers/controller.go target=_blank rel="noopener noreffer">PostsController</a> class which is basically handling all of the requests.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span> <span class=nx>PostsController</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>repo</span> <span class=nx>repository</span><span class=p>.</span><span class=nx>Repository</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>New</span><span class=p>(</span><span class=nx>repo</span> <span class=nx>repository</span><span class=p>.</span><span class=nx>Repository</span><span class=p>)</span> <span class=o>*</span><span class=nx>PostsController</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&amp;</span><span class=nx>PostsController</span><span class=p>{</span><span class=nx>repo</span><span class=p>:</span> <span class=nx>repo</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>As we can see, the only dependency for the <code>PostsController</code> is the <a href=https://github.com/ocakhasan/golang-mongo-rest-api/blob/main/internal/repository/repository.go target=_blank rel="noopener noreffer">Repository</a>. Let&rsquo;s check the <code>Repository</code> interface.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span> <span class=nx>Repository</span> <span class=kd>interface</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nf>GetBooksWithComments</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>filter</span> <span class=nx>PostFilter</span><span class=p>)</span> <span class=p>([]</span><span class=nx>models</span><span class=p>.</span><span class=nx>BookWithComments</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nf>CreateBook</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>book</span> <span class=nx>models</span><span class=p>.</span><span class=nx>Book</span><span class=p>)</span> <span class=p>(</span><span class=nx>models</span><span class=p>.</span><span class=nx>Book</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nf>GetAuthorById</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>id</span> <span class=kt>string</span><span class=p>)</span> <span class=p>(</span><span class=o>*</span><span class=nx>models</span><span class=p>.</span><span class=nx>Author</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>New</span><span class=p>(</span><span class=nx>db</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span><span class=p>)</span> <span class=nx>Repository</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&amp;</span><span class=nx>mongoRepository</span><span class=p>{</span><span class=nx>db</span><span class=p>:</span> <span class=nx>db</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>mongoRepository</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>db</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>mongoRepository</code> implements the <code>Repository</code> interface and, the only dependency for it is the <a href=https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo@v1.12.1#Database target=_blank rel="noopener noreffer">mongo.Database</a>.</p><p>In short terms, to be able to test our controller end2end, we need a <code>MongoDB</code> connection, but the real question is how to get a real MongoDB connection.</p><h3 id=test-containers>Test Containers</h3><p>The answer is to use the Test-Containers. What is test-containers?</p><p>Testcontainers is an open source framework for providing throwaway, lightweight instances of databases, message brokers, web browsers, or just about anything that can run in a Docker container<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>.</p><p>So, here is our strategy for testing.</p><ol><li>Run a MongoDB container with Test-Containers before doing the test.</li><li>Create the database connection with the MongoDB container.</li><li>Pass this connection to our API Controllers</li><li>Do the API Testing</li><li>Remove the MongoDB container after doing the testing.</li></ol><h3 id=how-to-implement-with-golang>How to Implement With Golang</h3><p>We can use the <a href=https://pkg.go.dev/testing#M target=_blank rel="noopener noreffer">testing.Main</a>.</p><p>M is a type passed to a TestMain function to run the actual tests <sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>.</p><p>Let&rsquo;s implement the <code>TestingMain</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>var</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=nx>testDbInstance</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>TestMain</span><span class=p>(</span><span class=nx>m</span> <span class=o>*</span><span class=nx>testing</span><span class=p>.</span><span class=nx>M</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>log</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;setup is running&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>testDB</span> <span class=o>:=</span> <span class=nf>SetupTestDatabase</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=nx>testDbInstance</span> <span class=p>=</span> <span class=nx>testDB</span><span class=p>.</span><span class=nx>DbInstance</span>
+</span></span><span class=line><span class=cl>	<span class=nf>populateDB</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=nx>exitVal</span> <span class=o>:=</span> <span class=nx>m</span><span class=p>.</span><span class=nf>Run</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=nx>log</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;teardown is running&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>_</span> <span class=p>=</span> <span class=nx>testDB</span><span class=p>.</span><span class=nx>container</span><span class=p>.</span><span class=nf>Terminate</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>	<span class=nx>os</span><span class=p>.</span><span class=nf>Exit</span><span class=p>(</span><span class=nx>exitVal</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>populateDB()</code> function inserts some data to the database so we can do our testing.</p><p>Let&rsquo;s check the <code>SetupTestDatabase()</code> which is basically creating the MongoDB container and creating the connection to that container.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span> <span class=nx>TestDatabase</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>DbInstance</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span>
+</span></span><span class=line><span class=cl>	<span class=nx>DbAddress</span>  <span class=kt>string</span>
+</span></span><span class=line><span class=cl>	<span class=nx>container</span>  <span class=nx>testcontainers</span><span class=p>.</span><span class=nx>Container</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>SetupTestDatabase</span><span class=p>()</span> <span class=o>*</span><span class=nx>TestDatabase</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>ctx</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>context</span><span class=p>.</span><span class=nf>WithTimeout</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=o>*</span><span class=mi>60</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>container</span><span class=p>,</span> <span class=nx>dbInstance</span><span class=p>,</span> <span class=nx>dbAddr</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>createMongoContainer</span><span class=p>(</span><span class=nx>ctx</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>log</span><span class=p>.</span><span class=nf>Fatal</span><span class=p>(</span><span class=s>&#34;failed to setup test&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&amp;</span><span class=nx>TestDatabase</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>container</span><span class=p>:</span>  <span class=nx>container</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>DbInstance</span><span class=p>:</span> <span class=nx>dbInstance</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>DbAddress</span><span class=p>:</span>  <span class=nx>dbAddr</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=p>(</span><span class=nx>tdb</span> <span class=o>*</span><span class=nx>TestDatabase</span><span class=p>)</span> <span class=nf>TearDown</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>_</span> <span class=p>=</span> <span class=nx>tdb</span><span class=p>.</span><span class=nx>container</span><span class=p>.</span><span class=nf>Terminate</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>createMongoContainer</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>)</span> <span class=p>(</span><span class=nx>testcontainers</span><span class=p>.</span><span class=nx>Container</span><span class=p>,</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span><span class=p>,</span> <span class=kt>string</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>env</span> <span class=p>=</span> <span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>string</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;MONGO_INITDB_ROOT_USERNAME&#34;</span><span class=p>:</span> <span class=s>&#34;root&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;MONGO_INITDB_ROOT_PASSWORD&#34;</span><span class=p>:</span> <span class=s>&#34;pass&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;MONGO_INITDB_DATABASE&#34;</span><span class=p>:</span>      <span class=s>&#34;testdb&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>port</span> <span class=p>=</span> <span class=s>&#34;27017/tcp&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>req</span> <span class=o>:=</span> <span class=nx>testcontainers</span><span class=p>.</span><span class=nx>GenericContainerRequest</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>ContainerRequest</span><span class=p>:</span> <span class=nx>testcontainers</span><span class=p>.</span><span class=nx>ContainerRequest</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nx>Image</span><span class=p>:</span>        <span class=s>&#34;mongo&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>			<span class=nx>ExposedPorts</span><span class=p>:</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=nx>port</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>			<span class=nx>Env</span><span class=p>:</span>          <span class=nx>env</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=p>},</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Started</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=nx>container</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>testcontainers</span><span class=p>.</span><span class=nf>GenericContainer</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>req</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=kc>nil</span><span class=p>,</span> <span class=s>&#34;&#34;</span><span class=p>,</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Errorf</span><span class=p>(</span><span class=s>&#34;failed to start container: %v&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>p</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>container</span><span class=p>.</span><span class=nf>MappedPort</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=s>&#34;27017&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=kc>nil</span><span class=p>,</span> <span class=s>&#34;&#34;</span><span class=p>,</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Errorf</span><span class=p>(</span><span class=s>&#34;failed to get container external port: %v&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>log</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;mongo container ready and running at port: &#34;</span><span class=p>,</span> <span class=nx>p</span><span class=p>.</span><span class=nf>Port</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>uri</span> <span class=o>:=</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Sprintf</span><span class=p>(</span><span class=s>&#34;mongodb://root:pass@localhost:%s&#34;</span><span class=p>,</span> <span class=nx>p</span><span class=p>.</span><span class=nf>Port</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>	<span class=nx>db</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>database</span><span class=p>.</span><span class=nf>NewMongoDatabase</span><span class=p>(</span><span class=nx>uri</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=nx>db</span><span class=p>,</span> <span class=nx>uri</span><span class=p>,</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Errorf</span><span class=p>(</span><span class=s>&#34;failed to establish database connection: %v&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=nx>db</span><span class=p>,</span> <span class=nx>uri</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Now that we have the <code>mongo.Database</code>, we can create the <code>Repository</code> and then we can create the <code>PostsController</code>.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;github.com/labstack/echo/v4&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;github.com/ocakhasan/mongoapi/internal/controllers&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;github.com/ocakhasan/mongoapi/internal/repository&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;github.com/ocakhasan/mongoapi/pkg/router&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>InitializeTestRouter</span><span class=p>()</span> <span class=o>*</span><span class=nx>echo</span><span class=p>.</span><span class=nx>Echo</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>postgreRepo</span> <span class=o>:=</span> <span class=nx>repository</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=nx>testDbInstance</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>userController</span> <span class=o>:=</span> <span class=nx>controllers</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=nx>postgreRepo</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=nx>router</span><span class=p>.</span><span class=nf>Initialize</span><span class=p>(</span><span class=nx>userController</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Now we have the router and we can test the endpoints.</p><h3 id=apitest-package>apitest package</h3><p>You can create the tests with <code>net/http</code> package but it will create a lot of boilerplate code. There is a package called <a href=https://github.com/steinfletcher/apitest target=_blank rel="noopener noreffer">apitest</a>.</p><p>It has a lot of easy features such as</p><ul><li>reading body from a file</li><li>easily check the response status code</li><li>checking body from a file</li><li>and so on&mldr;</li></ul><p>One of the endpoints is to create books for given author.</p><p>Here is an example request and response from the server.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>curl --location <span class=s1>&#39;http://localhost:3030/api/book&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>--header <span class=s1>&#39;Content-Type: application/json&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>--data <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;book_name&#34;: &#34;The Idiot&#34;,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;author_id&#34;: &#34;654e619760034d917aa0ae64&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Response</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>{
+</span></span><span class=line><span class=cl>    &#34;book&#34;: {
+</span></span><span class=line><span class=cl>        &#34;title&#34;: &#34;The Idiot&#34;,
+</span></span><span class=line><span class=cl>        &#34;author&#34;: {
+</span></span><span class=line><span class=cl>            &#34;id&#34;: &#34;654e619760034d917aa0ae64&#34;,
+</span></span><span class=line><span class=cl>            &#34;name&#34;: &#34;Marcus Aurelius&#34;
+</span></span><span class=line><span class=cl>        },
+</span></span><span class=line><span class=cl>        &#34;likes&#34;: 0
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><p>As we can see the book is created and returned from the response.</p><p>To test this endpoint end2end way you need to pass the correct body, expected response and expected response status code.</p><p>I already created the json files for you</p><ul><li>request body: <a href=https://github.com/ocakhasan/golang-mongo-rest-api/blob/main/internal/controllers/integration_test/requests/create_book_success.json target=_blank rel="noopener noreffer">https://github.com/ocakhasan/golang-mongo-rest-api/blob/main/internal/controllers/integration_test/requests/create_book_success.json</a></li><li>response body: <a href=https://github.com/ocakhasan/golang-mongo-rest-api/blob/main/internal/controllers/integration_test/responses/create_book_response.json target=_blank rel="noopener noreffer">https://github.com/ocakhasan/golang-mongo-rest-api/blob/main/internal/controllers/integration_test/responses/create_book_response.json</a></li></ul><p>Let&rsquo;s write the test function</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=k>func</span> <span class=n>TestCreatePostSuccess</span><span class=p>(</span><span class=n>t</span> <span class=o>*</span><span class=n>testing</span><span class=o>.</span><span class=n>T</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=n>apitest</span><span class=o>.</span><span class=n>New</span><span class=p>()</span><span class=o>.</span>
+</span></span><span class=line><span class=cl>		<span class=n>Handler</span><span class=p>(</span><span class=n>InitializeTestRouter</span><span class=p>())</span><span class=o>.</span>
+</span></span><span class=line><span class=cl>		<span class=n>Post</span><span class=p>(</span><span class=s2>&#34;/api/book&#34;</span><span class=p>)</span><span class=o>.</span>
+</span></span><span class=line><span class=cl>		<span class=n>Header</span><span class=p>(</span><span class=s2>&#34;content-type&#34;</span><span class=p>,</span> <span class=s2>&#34;application/json&#34;</span><span class=p>)</span><span class=o>.</span>
+</span></span><span class=line><span class=cl>		<span class=n>BodyFromFile</span><span class=p>(</span><span class=s2>&#34;requests/create_book_success.json&#34;</span><span class=p>)</span><span class=o>.</span>
+</span></span><span class=line><span class=cl>		<span class=n>Expect</span><span class=p>(</span><span class=n>t</span><span class=p>)</span><span class=o>.</span>
+</span></span><span class=line><span class=cl>		<span class=n>Status</span><span class=p>(</span><span class=n>http</span><span class=o>.</span><span class=n>StatusCreated</span><span class=p>)</span><span class=o>.</span>
+</span></span><span class=line><span class=cl>		<span class=n>BodyFromFile</span><span class=p>(</span><span class=s2>&#34;responses/create_book_response.json&#34;</span><span class=p>)</span><span class=o>.</span>
+</span></span><span class=line><span class=cl>		<span class=n>End</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Let&rsquo;s analyze the commands step by step.</p><ol><li><code>apitest.New()</code>: New creates a new api test. The name is optional and will appear in test reports</li><li><code>Handler(InitializeTestRouter())</code>: initializes the endpoints and their corresponding handlers.</li><li><code>Post("/api/book").</code>: sends a <code>POST</code> request to <code>/api/book</code> endpoint.</li><li><code>Header("content-type", "application/json").</code>: sets the content-type header.</li><li><code>BodyFromFile("requests/create_book_success.json")</code>: reads the body from given file and sets the request body.</li><li><code>Status(http.StatusCreated)</code>: expects the response status code to <code>http.StatusCreated</code>.</li><li><code>BodyFromFile("responses/create_book_response.json")</code>: expects the body to be same as the given file content.</li></ol><p>We send a request with given body and we expect the response to be in a certain format and certain data.</p><p>As we can see it is super easy to setup and test our endpoints.</p><p>Hope you enjoyed the blog. Once again, you may not grasp the whole concept by just looking at the code examples here, please check the <a href=https://github.com/ocakhasan/golang-mongo-rest-api target=_blank rel="noopener noreffer">golang-mongo-rest-api</a>.</p><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p><a href=https://testcontainers.com/ target=_blank rel="noopener noreffer">https://testcontainers.com/</a>&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2><p><a href=https://pkg.go.dev/testing#M target=_blank rel="noopener noreffer">https://pkg.go.dev/testing#M</a>&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2023-11-10</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/golang-mongo-db-rest-api-integration-tests/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://ocakhasan.github.io/golang-mongo-db-rest-api-integration-tests/ data-title="Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB" data-hashtags=golang,mongodb,rest,tests><i class="fab fa-twitter fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://ocakhasan.github.io/golang-mongo-db-rest-api-integration-tests/ data-hashtag=golang><i class="fab fa-facebook-square fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://ocakhasan.github.io/golang-mongo-db-rest-api-integration-tests/ data-title="Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB"><i class="fab fa-hacker-news fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Line" data-sharer=line data-url=https://ocakhasan.github.io/golang-mongo-db-rest-api-integration-tests/ data-title="Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB"><i data-svg-src=/lib/simple-icons/icons/line.min.svg aria-hidden=true></i></a><a href=javascript:void(0); title="Share on 微博" data-sharer=weibo data-url=https://ocakhasan.github.io/golang-mongo-db-rest-api-integration-tests/ data-title="Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB"><i class="fab fa-weibo fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/golang/>golang</a>,&nbsp;<a href=/tags/mongodb/>mongodb</a>,&nbsp;<a href=/tags/rest/>rest</a>,&nbsp;<a href=/tags/tests/>tests</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/expectations/ class=prev rel=prev title="(tr) beklentiler"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>(tr) beklentiler</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.120.4">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2019 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Hasan Ocak</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.css><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/contrib/auto-render.min.js></script><script type=text/javascript src=/lib/katex/contrib/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/contrib/mhchem.min.js></script><script type=text/javascript src=/lib/mermaid/mermaid.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{},data:{"id-1":`classDiagram
+    Author *-- Book
+    Book *-- Comment
+    class Author{
+        +String id
+        +String name
+    }
+    class Book{
+        +String title
+        +Author author
+        +Int likes
+    }
+    class Comment{
+        +String postTitle
+        +Int likes
+        +String comment
+    }`},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-165674239-4",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-165674239-4" async></script></body></html>
