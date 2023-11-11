@@ -330,6 +330,48 @@ I already created the json files for you.
 Let's write the test function
 
 ```go
+package integrationtest
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"testing"
+
+	"github.com/labstack/echo/v4"
+	"github.com/ocakhasan/mongoapi/internal/controllers"
+	"github.com/ocakhasan/mongoapi/internal/repository"
+	"github.com/ocakhasan/mongoapi/pkg/router"
+	"github.com/steinfletcher/apitest"
+	"github.com/steinfletcher/apitest-jsonpath"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+var (
+	testDbInstance *mongo.Database
+)
+
+func TestMain(m *testing.M) {
+	log.Println("setup is running")
+	testDB := SetupTestDatabase()
+	testDbInstance = testDB.DbInstance
+	populateDB()
+	exitVal := m.Run()
+	log.Println("teardown is running")
+	_ = testDB.container.Terminate(context.Background())
+	os.Exit(exitVal)
+}
+
+func InitializeTestRouter() *echo.Echo {
+	postgreRepo := repository.New(testDbInstance)
+
+	userController := controllers.New(postgreRepo)
+
+	return router.Initialize(userController)
+}
+
 func TestCreatePostSuccess(t *testing.T) {
 	apitest.New().
 		Handler(InitializeTestRouter()).
