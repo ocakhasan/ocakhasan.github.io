@@ -217,6 +217,22 @@ func InitializeTestRouter() *echo.Echo {
 }
 ```
 
+Let's also check the `router.Initialize()` to see which endpoints there are.
+
+```go
+func Initialize(controller *controllers.PostsController) *echo.Echo {
+	e := echo.New()
+
+	api := e.Group("/api")
+
+	api.GET("/books", controller.GetBooksWithComments())
+	api.POST("/book", controller.CreateBook())
+	api.GET("/author/:id/books", controller.GetAuthorBooksWithComments())
+
+	return e
+}
+```
+
 Now we have the router and we can test the endpoints.
 
 ### apitest package
@@ -230,7 +246,56 @@ It has a lot of easy features such as
 - checking body from a file
 - and so on...
 
-One of the endpoints is to create books for given author.
+One of the endpoints is to create books for given author. Let's see the controller code for context on what it is doing.
+
+```go
+func (u PostsController) CreateBook() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		req := new(CreateBookRequest)
+
+		if err := c.Bind(&req); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{
+				"err": err.Error(),
+			})
+		}
+
+		objId, err := primitive.ObjectIDFromHex(req.AuthorId)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{
+				"err": err.Error(),
+			})
+		}
+
+		author, err := u.repo.GetAuthorById(c.Request().Context(), objId.Hex())
+		if err != nil {
+			if errors.Is(err, mongo.ErrNoDocuments) {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{
+					"err": "author does not exist",
+				})
+			}
+		}
+
+		createdBook, err := u.repo.CreateBook(c.Request().Context(), models.Book{
+			Title:  req.BookName,
+			Author: *author,
+			Likes:  0,
+		})
+
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+				"err": err.Error(),
+			})
+		}
+
+		return c.JSON(http.StatusCreated, map[string]interface{}{
+			"book": createdBook,
+		})
+	}
+}
+```
+
+- it checks if the author exists
+- if author exists, then create the book in the database.
 
 Here is an example request and response from the server.
 
@@ -262,14 +327,14 @@ As we can see the book is created and returned from the response.
 
 To test this endpoint end2end way you need to pass the correct body, expected response and expected response status code.
 
-I already created the json files for you
+I already created the json files for you.
 
 - request body: https://github.com/ocakhasan/golang-mongo-rest-api/blob/main/internal/controllers/integration_test/requests/create_book_success.json
 - response body: https://github.com/ocakhasan/golang-mongo-rest-api/blob/main/internal/controllers/integration_test/responses/create_book_response.json
 
 Let's write the test function
 
-```
+```go
 func TestCreatePostSuccess(t *testing.T) {
 	apitest.New().
 		Handler(InitializeTestRouter()).
