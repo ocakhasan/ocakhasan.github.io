@@ -1,4 +1,4 @@
-# Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB
+# Integration Testing for MongoDB-Backed REST APIs with Golang
 
 
 
