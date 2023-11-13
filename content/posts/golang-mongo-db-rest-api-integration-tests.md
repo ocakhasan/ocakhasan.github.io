@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Writing Integration Tests, A Comprehensive Guide for REST API with MongoDB
+title: Integration Testing for MongoDB-Backed REST APIs with Golang 
 summary: Let's write a real integration tests for a golang rest api. 
 date: 2023-11-10
 tags: [golang, mongodb, rest, tests]
