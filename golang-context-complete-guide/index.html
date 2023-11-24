@@ -1,0 +1,463 @@
+<!doctype html><html lang=tr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Golang Context Guide in Concurrent Programs - Hasan Ocak Tech Blog</title><meta name=Description content="Çeşitli konulardan bahseden bir tech blog"><meta property="og:title" content="Golang Context Guide in Concurrent Programs">
+<meta property="og:description" content="Let&rsquo;s check how to use context effectively in concurrency."><meta property="og:type" content="article"><meta property="og:url" content="https://ocakhasan.github.io/golang-context-complete-guide/"><meta property="og:image" content="https://ocakhasan.github.io/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-11-24T00:00:00+00:00"><meta property="article:modified_time" content="2023-11-24T21:32:45+03:00"><meta property="og:site_name" content="Hasan Ocak Tech Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://ocakhasan.github.io/logo.png"><meta name=twitter:title content="Golang Context Guide in Concurrent Programs"><meta name=twitter:description content="Let&rsquo;s check how to use context effectively in concurrency."><meta name=application-name content="Hasan Ocak Tech Blog"><meta name=apple-mobile-web-app-title content="Hasan Ocak Tech Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://ocakhasan.github.io/golang-context-complete-guide/><link rel=prev href=https://ocakhasan.github.io/golang-mongo-db-rest-api-integration-tests/><link rel=stylesheet href=/css/style.min.css><link rel=preload href=/lib/fontawesome-free/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.css></noscript><link rel=preload href=/lib/animate/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><meta name=google-site-verification content="6FsPs8qV_9zEnPMWf3bEQwRJFU2Q9imUdyZqX_99So4"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Golang Context Guide in Concurrent Programs","inLanguage":"tr","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/ocakhasan.github.io\/golang-context-complete-guide\/"},"genre":"posts","keywords":"golang, concurrency","wordcount":2105,"url":"https:\/\/ocakhasan.github.io\/golang-context-complete-guide\/","datePublished":"2023-11-24T00:00:00+00:00","dateModified":"2023-11-24T21:32:45+03:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"Hasan Ocak"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/about>About </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i>
+</span></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/about title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class="toc-content always-active" id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Golang Context Guide in Concurrent Programs</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>Hasan Ocak</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2023-11-24>2023-11-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;2105 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;10 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#context-package>Context Package</a></li><li><a href=#demo-showcase-of-the-concurrency>Demo Showcase of the Concurrency</a><ul><li><a href=#explanation-of-the-demo>Explanation of the Demo</a></li><li><a href=#channel-close-case>Channel Close Case</a></li></ul></li><li><a href=#references>REFERENCES</a></li></ul></nav></div></div><div class=content id=content><p>Concurrent programming in Go can be a bit like juggling—keeping many tasks in the air at once. The <code>context</code> package in Go acts as your trusty assistant, helping you manage this juggling act with finesse.</p><p>In this blog post, we&rsquo;re going to unravel the secrets of the <code>context</code> package. It&rsquo;s your toolkit for handling tricky situations in concurrent programs, such as canceling tasks, setting deadlines, and smoothly passing information between different parts of your code.</p><p>Think of it as your guide to becoming a concurrency maestro in Go. We&rsquo;ll start with the basics, explore how to use the context package in real-life scenarios, and wrap up with tips to keep your concurrent programs running smoothly.</p><h2 id=context-package>Context Package</h2><p>Let&rsquo;s have a look at the code for the <code>context</code> package.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// A Context carries a deadline, a cancellation signal, and other values across
+</span></span></span><span class=line><span class=cl><span class=c1>// API boundaries.
+</span></span></span><span class=line><span class=cl><span class=c1>//
+</span></span></span><span class=line><span class=cl><span class=c1>// Context&#39;s methods may be called by multiple goroutines simultaneously.
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>type</span> <span class=nx>Context</span> <span class=kd>interface</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=c1>// Deadline returns the time when work done on behalf of this context
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// should be canceled. Deadline returns ok==false when no deadline is
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// set. Successive calls to Deadline return the same results.
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nf>Deadline</span><span class=p>()</span> <span class=p>(</span><span class=nx>deadline</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Time</span><span class=p>,</span> <span class=nx>ok</span> <span class=kt>bool</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=c1>// Done returns a channel that&#39;s closed when work done on behalf of this
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// context should be canceled. Done may return nil if this context can
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// never be canceled. Successive calls to Done return the same value.
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// The close of the Done channel may happen asynchronously,
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// after the cancel function returns.
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nf>Done</span><span class=p>()</span> <span class=o>&lt;-</span><span class=kd>chan</span> <span class=kd>struct</span><span class=p>{}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=c1>// If Done is not yet closed, Err returns nil.
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// If Done is closed, Err returns a non-nil error explaining why:
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// Canceled if the context was canceled
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// or DeadlineExceeded if the context&#39;s deadline passed.
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// After Err returns a non-nil error, successive calls to Err return the same error.
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nf>Err</span><span class=p>()</span> <span class=kt>error</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// Value returns the value associated with this context for key, or nil
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// if no value is associated with key. Successive calls to Value with
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>// the same key returns the same result.
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nf>Value</span><span class=p>(</span><span class=nx>key</span> <span class=nx>any</span><span class=p>)</span> <span class=nx>any</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>It is quite simple and we will be mostly using the <code>Done() &lt;- chan struct{}</code> function.</p><p>Let&rsquo;s have a look at the functions provided by the <code>context</code> package that we will use.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// WithCancel returns a copy of parent with a new Done channel. The returned
+</span></span></span><span class=line><span class=cl><span class=c1>// context&#39;s Done channel is closed when the returned cancel function is called
+</span></span></span><span class=line><span class=cl><span class=c1>// or when the parent context&#39;s Done channel is closed, whichever happens first.
+</span></span></span><span class=line><span class=cl><span class=c1>//
+</span></span></span><span class=line><span class=cl><span class=c1>// Canceling this context releases resources associated with it, so code should
+</span></span></span><span class=line><span class=cl><span class=c1>// call cancel as soon as the operations running in this Context complete.
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>func</span> <span class=nf>WithCancel</span><span class=p>(</span><span class=nx>parent</span> <span class=nx>Context</span><span class=p>)</span> <span class=p>(</span><span class=nx>ctx</span> <span class=nx>Context</span><span class=p>,</span> <span class=nx>cancel</span> <span class=nx>CancelFunc</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// WithDeadline returns a copy of the parent context with the deadline adjusted
+</span></span></span><span class=line><span class=cl><span class=c1>// to be no later than d. If the parent&#39;s deadline is already earlier than d,
+</span></span></span><span class=line><span class=cl><span class=c1>// WithDeadline(parent, d) is semantically equivalent to parent. The returned
+</span></span></span><span class=line><span class=cl><span class=c1>// [Context.Done] channel is closed when the deadline expires, when the returned
+</span></span></span><span class=line><span class=cl><span class=c1>// cancel function is called, or when the parent context&#39;s Done channel is
+</span></span></span><span class=line><span class=cl><span class=c1>// closed, whichever happens first.
+</span></span></span><span class=line><span class=cl><span class=c1>//
+</span></span></span><span class=line><span class=cl><span class=c1>// Canceling this context releases resources associated with it, so code should
+</span></span></span><span class=line><span class=cl><span class=c1>// call cancel as soon as the operations running in this [Context] complete.
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>func</span> <span class=nf>WithDeadline</span><span class=p>(</span><span class=nx>parent</span> <span class=nx>Context</span><span class=p>,</span> <span class=nx>deadline</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Time</span><span class=p>)</span> <span class=p>(</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>CancelFunc</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// WithTimeout returns WithDeadline(parent, time.Now().Add(timeout)).
+</span></span></span><span class=line><span class=cl><span class=c1>//
+</span></span></span><span class=line><span class=cl><span class=c1>// Canceling this context releases resources associated with it, so code should
+</span></span></span><span class=line><span class=cl><span class=c1>// call cancel as soon as the operations running in this [Context] complete:
+</span></span></span><span class=line><span class=cl><span class=c1>//
+</span></span></span><span class=line><span class=cl><span class=c1>//	func slowOperationWithTimeout(ctx context.Context) (Result, error) {
+</span></span></span><span class=line><span class=cl><span class=c1>//		ctx, cancel := context.WithTimeout(ctx, 100*time.Millisecond)
+</span></span></span><span class=line><span class=cl><span class=c1>//		defer cancel()  // releases resources if slowOperation completes before timeout elapses
+</span></span></span><span class=line><span class=cl><span class=c1>//		return slowOperation(ctx)
+</span></span></span><span class=line><span class=cl><span class=c1>//	}
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>func</span> <span class=nf>WithTimeout</span><span class=p>(</span><span class=nx>parent</span> <span class=nx>Context</span><span class=p>,</span> <span class=nx>timeout</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Duration</span><span class=p>)</span> <span class=p>(</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>CancelFunc</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>In most of the times these 3 functions are used and I will be giving examples on how to use them effectively.</p><h2 id=demo-showcase-of-the-concurrency>Demo Showcase of the Concurrency</h2><p>We will write some pseudo-code first to understand the flow, then implement it in golang.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>- channel is declared
+</span></span><span class=line><span class=cl>- some goroutine(s) is writing into the channel
+</span></span><span class=line><span class=cl>- some goroutines(s) are listening from channel in parallel and process the messages
+</span></span><span class=line><span class=cl>- wait for the listeners to finish the processing and exit the program
+</span></span></code></pre></td></tr></table></div></div><p>For our example, we will be having 2 goroutines listening to a channel and the main goroutine writing into the channel.</p><p>A simple program is with 2 second timeout can be written as</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span> <span class=nx>main</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;context&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;log&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;sync&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;time&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>ctx</span><span class=p>,</span> <span class=nx>cancel</span> <span class=o>:=</span> <span class=nx>context</span><span class=p>.</span><span class=nf>WithTimeout</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=mi>2</span><span class=o>*</span><span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>defer</span> <span class=nf>cancel</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>dataChannel</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>int</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>j</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>j</span> <span class=p>&lt;</span> <span class=mi>2</span><span class=p>;</span> <span class=nx>j</span><span class=o>++</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>go</span> <span class=kd>func</span><span class=p>(</span><span class=nx>i</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nf>worker</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>dataChannel</span><span class=p>,</span> <span class=nx>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>		<span class=p>}(</span><span class=nx>j</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>i</span> <span class=o>:=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>i</span> <span class=p>&lt;</span> <span class=mi>5</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>dataChannel</span> <span class=o>&lt;-</span> <span class=nx>i</span>
+</span></span><span class=line><span class=cl>		<span class=nx>i</span><span class=o>++</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>worker</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>ch</span> <span class=kd>chan</span> <span class=kt>int</span><span class=p>,</span> <span class=nx>number</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>select</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>case</span> <span class=o>&lt;-</span><span class=nx>ctx</span><span class=p>.</span><span class=nf>Done</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>			<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;context canceled, exiting for worker number %d\n&#34;</span><span class=p>,</span> <span class=nx>number</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=k>return</span>
+</span></span><span class=line><span class=cl>		<span class=k>case</span> <span class=nx>i</span><span class=p>,</span> <span class=nx>ok</span> <span class=o>:=</span> <span class=o>&lt;-</span><span class=nx>ch</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>			<span class=c1>// It means channel is closed
+</span></span></span><span class=line><span class=cl><span class=c1></span>			<span class=k>if</span> <span class=p>!</span><span class=nx>ok</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;channel is closed, exiting worker %d\n&#34;</span><span class=p>,</span> <span class=nx>number</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>				<span class=k>return</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;worker: %d: read %v from channel\n&#34;</span><span class=p>,</span> <span class=nx>number</span><span class=p>,</span> <span class=nx>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=explanation-of-the-demo>Explanation of the Demo</h3><p>Let&rsquo;s split the code and explain what each part is doing.</p><ol><li></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// ...
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>cancel</span> <span class=o>:=</span> <span class=nx>context</span><span class=p>.</span><span class=nf>WithTimeout</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=mi>2</span><span class=o>*</span><span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>defer</span> <span class=nf>cancel</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>dataChannel</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>int</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1>// ...
+</span></span></span></code></pre></td></tr></table></div></div><p>We are initializing the context variable with 2 second timeout. So if our program is taking more than 2 second, we want the
+program to exit it and inform the sub-goroutines about it.</p><p>Calling <code>defer cancel()</code> releases resources if the program completes before 2 second.</p><p>In the last line, we are creating the channel which will be the main communication system for our program.</p><ol start=2><li></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// ...
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>j</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>j</span> <span class=p>&lt;</span> <span class=mi>2</span><span class=p>;</span> <span class=nx>j</span><span class=o>++</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>go</span> <span class=kd>func</span><span class=p>(</span><span class=nx>i</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nf>worker</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>dataChannel</span><span class=p>,</span> <span class=nx>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>		<span class=p>}(</span><span class=nx>j</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// ...
+</span></span></span></code></pre></td></tr></table></div></div><p>This line of code initializes a waitgroup and runs the goroutines in the background. <code>sync.WaitGroup</code> is used to make sure that we are waiting for
+goroutines to finish the processing so we can exit the code.</p><ol start=3><li></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// ...
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nx>i</span> <span class=o>:=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>i</span> <span class=p>&lt;</span> <span class=mi>5</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>dataChannel</span> <span class=o>&lt;-</span> <span class=nx>i</span>
+</span></span><span class=line><span class=cl>		<span class=nx>i</span><span class=o>++</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=c1>// ..
+</span></span></span></code></pre></td></tr></table></div></div><p>In this lines of code we are writing simple numbers to the channel, so the goroutines has something to read.</p><p>In the last line, we are waiting on the <code>sync.WaitGroup</code> which means we are waiting goroutines to finish.
+4.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=nf>worker</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>ch</span> <span class=kd>chan</span> <span class=kt>int</span><span class=p>,</span> <span class=nx>number</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>select</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>case</span> <span class=o>&lt;-</span><span class=nx>ctx</span><span class=p>.</span><span class=nf>Done</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>			<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;context canceled, exiting for worker number %d\n&#34;</span><span class=p>,</span> <span class=nx>number</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=k>return</span>
+</span></span><span class=line><span class=cl>		<span class=k>case</span> <span class=nx>i</span><span class=p>,</span> <span class=nx>ok</span> <span class=o>:=</span> <span class=o>&lt;-</span><span class=nx>ch</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>			<span class=c1>// It means channel is closed
+</span></span></span><span class=line><span class=cl><span class=c1></span>			<span class=k>if</span> <span class=p>!</span><span class=nx>ok</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;channel is closed, exiting worker %d\n&#34;</span><span class=p>,</span> <span class=nx>number</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>				<span class=k>return</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;worker: %d: read %v from channel\n&#34;</span><span class=p>,</span> <span class=nx>number</span><span class=p>,</span> <span class=nx>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>worker function takes the context parameter and the data channel.</p><ul><li>ctx is passed to check if the context is canceled or not.<ul><li>if the context is canceled, the goroutine will exit which is the wanted behaviour of the code.</li></ul></li><li>channel is passed to read the data from the main goroutine<ul><li>if the channel is closed, it means that there are no data to read from so we can exit.</li></ul></li></ul><p>When you run the code, here is what is going to happen:</p><ol><li>The goroutines will start to listen the channel.</li><li>The main goroutine will write to the channel.</li><li>Goroutines will receive some values from the channel and print some stuff.</li><li>When the 2 second passes, the context will be canceled which means that the goroutines will also exit and the waitgroup value will be 0.</li><li>the program will exit.</li></ol><p>Let&rsquo;s run the code and see the output.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>go run main.go
+</span></span></code></pre></td></tr></table></div></div><p>output</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>2023/11/24 21:15:27 worker: 1: read 0 from channel
+</span></span><span class=line><span class=cl>2023/11/24 21:15:27 worker: 1: read 2 from channel
+</span></span><span class=line><span class=cl>2023/11/24 21:15:27 worker: 0: read 1 from channel
+</span></span><span class=line><span class=cl>2023/11/24 21:15:27 worker: 0: read 4 from channel
+</span></span><span class=line><span class=cl>2023/11/24 21:15:27 worker: 1: read 3 from channel
+</span></span><span class=line><span class=cl>2023/11/24 21:15:29 context canceled, exiting for worker number 0
+</span></span><span class=line><span class=cl>2023/11/24 21:15:29 context canceled, exiting for worker number 1
+</span></span></code></pre></td></tr></table></div></div><p>As we can see from the output, the goroutines read some values from the channel, then waited for the context to cancel.
+When the context is canceled, it is the end time for the goroutines, so they exit, which also results in the main program exit.</p><p>From the times of the logs, we can see that the program took nearly 2 seconds to finish.</p><h3 id=channel-close-case>Channel Close Case</h3><p>Let&rsquo;s say before the timeout, the channel is closed by the main goroutine which can mean</p><ul><li>we wrote all of the data we want to process into the channel, it is time to go.</li><li>we processed all of the messages from the channel before the timeout, which is exactly what is wanted in real world case,
+the program should finish before the timeout value.</li></ul><p>The goroutines should process all of the messages and exit when the channel is closed.</p><p>So, let&rsquo;s modify our code to close the channel when there is no data to write to channel.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=hl><span class=lnt>31
+</span></span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span> <span class=nx>main</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;context&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;log&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;sync&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;time&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>ctx</span><span class=p>,</span> <span class=nx>cancel</span> <span class=o>:=</span> <span class=nx>context</span><span class=p>.</span><span class=nf>WithTimeout</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=mi>2</span><span class=o>*</span><span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>defer</span> <span class=nf>cancel</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>dataChannel</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>int</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>j</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>j</span> <span class=p>&lt;</span> <span class=mi>2</span><span class=p>;</span> <span class=nx>j</span><span class=o>++</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>go</span> <span class=kd>func</span><span class=p>(</span><span class=nx>i</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nf>worker</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>dataChannel</span><span class=p>,</span> <span class=nx>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>		<span class=p>}(</span><span class=nx>j</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>i</span> <span class=o>:=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=nx>i</span> <span class=p>&lt;</span> <span class=mi>5</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>dataChannel</span> <span class=o>&lt;-</span> <span class=nx>i</span>
+</span></span><span class=line><span class=cl>		<span class=nx>i</span><span class=o>++</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class="line hl"><span class=cl>	<span class=nb>close</span><span class=p>(</span><span class=nx>dataChannel</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>wg</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>worker</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>ch</span> <span class=kd>chan</span> <span class=kt>int</span><span class=p>,</span> <span class=nx>number</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>select</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>case</span> <span class=o>&lt;-</span><span class=nx>ctx</span><span class=p>.</span><span class=nf>Done</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>			<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;context canceled, exiting for worker number %d\n&#34;</span><span class=p>,</span> <span class=nx>number</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=k>return</span>
+</span></span><span class=line><span class=cl>		<span class=k>case</span> <span class=nx>i</span><span class=p>,</span> <span class=nx>ok</span> <span class=o>:=</span> <span class=o>&lt;-</span><span class=nx>ch</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>			<span class=c1>// It means channel is closed
+</span></span></span><span class=line><span class=cl><span class=c1></span>			<span class=k>if</span> <span class=p>!</span><span class=nx>ok</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;channel is closed, exiting worker %d\n&#34;</span><span class=p>,</span> <span class=nx>number</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>				<span class=k>return</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;worker: %d: read %v from channel\n&#34;</span><span class=p>,</span> <span class=nx>number</span><span class=p>,</span> <span class=nx>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span></span></span></code></pre></td></tr></table></div></div><p>At line 31, we are closing the channel.</p><p>Now let&rsquo;s run the code again and see the output</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>&gt; go run main.go
+</span></span></code></pre></td></tr></table></div></div><p>Output</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>2023/11/24 21:21:07 worker: 1: read 0 from channel
+</span></span><span class=line><span class=cl>2023/11/24 21:21:07 worker: 1: read 2 from channel
+</span></span><span class=line><span class=cl>2023/11/24 21:21:07 worker: 1: read 3 from channel
+</span></span><span class=line><span class=cl>2023/11/24 21:21:07 worker: 1: read 4 from channel
+</span></span><span class=line><span class=cl>2023/11/24 21:21:07 channel is closed, exiting worker 1
+</span></span><span class=line><span class=cl>2023/11/24 21:21:07 worker: 0: read 1 from channel
+</span></span><span class=line><span class=cl>2023/11/24 21:21:07 channel is closed, exiting worker 0
+</span></span></code></pre></td></tr></table></div></div><p>What we see from the output is that whenever the channel is closed, the worker exits and the program finishes.</p><p>You can see from the log times that program exited really quickly before the 2 second timeout of the context, there was no chance for the context to cancel.</p><p>Our program is safe by checking</p><ol><li>context cancellation</li><li>channel close check</li></ol><p>There are 2 conditions we want our program to finish</p><ol><li>either process all of the data and exit</li><li>or exit after the timeout.</li></ol><p>In golang, the best practice for goroutines is to know when they should exit and passing <code>context.Context</code> and checking if it is cancelled is one of
+the best way to handle the goroutines.</p><p>In this example we used the <code>context.Timeout</code> but there are other options as we defined in the <a href=#context-package rel>Context Package Section</a>.</p><p>You can use</p><ul><li><a href=https://pkg.go.dev/context#WithCancel target=_blank rel="noopener noreffer">context.WithCancel</a> and manually cancel the context whenever you want to.</li><li><a href=https://pkg.go.dev/context#WithDeadline target=_blank rel="noopener noreffer">context.WithDeadline</a> and set a deadline for your program to finish.</li></ul><p>I hope this blog helped you understand how to use context to propagate the program exit to the sub-goroutines.</p><p>Any feedback is appreciated.</p><h2 id=references>REFERENCES</h2><ul><li><a href=https://pkg.go.dev/context target=_blank rel="noopener noreffer">pkg.go.dev/context</a></li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2023-11-24</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/golang-context-complete-guide/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://ocakhasan.github.io/golang-context-complete-guide/ data-title="Golang Context Guide in Concurrent Programs" data-hashtags=golang,concurrency><i class="fab fa-twitter fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://ocakhasan.github.io/golang-context-complete-guide/ data-hashtag=golang><i class="fab fa-facebook-square fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://ocakhasan.github.io/golang-context-complete-guide/ data-title="Golang Context Guide in Concurrent Programs"><i class="fab fa-hacker-news fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Line" data-sharer=line data-url=https://ocakhasan.github.io/golang-context-complete-guide/ data-title="Golang Context Guide in Concurrent Programs"><i data-svg-src=/lib/simple-icons/icons/line.min.svg aria-hidden=true></i></a><a href=javascript:void(0); title="Share on 微博" data-sharer=weibo data-url=https://ocakhasan.github.io/golang-context-complete-guide/ data-title="Golang Context Guide in Concurrent Programs"><i class="fab fa-weibo fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/golang/>golang</a>,&nbsp;<a href=/tags/concurrency/>concurrency</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/golang-mongo-db-rest-api-integration-tests/ class=prev rel=prev title="Integration Testing for MongoDB-Backed REST APIs with Golang"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>Integration Testing for MongoDB-Backed REST APIs with Golang</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.120.4">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2019 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Hasan Ocak</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.css><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/contrib/auto-render.min.js></script><script type=text/javascript src=/lib/katex/contrib/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/contrib/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-165674239-4",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-165674239-4" async></script></body></html>
