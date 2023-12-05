@@ -84,7 +84,6 @@ Askerdeyken bu kitabı okurken *Bilişsel Mesafe Koyma* yöntemi çok mantıklı
 - Daha çok insanla tanışmaya çalıştım, güzel insanlarla tanıştım ve artık gün saymayı bıraktım. Sadece şu tarihte eve döneceğim diyordum.
 - Hatta bir ara askerlik çok keyifli gelmeye başladı ancak bu his kısa sürdü tabii ki 
 
-Kısa süren askerlik bile başlarda çok bıktırsa da sonradan çok rahat bir şekilde devam ettirebildim. Askerde bol bol düşünme zamanınız olduğu için aklınıza takılan herhangi bir sıkıntıyı iyice düşünme fırsatınız oluyor. Bazı kişisel konular ilk başlarda beni çok üzmeye, germeye başladı ancak daha sonra aslında bana acı veren konuların o kadar da sıkıntı şeyler olmadığını gördüm ve biraz da olsa rahatladım diyebilirim.
 
 Dediğim gibi hala bu konu üzerinde çalışıyorum. İleride bu terimi daha iyi entegre edebildiğimi görürsem bu yazıyı güncelleyeceğim. :handshake:
 
