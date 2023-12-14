@@ -15,7 +15,7 @@ Let's see if I will be able to achieve my goals.
 
 **Here is the list**
 
-- [] Read More Books (at least 25)
+- [ ] Read More Books (at least 25)
 - [ ] Do more exercise
   - [ ] 10000 pushups
   - [x] start to run regularly
