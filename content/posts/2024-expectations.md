@@ -4,6 +4,7 @@ title: (tr) 2023 özet & 2024 beklentileri
 summary: Yeni yılda neler yapmayı hedefliyorum. 
 date: 2023-12-14
 tags: [life, thoughts]
+draft: true
 ---
 
 ## 2023 özet
