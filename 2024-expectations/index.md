@@ -3,7 +3,7 @@
 
 ## 2023 özet
 
-2023 yılı bitmek üzereyken bu sene neler yaptım diye bir bakalım. Geçen sene bu zamanlar ufak bir [yazı](https://ocakhasan.github.io/my-goals-for-2023/) yazmıştım, bakınca biraz garip geldi ama kısa ve net hedefler koymuşum. bu sefer öyle yapmayacağım.
+2023 yılının son gününde bu sene neler yaptım diye bir bakalım. Geçen sene bu zamanlar ufak bir [yazı](https://ocakhasan.github.io/my-goals-for-2023/) yazmıştım, bakınca biraz garip geldi ama kısa ve net hedefler koymuşum. bu sefer öyle yapmayacağım.
 
 2023 bence benim için verimli bir yıldı. Verimlilik açısından aşağıdaki maddeleri yazabilirim.
 
