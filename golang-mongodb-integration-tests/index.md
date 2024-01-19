@@ -469,6 +469,16 @@ In the second test, first we create a book to ensure that there is some data to 
 
 In the first test, random id is tried to be fetched and it returned an error `mongo.ErrNoDocuments` which states that there is no record for given filter in this collection.
 
+In the end we need to provide something like this for `go test` to catch.
+
+```go
+// In order for 'go test' to run this suite, we need to create
+// a normal test function and pass our suite to suite.Run
+func TestExampleTestSuite(t *testing.T) {
+	suite.Run(t, new(RepositorySuite))
+}
+```
+
 
 To run the tests, you just need to run
 
