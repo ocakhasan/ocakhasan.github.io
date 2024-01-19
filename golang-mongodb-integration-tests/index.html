@@ -1,0 +1,672 @@
+<!doctype html><html lang=tr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Write Integration Tests For Mongo With Golang - Hasan Ocak Tech Blog</title><meta name=Description content="Çeşitli konulardan bahseden bir tech blog"><meta property="og:title" content="Write Integration Tests For Mongo With Golang">
+<meta property="og:description" content="let&rsquo;s write some integration tests for mongodb with golang."><meta property="og:type" content="article"><meta property="og:url" content="https://ocakhasan.github.io/golang-mongodb-integration-tests/"><meta property="og:image" content="https://ocakhasan.github.io/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-01-19T00:00:00+00:00"><meta property="article:modified_time" content="2024-01-19T21:34:17+03:00"><meta property="og:site_name" content="Hasan Ocak Tech Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://ocakhasan.github.io/logo.png"><meta name=twitter:title content="Write Integration Tests For Mongo With Golang"><meta name=twitter:description content="let&rsquo;s write some integration tests for mongodb with golang."><meta name=application-name content="Hasan Ocak Tech Blog"><meta name=apple-mobile-web-app-title content="Hasan Ocak Tech Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://ocakhasan.github.io/golang-mongodb-integration-tests/><link rel=prev href=https://ocakhasan.github.io/2024-expectations/><link rel=stylesheet href=/css/style.min.css><link rel=preload href=/lib/fontawesome-free/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.css></noscript><link rel=preload href=/lib/animate/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><meta name=google-site-verification content="6FsPs8qV_9zEnPMWf3bEQwRJFU2Q9imUdyZqX_99So4"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Write Integration Tests For Mongo With Golang","inLanguage":"tr","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/ocakhasan.github.io\/golang-mongodb-integration-tests\/"},"genre":"posts","keywords":"golang, mongodb, tests","wordcount":2057,"url":"https:\/\/ocakhasan.github.io\/golang-mongodb-integration-tests\/","datePublished":"2024-01-19T00:00:00+00:00","dateModified":"2024-01-19T21:34:17+03:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"Hasan Ocak"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/about>About </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i>
+</span></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Hasan Ocak Tech Blog">Hasan Ocak</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/about title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class="toc-content always-active" id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Write Integration Tests For Mongo With Golang</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>Hasan Ocak</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2024-01-19>2024-01-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;2057 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;10 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#prequisites>PREQUISITES</a></li><li><a href=#code>Code</a><ul><li><a href=#model>Model</a></li><li><a href=#repository>Repository</a></li><li><a href=#mongo-database>MONGO DATABASE</a></li><li><a href=#test-containers-setup>TEST CONTAINERS SETUP</a></li><li><a href=#tests>TESTS</a></li></ul></li><li><a href=#references>REFERENCES</a></li></ul></nav></div></div><div class=content id=content><p>In most of today&rsquo;s services, there is almost always a data storage to store some data. This could be some relational databases such as <code>MySQL</code> or some document database such
+as <code>MongoDB</code>. In this blog I will show how to write some tests for MongoDB.</p><p>All of the code can be received in <a href=https://github.com/ocakhasan/golang-mongo-integration-test target=_blank rel="noopener noreffer">ocakhasan/golang-mongo-integration-tests</a></p><p>If you would like to learn more about how to use <code>MongoDB</code> with <code>golang</code>, please check</p><ol><li><a href=https://ocakhasan.github.io/golang-mongodb-query-examples/ target=_blank rel="noopener noreffer">Golang & MongoDB Query Cheat Sheet</a></li><li><a href=https://ocakhasan.github.io/golang-mongo-db-rest-api-integration-tests/ target=_blank rel="noopener noreffer">Integration Testing for MongoDB-Backed REST APIs with Golang</a></li></ol><h2 id=prequisites>PREQUISITES</h2><p>You need to have <code>Docker</code> installed in your system since this project requires <a href=https://testcontainers.com/ target=_blank rel="noopener noreffer">testcontainers</a>.</p><p>We are going to use the <a href=https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo target=_blank rel="noopener noreffer">Official SDK</a> provided by the MongoDB corporation.</p><p>We are going to use <a href=https://pkg.go.dev/github.com/stretchr/testify/suite target=_blank rel="noopener noreffer">testify/suite</a> to setup and teardown tests. This is not a need but it would be feasible to use
+<code>suite.Suite</code> once there are more methods.</p><p>Here are the packages used in this project</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>github.com/stretchr/testify v1.8.4
+</span></span><span class=line><span class=cl>github.com/testcontainers/testcontainers-go v0.27.0
+</span></span><span class=line><span class=cl>go.mongodb.org/mongo-driver v1.13.1
+</span></span></code></pre></td></tr></table></div></div><h2 id=code>Code</h2><p>I think first we should see the methods we are going to test to get the idea.</p><h3 id=model>Model</h3><p>First let&rsquo;s see the database model we are dealing with</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span> <span class=nx>Book</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>ID</span>     <span class=nx>primitive</span><span class=p>.</span><span class=nx>ObjectID</span> <span class=s>`bson:&#34;_id&#34;`</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Author</span> <span class=kt>string</span>             <span class=s>`bson:&#34;author&#34;`</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Title</span>  <span class=kt>string</span>             <span class=s>`bson:&#34;title&#34;`</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Likes</span>  <span class=kt>int</span>                <span class=s>`bson:&#34;likes&#34;`</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=repository>Repository</h3><p>We have an interface called <code>Repository</code> which has all the methods for our project needs.</p><p>To make the blog shorter, I added 2 simple methods just to show the idea.</p><p>Now let&rsquo;s see the <code>Repository</code> interface.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span> <span class=nx>Repository</span> <span class=kd>interface</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nf>CreateBook</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>book</span> <span class=nx>Book</span><span class=p>)</span> <span class=p>(</span><span class=nx>Book</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nf>FindBook</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>id</span> <span class=nx>primitive</span><span class=p>.</span><span class=nx>ObjectID</span><span class=p>)</span> <span class=p>(</span><span class=o>*</span><span class=nx>Book</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>We have a struct named <code>mongoRepository</code> which implements the <code>Repository</code> interface methods.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=nf>NewRepository</span><span class=p>(</span><span class=nx>db</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span><span class=p>)</span> <span class=o>*</span><span class=nx>mongoRepository</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=o>&amp;</span><span class=nx>mongoRepository</span><span class=p>{</span><span class=nx>db</span><span class=p>:</span> <span class=nx>db</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>mongoRepository</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>db</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=p>(</span><span class=nx>m</span> <span class=o>*</span><span class=nx>mongoRepository</span><span class=p>)</span> <span class=nf>CreateBook</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>book</span> <span class=nx>Book</span><span class=p>)</span> <span class=p>(</span><span class=nx>Book</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>book</span><span class=p>.</span><span class=nx>ID</span><span class=p>.</span><span class=nf>IsZero</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>book</span><span class=p>.</span><span class=nx>ID</span> <span class=p>=</span> <span class=nx>primitive</span><span class=p>.</span><span class=nf>NewObjectID</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>_</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>m</span><span class=p>.</span><span class=nx>db</span><span class=p>.</span><span class=nf>Collection</span><span class=p>(</span><span class=s>&#34;books&#34;</span><span class=p>).</span><span class=nf>InsertOne</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>book</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>Book</span><span class=p>{},</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=nx>book</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=p>(</span><span class=nx>m</span> <span class=o>*</span><span class=nx>mongoRepository</span><span class=p>)</span> <span class=nf>FindBook</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>id</span> <span class=nx>primitive</span><span class=p>.</span><span class=nx>ObjectID</span><span class=p>)</span> <span class=p>(</span><span class=o>*</span><span class=nx>Book</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>book</span> <span class=nx>Book</span>
+</span></span><span class=line><span class=cl>	<span class=nx>filter</span> <span class=o>:=</span> <span class=nx>bson</span><span class=p>.</span><span class=nx>M</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;_id&#34;</span><span class=p>:</span> <span class=nx>id</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>m</span><span class=p>.</span><span class=nx>db</span><span class=p>.</span><span class=nf>Collection</span><span class=p>(</span><span class=s>&#34;books&#34;</span><span class=p>).</span><span class=nf>FindOne</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>filter</span><span class=p>).</span><span class=nf>Decode</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>book</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=kc>nil</span><span class=p>,</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&amp;</span><span class=nx>book</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>As we can see, <code>mongoRepository</code> only accepts a client which is <a href=https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo#Database target=_blank rel="noopener noreffer"><code>mongo.Database</code></a>.</p><p>The implementation is super straight forward.</p><h3 id=mongo-database>MONGO DATABASE</h3><p>To be able to meet the needs of the <code>mongoRepository</code> we must create a client.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span> <span class=nx>mongo</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;context&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;time&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;go.mongodb.org/mongo-driver/mongo&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;go.mongodb.org/mongo-driver/mongo/options&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>NewMongoDatabase</span><span class=p>(</span><span class=nx>uri</span> <span class=kt>string</span><span class=p>,</span> <span class=nx>database</span> <span class=kt>string</span><span class=p>)</span> <span class=p>(</span><span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>ctx</span><span class=p>,</span> <span class=nx>cancel</span> <span class=o>:=</span> <span class=nx>context</span><span class=p>.</span><span class=nf>WithTimeout</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=mi>10</span><span class=o>*</span><span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>defer</span> <span class=nf>cancel</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=nx>client</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>mongo</span><span class=p>.</span><span class=nf>Connect</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>options</span><span class=p>.</span><span class=nf>Client</span><span class=p>().</span><span class=nf>ApplyURI</span><span class=p>(</span><span class=nx>uri</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=kc>nil</span><span class=p>,</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>db</span> <span class=o>:=</span> <span class=nx>client</span><span class=p>.</span><span class=nf>Database</span><span class=p>(</span><span class=nx>database</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=nx>db</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=test-containers-setup>TEST CONTAINERS SETUP</h3><p>First we need to create a container to be able to test our needs. Creating a container is quite easy with the followings.</p><p>Let&rsquo;s create a struct called <code>TestDatabase</code> which will have all of our needs to test the functionality.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span> <span class=nx>TestDatabase</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>DbInstance</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span>
+</span></span><span class=line><span class=cl>	<span class=nx>DbAddress</span>  <span class=kt>string</span>
+</span></span><span class=line><span class=cl>	<span class=nx>container</span>  <span class=nx>testcontainers</span><span class=p>.</span><span class=nx>Container</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>We need the <code>*mongo.Database</code> to create the <code>Repository</code> method.</p><p>We need the <code>container</code> to terminate it when the testing is done.</p><p>Now let&rsquo;s create the rest.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=nf>SetupTestDatabase</span><span class=p>()</span> <span class=o>*</span><span class=nx>TestDatabase</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>ctx</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>context</span><span class=p>.</span><span class=nf>WithTimeout</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=o>*</span><span class=mi>60</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>container</span><span class=p>,</span> <span class=nx>dbInstance</span><span class=p>,</span> <span class=nx>dbAddr</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>createMongoContainer</span><span class=p>(</span><span class=nx>ctx</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>log</span><span class=p>.</span><span class=nf>Fatal</span><span class=p>(</span><span class=s>&#34;failed to setup test&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&amp;</span><span class=nx>TestDatabase</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>container</span><span class=p>:</span>  <span class=nx>container</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>DbInstance</span><span class=p>:</span> <span class=nx>dbInstance</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>DbAddress</span><span class=p>:</span>  <span class=nx>dbAddr</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=p>(</span><span class=nx>tdb</span> <span class=o>*</span><span class=nx>TestDatabase</span><span class=p>)</span> <span class=nf>TearDown</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>_</span> <span class=p>=</span> <span class=nx>tdb</span><span class=p>.</span><span class=nx>container</span><span class=p>.</span><span class=nf>Terminate</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>The <code>TearDown</code> method of the <code>TestDatabase</code> will be used after all of the tests run to terminate the container so we free the resources.</p><p>Now let&rsquo;s see how to create the container</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=nf>createMongoContainer</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>)</span> <span class=p>(</span><span class=nx>testcontainers</span><span class=p>.</span><span class=nx>Container</span><span class=p>,</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span><span class=p>,</span> <span class=kt>string</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>env</span> <span class=p>=</span> <span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>string</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;MONGO_INITDB_ROOT_USERNAME&#34;</span><span class=p>:</span> <span class=s>&#34;root&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;MONGO_INITDB_ROOT_PASSWORD&#34;</span><span class=p>:</span> <span class=s>&#34;pass&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;MONGO_INITDB_DATABASE&#34;</span><span class=p>:</span>      <span class=s>&#34;testdb&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>port</span> <span class=p>=</span> <span class=s>&#34;27017/tcp&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>req</span> <span class=o>:=</span> <span class=nx>testcontainers</span><span class=p>.</span><span class=nx>GenericContainerRequest</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>ContainerRequest</span><span class=p>:</span> <span class=nx>testcontainers</span><span class=p>.</span><span class=nx>ContainerRequest</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nx>Image</span><span class=p>:</span>        <span class=s>&#34;mongo&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>			<span class=nx>ExposedPorts</span><span class=p>:</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=nx>port</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>			<span class=nx>Env</span><span class=p>:</span>          <span class=nx>env</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=p>},</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Started</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=nx>container</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>testcontainers</span><span class=p>.</span><span class=nf>GenericContainer</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>req</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=kc>nil</span><span class=p>,</span> <span class=s>&#34;&#34;</span><span class=p>,</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Errorf</span><span class=p>(</span><span class=s>&#34;failed to start container: %v&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>p</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>container</span><span class=p>.</span><span class=nf>MappedPort</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=s>&#34;27017&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=kc>nil</span><span class=p>,</span> <span class=s>&#34;&#34;</span><span class=p>,</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Errorf</span><span class=p>(</span><span class=s>&#34;failed to get container external port: %v&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>log</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;mongo container ready and running at port: &#34;</span><span class=p>,</span> <span class=nx>p</span><span class=p>.</span><span class=nf>Port</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>uri</span> <span class=o>:=</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Sprintf</span><span class=p>(</span><span class=s>&#34;mongodb://root:pass@localhost:%s&#34;</span><span class=p>,</span> <span class=nx>p</span><span class=p>.</span><span class=nf>Port</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>	<span class=nx>db</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>NewMongoDatabase</span><span class=p>(</span><span class=nx>uri</span><span class=p>,</span> <span class=s>&#34;testdb&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=nx>db</span><span class=p>,</span> <span class=nx>uri</span><span class=p>,</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Errorf</span><span class=p>(</span><span class=s>&#34;failed to establish database connection: %v&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=nx>db</span><span class=p>,</span> <span class=nx>uri</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>It can look complex but in reality.</p><ol><li>First you create the container</li><li>Then you get the mapped port from mongo container to your localhost</li><li>Then create the mongo URI to connect the database.</li></ol><p>All of the code can be seen below.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span> <span class=nx>mongo</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;context&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;fmt&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;log&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;time&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;github.com/testcontainers/testcontainers-go&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;go.mongodb.org/mongo-driver/mongo&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>TestDatabase</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>DbInstance</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span>
+</span></span><span class=line><span class=cl>	<span class=nx>DbAddress</span>  <span class=kt>string</span>
+</span></span><span class=line><span class=cl>	<span class=nx>container</span>  <span class=nx>testcontainers</span><span class=p>.</span><span class=nx>Container</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>SetupTestDatabase</span><span class=p>()</span> <span class=o>*</span><span class=nx>TestDatabase</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>ctx</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>context</span><span class=p>.</span><span class=nf>WithTimeout</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=o>*</span><span class=mi>60</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=nx>container</span><span class=p>,</span> <span class=nx>dbInstance</span><span class=p>,</span> <span class=nx>dbAddr</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>createMongoContainer</span><span class=p>(</span><span class=nx>ctx</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>log</span><span class=p>.</span><span class=nf>Fatal</span><span class=p>(</span><span class=s>&#34;failed to setup test&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&amp;</span><span class=nx>TestDatabase</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>container</span><span class=p>:</span>  <span class=nx>container</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>DbInstance</span><span class=p>:</span> <span class=nx>dbInstance</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>DbAddress</span><span class=p>:</span>  <span class=nx>dbAddr</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=p>(</span><span class=nx>tdb</span> <span class=o>*</span><span class=nx>TestDatabase</span><span class=p>)</span> <span class=nf>TearDown</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>_</span> <span class=p>=</span> <span class=nx>tdb</span><span class=p>.</span><span class=nx>container</span><span class=p>.</span><span class=nf>Terminate</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>createMongoContainer</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>)</span> <span class=p>(</span><span class=nx>testcontainers</span><span class=p>.</span><span class=nx>Container</span><span class=p>,</span> <span class=o>*</span><span class=nx>mongo</span><span class=p>.</span><span class=nx>Database</span><span class=p>,</span> <span class=kt>string</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>env</span> <span class=p>=</span> <span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>string</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;MONGO_INITDB_ROOT_USERNAME&#34;</span><span class=p>:</span> <span class=s>&#34;root&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;MONGO_INITDB_ROOT_PASSWORD&#34;</span><span class=p>:</span> <span class=s>&#34;pass&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;MONGO_INITDB_DATABASE&#34;</span><span class=p>:</span>      <span class=s>&#34;testdb&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>port</span> <span class=p>=</span> <span class=s>&#34;27017/tcp&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>req</span> <span class=o>:=</span> <span class=nx>testcontainers</span><span class=p>.</span><span class=nx>GenericContainerRequest</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>ContainerRequest</span><span class=p>:</span> <span class=nx>testcontainers</span><span class=p>.</span><span class=nx>ContainerRequest</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nx>Image</span><span class=p>:</span>        <span class=s>&#34;mongo&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>			<span class=nx>ExposedPorts</span><span class=p>:</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=nx>port</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>			<span class=nx>Env</span><span class=p>:</span>          <span class=nx>env</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=p>},</span>
+</span></span><span class=line><span class=cl>		<span class=nx>Started</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=nx>container</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>testcontainers</span><span class=p>.</span><span class=nf>GenericContainer</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>req</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=kc>nil</span><span class=p>,</span> <span class=s>&#34;&#34;</span><span class=p>,</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Errorf</span><span class=p>(</span><span class=s>&#34;failed to start container: %v&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>p</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>container</span><span class=p>.</span><span class=nf>MappedPort</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=s>&#34;27017&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=kc>nil</span><span class=p>,</span> <span class=s>&#34;&#34;</span><span class=p>,</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Errorf</span><span class=p>(</span><span class=s>&#34;failed to get container external port: %v&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>log</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;mongo container ready and running at port: &#34;</span><span class=p>,</span> <span class=nx>p</span><span class=p>.</span><span class=nf>Port</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>uri</span> <span class=o>:=</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Sprintf</span><span class=p>(</span><span class=s>&#34;mongodb://root:pass@localhost:%s&#34;</span><span class=p>,</span> <span class=nx>p</span><span class=p>.</span><span class=nf>Port</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>	<span class=nx>db</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nf>NewMongoDatabase</span><span class=p>(</span><span class=nx>uri</span><span class=p>,</span> <span class=s>&#34;testdb&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=nx>db</span><span class=p>,</span> <span class=nx>uri</span><span class=p>,</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Errorf</span><span class=p>(</span><span class=s>&#34;failed to establish database connection: %v&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=nx>container</span><span class=p>,</span> <span class=nx>db</span><span class=p>,</span> <span class=nx>uri</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=tests>TESTS</h3><p>Now that we will have</p><ol><li>Repository methods</li><li>How to create the container and connect to it with Mongo</li></ol><p>We can pass to testing phase. As I mentioned in the beginning, we will use the `testify/suite&rsquo; method to write the tests.</p><p>First, let&rsquo;s create a struct called <code>RepositorySuite</code> which has the <code>suite.Suite</code>, so it can call the helper functions of the <code>suite.Suite</code>.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span> <span class=nx>RepositorySuite</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>suite</span><span class=p>.</span><span class=nx>Suite</span>
+</span></span><span class=line><span class=cl>	<span class=nx>repository</span>   <span class=nx>Repository</span>
+</span></span><span class=line><span class=cl>	<span class=nx>testDatabase</span> <span class=o>*</span><span class=nx>TestDatabase</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Now we will implement some interfaces from the <code>testify/suite</code> package.</p><p>First let&rsquo;s implement <code>SetupAllSuite</code> interface.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span> <span class=nx>SetupAllSuite</span> <span class=kd>interface</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nf>SetupSuite</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p><strong>SetupAllSuite</strong> has a <strong>SetupSuite</strong> method, which will run <strong>before the tests</strong> in the suite are run.</p></blockquote><p>We are going to implement this interface and we will create the mongo container and the repository.</p><p>Now, let&rsquo;s implement the <code>TearDownAllSuite</code> interface.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>type</span> <span class=nx>TearDownAllSuite</span> <span class=kd>interface</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nf>TearDownSuite</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p><strong>TearDownAllSuite</strong> has a <strong>TearDownSuite</strong> method, which will run <strong>after all the tests</strong> in the suite have been run.</p></blockquote><p>We are going to implement this interface and we will terminate the mongo container.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=p>(</span><span class=nx>suite</span> <span class=o>*</span><span class=nx>RepositorySuite</span><span class=p>)</span> <span class=nf>SetupSuite</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>suite</span><span class=p>.</span><span class=nx>testDatabase</span> <span class=p>=</span> <span class=nf>SetupTestDatabase</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=nx>suite</span><span class=p>.</span><span class=nx>repository</span> <span class=p>=</span> <span class=nf>NewRepository</span><span class=p>(</span><span class=nx>suite</span><span class=p>.</span><span class=nx>testDatabase</span><span class=p>.</span><span class=nx>DbInstance</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=p>(</span><span class=nx>suite</span> <span class=o>*</span><span class=nx>RepositorySuite</span><span class=p>)</span> <span class=nf>TearDownSuite</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>suite</span><span class=p>.</span><span class=nx>testDatabase</span><span class=p>.</span><span class=nx>container</span><span class=p>.</span><span class=nf>Terminate</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Now we can write our tests. Now let&rsquo;s write some tests for the <code>CreateBook</code> method. Let&rsquo;s recall the method.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=p>(</span><span class=nx>m</span> <span class=o>*</span><span class=nx>mongoRepository</span><span class=p>)</span> <span class=nf>CreateBook</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>book</span> <span class=nx>Book</span><span class=p>)</span> <span class=p>(</span><span class=nx>Book</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>book</span><span class=p>.</span><span class=nx>ID</span><span class=p>.</span><span class=nf>IsZero</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>book</span><span class=p>.</span><span class=nx>ID</span> <span class=p>=</span> <span class=nx>primitive</span><span class=p>.</span><span class=nf>NewObjectID</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>_</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>m</span><span class=p>.</span><span class=nx>db</span><span class=p>.</span><span class=nf>Collection</span><span class=p>(</span><span class=s>&#34;books&#34;</span><span class=p>).</span><span class=nf>InsertOne</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>book</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=nx>Book</span><span class=p>{},</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=nx>book</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>The method is quite simple, it checks if the ID is provided by the function. If it is not provided, it generates a new unique id.</p><p>So what we can test is</p><ol><li>Provide a book with no id</li><li>Provide a book with id</li></ol><p>Then check whether they are created or not.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// All methods that begin with &#34;Test&#34; are run as tests within a
+</span></span></span><span class=line><span class=cl><span class=c1>// suite.
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>func</span> <span class=p>(</span><span class=nx>suite</span> <span class=o>*</span><span class=nx>RepositorySuite</span><span class=p>)</span> <span class=nf>TestCreateBook</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>suite</span><span class=p>.</span><span class=nf>Run</span><span class=p>(</span><span class=s>&#34;when id is not provided&#34;</span><span class=p>,</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>book</span> <span class=o>:=</span> <span class=nx>Book</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>Author</span><span class=p>:</span> <span class=s>&#34;Irvin D. Yalom&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nx>Title</span><span class=p>:</span>  <span class=s>&#34;Staring at the Sun: Overcoming the Terror of Death&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nx>Likes</span><span class=p>:</span>  <span class=mi>100</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nx>createdBook</span><span class=p>,</span> <span class=nx>createBookErr</span> <span class=o>:=</span> <span class=nx>suite</span><span class=p>.</span><span class=nx>repository</span><span class=p>.</span><span class=nf>CreateBook</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=nx>book</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nx>suite</span><span class=p>.</span><span class=nf>Nil</span><span class=p>(</span><span class=nx>createBookErr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nx>suite</span><span class=p>.</span><span class=nf>Equal</span><span class=p>(</span><span class=nx>createdBook</span><span class=p>.</span><span class=nx>Title</span><span class=p>,</span> <span class=s>&#34;Staring at the Sun: Overcoming the Terror of Death&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nx>suite</span><span class=p>.</span><span class=nf>Equal</span><span class=p>(</span><span class=nx>createdBook</span><span class=p>.</span><span class=nx>Author</span><span class=p>,</span> <span class=s>&#34;Irvin D. Yalom&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nx>suite</span><span class=p>.</span><span class=nf>False</span><span class=p>(</span><span class=nx>createdBook</span><span class=p>.</span><span class=nx>ID</span><span class=p>.</span><span class=nf>IsZero</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nx>suite</span><span class=p>.</span><span class=nf>Run</span><span class=p>(</span><span class=s>&#34;when id is provided&#34;</span><span class=p>,</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>book</span> <span class=o>:=</span> <span class=nx>Book</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>ID</span><span class=p>:</span>     <span class=nx>primitive</span><span class=p>.</span><span class=nf>NewObjectID</span><span class=p>(),</span>
+</span></span><span class=line><span class=cl>            <span class=nx>Author</span><span class=p>:</span> <span class=s>&#34;Dostoyevksi&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nx>Title</span><span class=p>:</span>  <span class=s>&#34;Notes From the Underground&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nx>Likes</span><span class=p>:</span>  <span class=mi>100</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nx>createdBook</span><span class=p>,</span> <span class=nx>createBookErr</span> <span class=o>:=</span> <span class=nx>suite</span><span class=p>.</span><span class=nx>repository</span><span class=p>.</span><span class=nf>CreateBook</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=nx>book</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nx>suite</span><span class=p>.</span><span class=nf>Nil</span><span class=p>(</span><span class=nx>createBookErr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nx>suite</span><span class=p>.</span><span class=nf>Equal</span><span class=p>(</span><span class=nx>createdBook</span><span class=p>,</span> <span class=nx>book</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Now let&rsquo;s write some tests for <code>FindBook</code> method of the <code>mongoRepository</code>. Let&rsquo;s recall the method.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=p>(</span><span class=nx>m</span> <span class=o>*</span><span class=nx>mongoRepository</span><span class=p>)</span> <span class=nf>FindBook</span><span class=p>(</span><span class=nx>ctx</span> <span class=nx>context</span><span class=p>.</span><span class=nx>Context</span><span class=p>,</span> <span class=nx>id</span> <span class=nx>primitive</span><span class=p>.</span><span class=nx>ObjectID</span><span class=p>)</span> <span class=p>(</span><span class=o>*</span><span class=nx>Book</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>book</span> <span class=nx>Book</span>
+</span></span><span class=line><span class=cl>	<span class=nx>filter</span> <span class=o>:=</span> <span class=nx>bson</span><span class=p>.</span><span class=nx>M</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=s>&#34;_id&#34;</span><span class=p>:</span> <span class=nx>id</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>m</span><span class=p>.</span><span class=nx>db</span><span class=p>.</span><span class=nf>Collection</span><span class=p>(</span><span class=s>&#34;books&#34;</span><span class=p>).</span><span class=nf>FindOne</span><span class=p>(</span><span class=nx>ctx</span><span class=p>,</span> <span class=nx>filter</span><span class=p>).</span><span class=nf>Decode</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>book</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>return</span> <span class=kc>nil</span><span class=p>,</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=o>&amp;</span><span class=nx>book</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>It is quite simple, it tries to find the book with given id. So to test it,</p><ol><li>First, we need to create a book, then try to fetch it and it should be successful.</li><li>Try to fetch a document which not exists, then it should not found it.</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kd>func</span> <span class=p>(</span><span class=nx>suite</span> <span class=o>*</span><span class=nx>RepositorySuite</span><span class=p>)</span> <span class=nf>TestFindBook</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>suite</span><span class=p>.</span><span class=nf>Run</span><span class=p>(</span><span class=s>&#34;when there is no record&#34;</span><span class=p>,</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>id</span> <span class=o>:=</span> <span class=nx>primitive</span><span class=p>.</span><span class=nf>NewObjectID</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>		<span class=nx>foundBook</span><span class=p>,</span> <span class=nx>findBookErr</span> <span class=o>:=</span> <span class=nx>suite</span><span class=p>.</span><span class=nx>repository</span><span class=p>.</span><span class=nf>FindBook</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=nx>id</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>		<span class=nx>suite</span><span class=p>.</span><span class=nf>Equal</span><span class=p>(</span><span class=nx>findBookErr</span><span class=p>,</span> <span class=nx>mongo</span><span class=p>.</span><span class=nx>ErrNoDocuments</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=nx>suite</span><span class=p>.</span><span class=nf>Nil</span><span class=p>(</span><span class=nx>foundBook</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>suite</span><span class=p>.</span><span class=nf>Run</span><span class=p>(</span><span class=s>&#34;when there is record for given id&#34;</span><span class=p>,</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>book</span> <span class=o>:=</span> <span class=nx>Book</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nx>Author</span><span class=p>:</span> <span class=s>&#34;Dostoyevksi&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>			<span class=nx>Title</span><span class=p>:</span>  <span class=s>&#34;Notes From the Underground&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>			<span class=nx>Likes</span><span class=p>:</span>  <span class=mi>100</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>		<span class=nx>createdBook</span><span class=p>,</span> <span class=nx>createBookErr</span> <span class=o>:=</span> <span class=nx>suite</span><span class=p>.</span><span class=nx>repository</span><span class=p>.</span><span class=nf>CreateBook</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=nx>book</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=nx>suite</span><span class=p>.</span><span class=nf>Nil</span><span class=p>(</span><span class=nx>createBookErr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>		<span class=nx>id</span> <span class=o>:=</span> <span class=nx>createdBook</span><span class=p>.</span><span class=nx>ID</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>		<span class=nx>foundBook</span><span class=p>,</span> <span class=nx>findBookErr</span> <span class=o>:=</span> <span class=nx>suite</span><span class=p>.</span><span class=nx>repository</span><span class=p>.</span><span class=nf>FindBook</span><span class=p>(</span><span class=nx>context</span><span class=p>.</span><span class=nf>Background</span><span class=p>(),</span> <span class=nx>id</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>		<span class=nx>suite</span><span class=p>.</span><span class=nf>Nil</span><span class=p>(</span><span class=nx>findBookErr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=nx>suite</span><span class=p>.</span><span class=nf>Equal</span><span class=p>(</span><span class=o>*</span><span class=nx>foundBook</span><span class=p>,</span> <span class=nx>createdBook</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>In the second test, first we create a book to ensure that there is some data to fetch.</p><p>In the first test, random id is tried to be fetched and it returned an error <code>mongo.ErrNoDocuments</code> which states that there is no record for given filter in this collection.</p><p>To run the tests, you just need to run</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>go <span class=nb>test</span> -v ./..
+</span></span></code></pre></td></tr></table></div></div><p>You will see output similar to this.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>2024/01/19 21:24:15 🐳 Creating container for image testcontainers/ryuk:0.6.0
+</span></span><span class=line><span class=cl>2024/01/19 21:24:15 ✅ Container created: 6096e5f94047
+</span></span><span class=line><span class=cl>2024/01/19 21:24:15 🐳 Starting container: 6096e5f94047
+</span></span><span class=line><span class=cl>2024/01/19 21:24:15 ✅ Container started: 6096e5f94047
+</span></span><span class=line><span class=cl>2024/01/19 21:24:15 🚧 Waiting for container id 6096e5f94047 image: testcontainers/ryuk:0.6.0. Waiting for: &amp;{Port:8080/tcp timeout:&lt;nil&gt; PollInterval:100ms}
+</span></span><span class=line><span class=cl>2024/01/19 21:24:15 🐳 Creating container for image mongo
+</span></span><span class=line><span class=cl>2024/01/19 21:24:15 ✅ Container created: 6a6541ee0bcf
+</span></span><span class=line><span class=cl>2024/01/19 21:24:15 🐳 Starting container: 6a6541ee0bcf
+</span></span><span class=line><span class=cl>2024/01/19 21:24:15 ✅ Container started: 6a6541ee0bcf
+</span></span><span class=line><span class=cl>2024/01/19 21:24:15 mongo container ready and running at port:  50354
+</span></span><span class=line><span class=cl>=== RUN   TestExampleTestSuite/TestCreateBook
+</span></span><span class=line><span class=cl>=== RUN   TestExampleTestSuite/TestCreateBook/when_id_is_not_provided
+</span></span><span class=line><span class=cl>=== RUN   TestExampleTestSuite/TestCreateBook/when_id_is_provided
+</span></span><span class=line><span class=cl>=== RUN   TestExampleTestSuite/TestFindBook
+</span></span><span class=line><span class=cl>=== RUN   TestExampleTestSuite/TestFindBook/when_there_is_no_record
+</span></span><span class=line><span class=cl>=== RUN   TestExampleTestSuite/TestFindBook/when_there_is_record_for_given_id
+</span></span><span class=line><span class=cl>2024/01/19 21:24:20 🐳 Terminating container: 6a6541ee0bcf
+</span></span><span class=line><span class=cl>2024/01/19 21:24:21 🚫 Container terminated: 6a6541ee0bcf
+</span></span><span class=line><span class=cl>--- PASS: TestExampleTestSuite (6.04s)
+</span></span><span class=line><span class=cl>    --- PASS: TestExampleTestSuite/TestCreateBook (5.04s)
+</span></span><span class=line><span class=cl>        --- PASS: TestExampleTestSuite/TestCreateBook/when_id_is_not_provided (5.04s)
+</span></span><span class=line><span class=cl>        --- PASS: TestExampleTestSuite/TestCreateBook/when_id_is_provided (0.00s)
+</span></span><span class=line><span class=cl>    --- PASS: TestExampleTestSuite/TestFindBook (0.00s)
+</span></span><span class=line><span class=cl>        --- PASS: TestExampleTestSuite/TestFindBook/when_there_is_no_record (0.00s)
+</span></span><span class=line><span class=cl>        --- PASS: TestExampleTestSuite/TestFindBook/when_there_is_record_for_given_id (0.00s)
+</span></span><span class=line><span class=cl>PASS
+</span></span></code></pre></td></tr></table></div></div><p>As we can see</p><ol><li>First the container is created</li><li>The tests are running</li><li>Container is being terminated.</li></ol><h2 id=references>REFERENCES</h2><ul><li><a href=https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo target=_blank rel="noopener noreffer">mongodb go-sdk</a></li><li><a href=https://pkg.go.dev/github.com/stretchr/testify/suite target=_blank rel="noopener noreffer">testify/suite</a></li><li><a href=https://testcontainers.com/ target=_blank rel="noopener noreffer">testcontainers</a></li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2024-01-19</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/golang-mongodb-integration-tests/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=https://ocakhasan.github.io/golang-mongodb-integration-tests/ data-title="Write Integration Tests For Mongo With Golang" data-hashtags=golang,mongodb,tests><i class="fab fa-twitter fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://ocakhasan.github.io/golang-mongodb-integration-tests/ data-hashtag=golang><i class="fab fa-facebook-square fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://ocakhasan.github.io/golang-mongodb-integration-tests/ data-title="Write Integration Tests For Mongo With Golang"><i class="fab fa-hacker-news fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Line" data-sharer=line data-url=https://ocakhasan.github.io/golang-mongodb-integration-tests/ data-title="Write Integration Tests For Mongo With Golang"><i data-svg-src=/lib/simple-icons/icons/line.min.svg aria-hidden=true></i></a><a href=javascript:void(0); title="Share on 微博" data-sharer=weibo data-url=https://ocakhasan.github.io/golang-mongodb-integration-tests/ data-title="Write Integration Tests For Mongo With Golang"><i class="fab fa-weibo fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/golang/>golang</a>,&nbsp;<a href=/tags/mongodb/>mongodb</a>,&nbsp;<a href=/tags/tests/>tests</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/2024-expectations/ class=prev rel=prev title="(tr) 2023 özet & 2024 beklentileri"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>(tr) 2023 özet & 2024 beklentileri</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.121.2">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2019 - 2024</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Hasan Ocak</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.css><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/contrib/auto-render.min.js></script><script type=text/javascript src=/lib/katex/contrib/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/contrib/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-165674239-4",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-165674239-4" async></script></body></html>
